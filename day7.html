@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAZ AA-C Week 1 — Day 7</title>
+<style>* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f4f8; color: #2d3748; }
+.header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 24px 20px; text-align: center; }
+.header h1 { font-size: 1.8em; margin-bottom: 4px; }
+.header p { opacity: 0.9; font-size: 0.95em; }
+.nav { display: flex; justify-content: center; gap: 8px; padding: 16px 0; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); flex-wrap: wrap; }
+.nav a { text-decoration: none; padding: 8px 18px; border-radius: 20px; font-weight: 500; font-size: 0.9em; transition: all 0.2s; color: #4a5568; border: 2px solid transparent; }
+.nav a:hover { border-color: #667eea; color: #667eea; }
+.nav a.active { background: #667eea; color: white; border-color: #667eea; }
+.nav a.home { background: #edf2f7; }
+.container { max-width: 900px; margin: 0 auto; padding: 20px; }
+.section-title { font-size: 1.3em; font-weight: 700; margin: 24px 0 12px; padding: 10px 16px; background: white; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 8px; }
+.video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin-bottom: 20px; }
+.video-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: transform 0.2s; }
+.video-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+.video-card video { width: 100%; display: block; background: #000; max-height: 200px; }
+.video-card video[poster] { object-fit: cover; }
+.video-label { padding: 8px 12px; font-size: 0.85em; color: #718096; text-align: center; }
+.audio-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px; }
+.audio-track { display: flex; align-items: center; gap: 10px; background: white; padding: 10px 16px; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+.track-num { font-weight: 700; color: #a0aec0; font-size: 0.9em; min-width: 24px; }
+.track-name { flex: 1; font-size: 0.9em; color: #4a5568; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.play-btn, .loop-btn { width: 36px; height: 36px; border-radius: 50%; border: none; cursor: pointer; font-size: 1em; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+.play-btn { background: #667eea; color: white; }
+.play-btn:hover { background: #5a67d8; }
+.play-btn.playing { background: #e53e3e; }
+.loop-btn { background: #edf2f7; }
+.loop-btn.active { background: #48bb78; color: white; }
+.instructions { background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; font-size: 0.9em; color: #856404; }
+.loading { text-align: center; padding: 40px; color: #a0aec0; font-size: 1.1em; }
+footer { text-align: center; padding: 24px; color: #a0aec0; font-size: 0.85em; }</style>
+</head>
+<body>
+<div class="header"><h1>📚 RAZ AA-C Week 1</h1><p>Day 7 — 10 Videos + 11 Audio</p></div>
+<nav class="nav"><a href="/" class="home">🏠</a><a href="/day1.html">Day 1</a><a href="/day2.html">Day 2</a><a href="/day3.html">Day 3</a><a href="/day4.html">Day 4</a><a href="/day5.html">Day 5</a><a href="/day6.html">Day 6</a><a href="/day7.html" class="active">Day 7</a></nav>
+<div class="container">
+<div class="instructions"><strong>💡 使用方法：</strong>点击视频播放 | 点击音频 ▶ 播放，🔁 循环模式 | 每天重复听，磨耳朵</div>
+<div class="section-title"><span>🎬</span> Videos (10)</div>
+<div class="video-grid">
+            <div class="video-card">
+                <video src="/api/media?path=/day7/videos/1-7 01.mp4" preload="none"
+                       onclick="this.paused?this.play():this.pause()"
+                       playsinline controls>
+                </video>
+                <div class="video-label">1-7 01.mp4</div>
+            </div>
+            <div class="video-card">
+                <video src="/api/media?path=/day7/videos/1-7 02.mp4" preload="none"
+                       onclick="this.paused?this.play():this.pause()"
+                       playsinline controls>
+                </video>
+                <div class="video-label">1-7 02.mp4</div>
+            </div>
+            <div class="video-card">
+                <video src="/api/media?path=/day7/videos/1-7 03.mp4" preload="none"
+                       onclick="this.paused?this.play():this.pause()"
+                       playsinline controls>
+                </video>
+                <div class="video-label">1-7 03.mp4</div>
+            </div>
+            <div class="video-card">
+                <video src="/api/media?path=/day7/videos/1-7 04.mp4" preload="none"
+                       onclick="this.paused?this.play():this.pause()"
+                       playsinline controls>
+                </video>
+                <div class="video-label">1-7 04.mp4</div>
+            </div>
+            <div class="video-card">
+                <video src="/api/media?path=/day7/videos/1-7 05.mp4" preload="none"
+                       onclick="this.paused?this.play():this.pause()"
+                       playsinline controls>
+                </video>
+                <div class="video-label">1-7 05.mp4</div>
+            </div>
+            <div class="video-card">
+                <video src="/api/media?path=/day7/videos/1-7 06.mp4" preload="none"
+                       onclick="this.paused?this.play():this.pause()"
+                       playsinline controls>
+                </video>
+                <div class="video-label">1-7 06.mp4</div>
+            </div>
+            <div class="video-card">
+                <video src="/api/media?path=/day7/videos/1-7 07.mp4" preload="none"
+                       onclick="this.paused?this.play():this.pause()"
+                       playsinline controls>
+                </video>
+                <div class="video-label">1-7 07.mp4</div>
+            </div>
+            <div class="video-card">
+                <video src="/api/media?path=/day7/videos/1-7 08.mp4" preload="none"
+                       onclick="this.paused?this.play():this.pause()"
+                       playsinline controls>
+                </video>
+                <div class="video-label">1-7 08.mp4</div>
+            </div>
+            <div class="video-card">
+                <video src="/api/media?path=/day7/videos/1-7 09.mp4" preload="none"
+                       onclick="this.paused?this.play():this.pause()"
+                       playsinline controls>
+                </video>
+                <div class="video-label">1-7 09.mp4</div>
+            </div>
+            <div class="video-card">
+                <video src="/api/media?path=/day7/videos/1-7 10.mp4" preload="none"
+                       onclick="this.paused?this.play():this.pause()"
+                       playsinline controls>
+                </video>
+                <div class="video-label">1-7 10.mp4</div>
+            </div></div>
+<div class="section-title"><span>🎵</span> Audio — Click ▶ to play, 🔁 to loop</div>
+<div class="audio-list">
+            <div class="audio-track">
+                <span class="track-num">01</span>
+                <audio id="audio0" loop preload="none"></audio>
+                <button class="play-btn" onclick="toggleAudio(0,'/api/media?path=/day7/audio/1-7 01.mp3')">▶</button>
+                <button class="loop-btn" onclick="toggleLoop(0)">🔁</button>
+                <span class="track-name">1-7 01.mp3</span>
+            </div>
+            <div class="audio-track">
+                <span class="track-num">02</span>
+                <audio id="audio1" loop preload="none"></audio>
+                <button class="play-btn" onclick="toggleAudio(1,'/api/media?path=/day7/audio/1-7 02.mp3')">▶</button>
+                <button class="loop-btn" onclick="toggleLoop(1)">🔁</button>
+                <span class="track-name">1-7 02.mp3</span>
+            </div>
+            <div class="audio-track">
+                <span class="track-num">03</span>
+                <audio id="audio2" loop preload="none"></audio>
+                <button class="play-btn" onclick="toggleAudio(2,'/api/media?path=/day7/audio/1-7 03.MP3')">▶</button>
+                <button class="loop-btn" onclick="toggleLoop(2)">🔁</button>
+                <span class="track-name">1-7 03.MP3</span>
+            </div>
+            <div class="audio-track">
+                <span class="track-num">04</span>
+                <audio id="audio3" loop preload="none"></audio>
+                <button class="play-btn" onclick="toggleAudio(3,'/api/media?path=/day7/audio/1-7 04.MP3')">▶</button>
+                <button class="loop-btn" onclick="toggleLoop(3)">🔁</button>
+                <span class="track-name">1-7 04.MP3</span>
+            </div>
+            <div class="audio-track">
+                <span class="track-num">05</span>
+                <audio id="audio4" loop preload="none"></audio>
+                <button class="play-btn" onclick="toggleAudio(4,'/api/media?path=/day7/audio/1-7 05.MP3')">▶</button>
+                <button class="loop-btn" onclick="toggleLoop(4)">🔁</button>
+                <span class="track-name">1-7 05.MP3</span>
+            </div>
+            <div class="audio-track">
+                <span class="track-num">06</span>
+                <audio id="audio5" loop preload="none"></audio>
+                <button class="play-btn" onclick="toggleAudio(5,'/api/media?path=/day7/audio/1-7 06.MP3')">▶</button>
+                <button class="loop-btn" onclick="toggleLoop(5)">🔁</button>
+                <span class="track-name">1-7 06.MP3</span>
+            </div>
+            <div class="audio-track">
+                <span class="track-num">07</span>
+                <audio id="audio6" loop preload="none"></audio>
+                <button class="play-btn" onclick="toggleAudio(6,'/api/media?path=/day7/audio/1-7 07.MP3')">▶</button>
+                <button class="loop-btn" onclick="toggleLoop(6)">🔁</button>
+                <span class="track-name">1-7 07.MP3</span>
+            </div>
+            <div class="audio-track">
+                <span class="track-num">08</span>
+                <audio id="audio7" loop preload="none"></audio>
+                <button class="play-btn" onclick="toggleAudio(7,'/api/media?path=/day7/audio/1-7 08.mp3')">▶</button>
+                <button class="loop-btn" onclick="toggleLoop(7)">🔁</button>
+                <span class="track-name">1-7 08.mp3</span>
+            </div>
+            <div class="audio-track">
+                <span class="track-num">09</span>
+                <audio id="audio8" loop preload="none"></audio>
+                <button class="play-btn" onclick="toggleAudio(8,'/api/media?path=/day7/audio/1-7 09.mp3')">▶</button>
+                <button class="loop-btn" onclick="toggleLoop(8)">🔁</button>
+                <span class="track-name">1-7 09.mp3</span>
+            </div>
+            <div class="audio-track">
+                <span class="track-num">10</span>
+                <audio id="audio9" loop preload="none"></audio>
+                <button class="play-btn" onclick="toggleAudio(9,'/api/media?path=/day7/audio/1-7 10.mp3')">▶</button>
+                <button class="loop-btn" onclick="toggleLoop(9)">🔁</button>
+                <span class="track-name">1-7 10.mp3</span>
+            </div>
+            <div class="audio-track">
+                <span class="track-num">11</span>
+                <audio id="audio10" loop preload="none"></audio>
+                <button class="play-btn" onclick="toggleAudio(10,'/api/media?path=/day7/audio/1-7 RAZ AA.mp3')">▶</button>
+                <button class="loop-btn" onclick="toggleLoop(10)">🔁</button>
+                <span class="track-name">1-7 RAZ AA.mp3</span>
+            </div></div>
+</div>
+<footer>RAZ AA-C Week 1</footer>
+<script>
+let currentAudio = null, currentAudioIdx = null;
+let audioSources = {};
+
+function toggleAudio(idx, src) {
+    const audio = document.getElementById('audio'+idx);
+    const btn = audio.parentElement.querySelector('.play-btn');
+    
+    if (!audioSources[idx]) {
+        audioSources[idx] = src;
+        audio.src = src;
+        audio.load();
+    }
+    
+    if (audio.paused) {
+        if (currentAudio && currentAudio !== audio) {
+            currentAudio.pause();
+            document.getElementById('audio'+currentAudioIdx).parentElement.querySelector('.play-btn').classList.remove('playing');
+            document.getElementById('audio'+currentAudioIdx).parentElement.querySelector('.play-btn').textContent = '▶';
+        }
+        audio.play();
+        btn.classList.add('playing');
+        btn.textContent = '⏸';
+        currentAudio = audio;
+        currentAudioIdx = idx;
+    } else {
+        audio.pause();
+        btn.classList.remove('playing');
+        btn.textContent = '▶';
+        currentAudio = null;
+        currentAudioIdx = null;
+    }
+}
+
+function toggleLoop(idx) {
+    const audio = document.getElementById('audio'+idx);
+    const btn = audio.parentElement.querySelector('.loop-btn');
+    audio.loop = !audio.loop;
+    btn.classList.toggle('active', audio.loop);
+}
+</script>
+</body>
+</html>
