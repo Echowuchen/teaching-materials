@@ -2,6 +2,6 @@ services:
   - type: web
     name: raz-week1
     env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: python server.py
+    buildCommand: pip install -r raz/requirements.txt
+    startCommand: cd raz && python server.py
     plan: free
