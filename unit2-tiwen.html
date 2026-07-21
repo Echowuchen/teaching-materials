@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>提问策略 - 四年级语文</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:linear-gradient(180deg,#e0f7fa 0%,#f1f8e9 100%);
+    min-height:100vh;padding:16px
+  }
+  .container{max-width:800px;margin:0 auto}
+  .header{
+    text-align:center;padding:24px 16px;
+    background:linear-gradient(135deg,#1565C0,#42A5F5);
+    border-radius:20px;color:#fff;margin-bottom:16px;
+    box-shadow:0 4px 20px rgba(21,101,192,0.3)
+  }
+  .header h1{font-size:1.6em;margin-bottom:4px}
+  .header p{font-size:0.85em;opacity:.9;line-height:1.4}
+  .tab-bar{display:flex;gap:4px;overflow-x:auto;padding:4px 0;-webkit-overflow-scrolling:touch;margin-bottom:12px}
+  .tab-btn{flex-shrink:0;padding:10px 18px;border:none;border-radius:12px 12px 0 0;font-size:0.85em;font-weight:600;cursor:pointer;background:#e0e0e0;color:#666;transition:all .2s;-webkit-tap-highlight-color:transparent}
+  .tab-btn.active{background:#fff;color:#1565C0;box-shadow:0 -2px 8px rgba(0,0,0,.06)}
+  .tab-btn:active{transform:scale(.95)}
+  .content-area{background:#fff;border-radius:0 16px 16px 16px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,.06);min-height:400px}
+  .tab-content{display:none}
+  .tab-content.active{display:block;animation:fadeIn .3s ease}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .lesson-title{font-size:1.2em;font-weight:700;color:#1a237e;margin-bottom:12px;padding-bottom:8px;border-bottom:3px solid #e0f2f1}
+  .section-title{font-size:.95em;font-weight:600;color:#555;margin:14px 0 8px;display:flex;align-items:center;gap:6px}
+  .section-title::before{content:'';display:inline-block;width:3px;height:14px;background:#1565C0;border-radius:2px}
+  .char-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+  .char-card{display:inline-flex;flex-direction:column;align-items:center;padding:8px 12px;background:linear-gradient(135deg,#e0f2f1,#e8f5e9);border-radius:10px;cursor:pointer;transition:all .2s;border:1.5px solid transparent;min-width:52px}
+  .char-card:active{transform:scale(.9)}
+  .char-card .char{font-size:1.3em;font-weight:700;color:#1a237e}
+  .char-card .pinyin{font-size:.7em;color:#888;margin-top:2px}
+  .char-card.zi{background:linear-gradient(135deg,#fff3e0,#ffe0b2);border-color:#ffcc80}
+  .word-list{display:flex;flex-wrap:wrap;gap:6px}
+  .word-tag{padding:4px 12px;background:#f5f5f5;border-radius:16px;font-size:.85em;color:#555;border:1px solid #e0e0e0}
+  .key-points{padding-left:16px}
+  .key-points li{font-size:.9em;color:#444;line-height:1.7;margin-bottom:4px}
+  .back-link{display:block;text-align:center;padding:16px;color:#888;text-decoration:none;font-size:.85em;margin-top:16px}
+  @media(max-width:500px){
+    body{padding:10px}
+    .header h1{font-size:1.3em}
+    .tab-btn{padding:8px 12px;font-size:.8em}
+    .content-area{padding:14px;border-radius:0 12px 12px 12px}
+    .char-card{padding:6px 10px;min-width:44px}
+    .char-card .char{font-size:1.1em}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>📖 提问策略</h1>
+    <p>四年级上册 · 第二单元 · 点击下方标签切换课文</p>
+  </div>
+  <div class="tab-bar" id="tabBar"></div>
+  <div class="content-area" id="contentArea"></div>
+  <a href="../index.html" class="back-link">← 返回目录</a>
+</div>
+<script>
+const lessons = [
+  {
+    id:'yigedoujia', label:'一个豆荚里的五粒豆', title:'1 一个豆荚里的五粒豆（安徒生）',
+    renzi:'豌(wān) 豆(dòu) 荚(jiā) 按(àn) 僵(jiāng) 苔(tái) 潭(tán) 愉(yú)',
+    xiezi:['豌','豆','荚','按','僵','苔','囚','框','溢'],
+    ciyu:['豆荚','暖洋洋','舒适','恐怕','僵硬','青苔','囚犯','愉快','窗台','丰满'],
+    yaodian:[
+      '每粒豌豆的志向不同，结果也不同',
+      '第五粒豌豆给生病的小女孩带来希望和快乐',
+      '提问策略：针对部分内容提问和针对全文提问',
+      '学会从不同角度提出有价值的问题'
+    ]
+  },
+  {
+    id:'bianfuheleida', label:'蝙蝠和雷达', title:'2 蝙蝠和雷达',
+    renzi:'蝙(biān) 蝠(fú) 即(jí) 锐(ruì) 铿(kēng) 屏(píng) 荧(yíng)',
+    xiezi:['蝙','蝠','启','即','科','横','竖','绳','系','蝇','证','研','究','达','驾'],
+    ciyu:['蝙蝠','清朗','捕捉','飞蛾','蚊子','铃铛','揭开','雷达','灵巧','科学家'],
+    yaodian:[
+      '蝙蝠夜间飞行靠嘴和耳朵配合探路',
+      '科学家模仿蝙蝠发明了雷达',
+      '学会从不同角度提问：内容、写法、启示',
+      '三次实验：蒙眼、堵耳、封嘴'
+    ]
+  },
+  {
+    id:'hufenghuanyu', label:'呼风唤雨的世纪', title:'3 呼风唤雨的世纪（陆永祥）',
+    renzi:'获(huò) 潜(qián) 舆(yú) 舶(bó)',
+    xiezi:['纪','技','改','程','超','亿','核','奥','益','联','质','任','善'],
+    ciyu:['呼风唤雨','获得','改善','程度','依赖','寄托','原子核','百亿','探索','奥秘'],
+    yaodian:[
+      '20世纪是呼风唤雨的世纪',
+      '现代科技让人类上天入地、潜入深海',
+      '学会针对全文提问：提出值得思考的大问题',
+      '科技改变生活，未来需要继续探索'
+    ]
+  },
+  {
+    id:'hudiedejia', label:'蝴蝶的家', title:'4 蝴蝶的家',
+    renzi:'避(bì) 撼(hàn) 喧(xuān) 雀(què)',
+    xiezi:['蝴','蝶','雀','按','坦','震'],
+    ciyu:['蝴蝶','躲避','震撼','喧嚷','屋檐','树冠','轻盈','密雨'],
+    yaodian:[
+      '作者对蝴蝶在大雨中飞行的担忧',
+      '不断追问：蝴蝶的家在哪里？',
+      '提出问题并积极思考',
+      '培养关爱自然、关爱生命的情感'
+    ]
+  },
+  {
+    id:'kouyu', label:'口语交际', title:'🗣️ 口语交际：爱护眼睛 保护视力',
+    renzi:'',xiezi:[],ciyu:[],
+    yaodian:[
+      '了解近视的危害和预防方法',
+      '讨论爱护眼睛的好习惯',
+      '制定班级护眼公约',
+      '表达清楚、有条理'
+    ]
+  },
+  {
+    id:'xiezuo', label:'习作', title:'✍️ 习作：写观察日记',
+    renzi:'',xiezi:[],ciyu:[],
+    yaodian:[
+      '选择一个观察对象（植物、动物、天气变化等）',
+      '连续观察几天，记录变化',
+      '用日记格式，写清日期和天气',
+      '写下自己的感受和发现'
+    ]
+  }
+];
+
+function init(){
+  const tabBar=document.getElementById('tabBar');
+  const content=document.getElementById('contentArea');
+  lessons.forEach((l,i)=>{
+    const tab=document.createElement('button');
+    tab.className='tab-btn'+(i===0?' active':'');
+    tab.textContent=l.label;
+    tab.onclick=()=>switchTab(i);
+    tabBar.appendChild(tab);
+    const div=document.createElement('div');
+    div.className='tab-content'+(i===0?' active':'');
+    div.innerHTML=buildContent(l);
+    content.appendChild(div);
+  });
+}
+
+function buildContent(l){
+  let html=`<div class="lesson-title">${l.title}</div>`;
+  if(l.renzi){
+    html+=`<div class="section-title">会认字</div><div class="char-grid">`;
+    l.renzi.split(' ').forEach(c=>{
+      if(!c)return;
+      const m=c.match(/(.)\(([^)]+)\)/);
+      if(m) html+=`<div class="char-card"><span class="char">${m[1]}</span><span class="pinyin">${m[2]}</span></div>`;
+    });
+    html+=`</div>`;
+  }
+  if(l.xiezi&&l.xiezi.length){
+    html+=`<div class="section-title">会写字</div><div class="char-grid">`;
+    l.xiezi.forEach(c=>{html+=`<div class="char-card zi"><span class="char">${c}</span><span class="pinyin">✍️</span></div>`});
+    html+=`</div>`;
+  }
+  if(l.ciyu&&l.ciyu.length){
+    html+=`<div class="section-title">重点词语</div><div class="word-list">`;
+    l.ciyu.forEach(w=>{html+=`<span class="word-tag">${w}</span>`});
+    html+=`</div>`;
+  }
+  if(l.yaodian&&l.yaodian.length){
+    html+=`<div class="section-title">课文要点</div><ul class="key-points">`;
+    l.yaodian.forEach(p=>{html+=`<li>${p}</li>`});
+    html+=`</ul>`;
+  }
+  return html;
+}
+
+function switchTab(i){
+  document.querySelectorAll('.tab-btn').forEach((t,j)=>{t.classList.toggle('active',j===i)});
+  document.querySelectorAll('.tab-content').forEach((c,j)=>{c.classList.toggle('active',j===i)});
+}
+
+init();
+</script>
+</body>
+</html>

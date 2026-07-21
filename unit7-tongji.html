@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>条形统计图 - 四年级数学</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(135deg,#283593,#5C6BC0);min-height:100vh;padding:20px;color:#333}
+  .container{max-width:800px;margin:0 auto}
+  .header{text-align:center;padding:20px;background:rgba(255,255,255,0.2);border-radius:20px;color:#fff;margin-bottom:20px;box-shadow:0 4px 20px rgba(0,0,0,0.2)}
+  .header h1{font-size:1.8em;margin-bottom:4px}
+  .header p{font-size:0.95em;opacity:0.9}
+  .card{background:white;border-radius:20px;padding:24px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,0.08)}
+  .section-title{font-size:1.1em;font-weight:600;color:#283593;margin:16px 0 10px;display:flex;align-items:center;gap:8px}
+  canvas{display:block;margin:0 auto;border-radius:12px;background:#f8f9fa;border:2px solid #e0e0e0}
+  .btn{display:inline-block;padding:12px 24px;background:linear-gradient(135deg,#283593,#5C6BC0);color:white;border:none;border-radius:12px;font-size:1em;font-weight:600;cursor:pointer;transition:all .2s;margin:4px}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(40,53,147,0.3)}
+  .btn-outline{background:transparent;border:2px solid #283593;color:#283593}
+  .data-input{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:12px 0}
+  .data-input div{display:flex;flex-direction:column;align-items:center;gap:4px}
+  .data-input label{font-size:.8em;color:#666}
+  .data-input input{width:60px;padding:8px;border:2px solid #e0e0e0;border-radius:8px;text-align:center;font-size:.9em}
+  .data-input input:focus{border-color:#283593;outline:none}
+  .toggle-row{display:flex;gap:8px;justify-content:center;margin:12px 0}
+  .quiz-q{font-size:1.1em;font-weight:600;text-align:center;margin:12px 0;color:#283593}
+  .quiz-options{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:12px 0}
+  .quiz-opt{padding:10px 20px;border:2px solid #e0e0e0;border-radius:12px;cursor:pointer;transition:all .2s;font-weight:600}
+  .quiz-opt:hover{border-color:#283593;background:#e8eaf6}
+  .quiz-opt.correct{border-color:#4CAF50;background:#e8f5e9;color:#2E7D32}
+  .quiz-opt.wrong{border-color:#C62828;background:#ffebee;color:#C62828}
+  .score{text-align:center;font-size:1.1em;color:#283593;padding:8px}
+  .back-link{display:block;text-align:center;padding:16px;color:rgba(255,255,255,0.8);text-decoration:none;font-size:.9em;margin-top:20px}
+  @media(max-width:500px){body{padding:10px}.header h1{font-size:1.4em}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header"><h1>📊 条形统计图</h1><p>数据收集、整理与图表绘制</p></div>
+
+  <div class="card">
+    <div class="section-title">📈 统计图生成器</div>
+    <div class="data-input" id="dataInput"></div>
+    <div class="toggle-row">
+      <button class="btn btn-outline" onclick="setOrientation('vertical')">纵向</button>
+      <button class="btn btn-outline" onclick="setOrientation('horizontal')">横向</button>
+      <button class="btn btn-outline" onclick="setGridUnit(1)">一格代表1</button>
+      <button class="btn btn-outline" onclick="setGridUnit(5)">一格代表5</button>
+    </div>
+    <canvas id="chartCanvas" width="450" height="300"></canvas>
+  </div>
+
+  <div class="card">
+    <div class="section-title">🧩 读图练习</div>
+    <div class="score" id="score">得分：0 / 0</div>
+    <canvas id="quizCanvas" width="400" height="250"></canvas>
+    <div class="quiz-q" id="quizQuestion"></div>
+    <div class="quiz-options" id="quizOptions"></div>
+    <div style="text-align:center;margin-top:12px">
+      <button class="btn" onclick="nextQuiz()">下一题</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">📚 重点知识</div>
+    <ul style="padding-left:16px;font-size:.9em;color:#444;line-height:1.8">
+      <li><strong>条形统计图：</strong>用直条的长短表示数量的多少</li>
+      <li><strong>一格代表多个单位：</strong>当数据较大时，一格可以代表2、5、10等</li>
+      <li><strong>读图方法：</strong>先看标题→再看横轴纵轴→最后看数据</li>
+      <li><strong>绘制步骤：</strong>画轴→定刻度→画直条→标数据</li>
+    </ul>
+  </div>
+
+  <a href="../index.html" class="back-link">← 返回目录</a>
+</div>
+
+<script>
+const categories = ['周一','周二','周三','周四','周五','周六','周日'];
+let values = [12, 18, 8, 22, 15, 25, 20];
+let orientation = 'vertical';
+let gridUnit = 5;
+const colors = ['#5C6BC0','#7986CB','#9FA8DA','#C5CAE9','#3F51B5','#303F9F','#1A237E'];
+
+function initInputs() {
+  const container = document.getElementById('dataInput');
+  container.innerHTML = '';
+  categories.forEach((cat, i) => {
+    const div = document.createElement('div');
+    div.innerHTML = `<label>${cat}</label><input type="number" value="${values[i]}" min="0" onchange="values[${i}]=parseInt(this.value)||0;drawChart()">`;
+    container.appendChild(div);
+  });
+}
+
+function setOrientation(o) { orientation = o; drawChart(); }
+function setGridUnit(u) { gridUnit = u; drawChart(); }
+
+function drawChart() {
+  const c = document.getElementById('chartCanvas');
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0, 0, c.width, c.height);
+  const maxVal = Math.max(...values, gridUnit * 2);
+  const ceilMax = Math.ceil(maxVal / gridUnit) * gridUnit;
+  const w = c.width, h = c.height;
+  const pad = { top: 20, right: 20, bottom: 40, left: 50 };
+  const chartW = w - pad.left - pad.right;
+  const chartH = h - pad.top - pad.bottom;
+
+  if (orientation === 'vertical') {
+    // Y axis
+    ctx.beginPath();
+    ctx.moveTo(pad.left, pad.top);
+    ctx.lineTo(pad.left, h - pad.bottom);
+    ctx.lineTo(w - pad.right, h - pad.bottom);
+    ctx.strokeStyle = '#333';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    // Grid lines and labels
+    const gridCount = ceilMax / gridUnit;
+    for (let i = 0; i <= gridCount; i++) {
+      const y = h - pad.bottom - (i / gridCount) * chartH;
+      ctx.beginPath();
+      ctx.moveTo(pad.left, y);
+      ctx.lineTo(w - pad.right, y);
+      ctx.strokeStyle = '#e0e0e0';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.fillStyle = '#666';
+      ctx.font = '12px sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText(i * gridUnit, pad.left - 8, y + 4);
+    }
+    // Bars
+    const barW = chartW / (categories.length * 2);
+    categories.forEach((cat, i) => {
+      const x = pad.left + (i * 2 + 0.5) * barW;
+      const barH = (values[i] / ceilMax) * chartH;
+      const y = h - pad.bottom - barH;
+      ctx.fillStyle = colors[i % colors.length];
+      ctx.fillRect(x, y, barW, barH);
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(x, y, barW, barH);
+      // Label
+      ctx.fillStyle = '#333';
+      ctx.font = '12px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(cat, x + barW / 2, h - pad.bottom + 16);
+      // Value
+      ctx.fillStyle = '#333';
+      ctx.fillText(values[i], x + barW / 2, y - 6);
+    });
+    // Title
+    ctx.fillStyle = '#283593';
+    ctx.font = 'bold 14px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('学生人数统计', w / 2, 16);
+  } else {
+    // Horizontal
+    ctx.beginPath();
+    ctx.moveTo(pad.left, pad.top);
+    ctx.lineTo(pad.left, h - pad.bottom);
+    ctx.lineTo(w - pad.right, h - pad.bottom);
+    ctx.strokeStyle = '#333';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    const gridCount = ceilMax / gridUnit;
+    for (let i = 0; i <= gridCount; i++) {
+      const x = pad.left + (i / gridCount) * chartW;
+      ctx.beginPath();
+      ctx.moveTo(x, pad.top);
+      ctx.lineTo(x, h - pad.bottom);
+      ctx.strokeStyle = '#e0e0e0';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.fillStyle = '#666';
+      ctx.font = '12px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(i * gridUnit, x, h - pad.bottom + 16);
+    }
+    const barH = chartH / (categories.length * 2);
+    categories.forEach((cat, i) => {
+      const y = pad.top + (i * 2 + 0.5) * barH;
+      const barW2 = (values[i] / ceilMax) * chartW;
+      ctx.fillStyle = colors[i % colors.length];
+      ctx.fillRect(pad.left, y, barW2, barH);
+      ctx.fillStyle = '#333';
+      ctx.font = '12px sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText(cat, pad.left - 8, y + barH / 2 + 4);
+      ctx.textAlign = 'left';
+      ctx.fillText(values[i], pad.left + barW2 + 6, y + barH / 2 + 4);
+    });
+    ctx.fillStyle = '#283593';
+    ctx.font = 'bold 14px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('学生人数统计', w / 2, 16);
+  }
+}
+
+let qScore = 0, qTotal = 0;
+let quizData = [], quizQuestion = '', quizAnswer = '';
+
+function generateQuiz() {
+  const cats = ['语文','数学','英语','科学','体育'];
+  quizData = cats.map(() => Math.floor(Math.random() * 30) + 5);
+  const maxV = Math.max(...quizData);
+  const maxI = quizData.indexOf(maxV);
+  const types = [
+    { q: `哪种科目最受欢迎？`, a: cats[maxI], opts: cats.slice() },
+    { q: `哪种科目人数最少？`, a: cats[quizData.indexOf(Math.min(...quizData))], opts: cats.slice() },
+    { q: `${cats[0]}有多少人？`, a: String(quizData[0]), opts: [String(quizData[0]), String(quizData[0]+5), String(quizData[0]-3), String(quizData[0]+10)] },
+    { q: `${cats[0]}和${cats[1]}共多少人？`, a: String(quizData[0]+quizData[1]), opts: [String(quizData[0]+quizData[1]), String(quizData[0]+quizData[1]+3), String(quizData[0]+quizData[1]-2), String(quizData[0]+quizData[2])] }
+  ];
+  const t = types[Math.floor(Math.random() * types.length)];
+  quizQuestion = t.q;
+  quizAnswer = t.a;
+  // Draw quiz chart
+  const c = document.getElementById('quizCanvas');
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0, 0, c.width, c.height);
+  const maxVal = Math.max(...quizData);
+  const ceilMax = Math.ceil(maxVal / 5) * 5;
+  const w = c.width, h = c.height;
+  const pad = { top: 20, right: 20, bottom: 40, left: 50 };
+  const chartW = w - pad.left - pad.right, chartH = h - pad.top - pad.bottom;
+  ctx.beginPath();
+  ctx.moveTo(pad.left, pad.top);
+  ctx.lineTo(pad.left, h - pad.bottom);
+  ctx.lineTo(w - pad.right, h - pad.bottom);
+  ctx.strokeStyle = '#333'; ctx.lineWidth = 2; ctx.stroke();
+  const gridCount = ceilMax / 5;
+  for (let i = 0; i <= gridCount; i++) {
+    const y = h - pad.bottom - (i / gridCount) * chartH;
+    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(w - pad.right, y);
+    ctx.strokeStyle = '#e0e0e0'; ctx.lineWidth = 1; ctx.stroke();
+    ctx.fillStyle = '#666'; ctx.font = '11px sans-serif'; ctx.textAlign = 'right';
+    ctx.fillText(i * 5, pad.left - 6, y + 4);
+  }
+  const barW = chartW / (cats.length * 2);
+  cats.forEach((cat, i) => {
+    const x = pad.left + (i * 2 + 0.5) * barW;
+    const barH = (quizData[i] / ceilMax) * chartH;
+    const y = h - pad.bottom - barH;
+    ctx.fillStyle = colors[i];
+    ctx.fillRect(x, y, barW, barH);
+    ctx.fillStyle = '#333'; ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(cat, x + barW / 2, h - pad.bottom + 16);
+  });
+
+  const opts = t.opts.sort(() => Math.random() - 0.5);
+  document.getElementById('quizQuestion').textContent = quizQuestion;
+  document.getElementById('quizOptions').innerHTML = opts.map(o =>
+    `<div class="quiz-opt" onclick="checkQuizAnswer('${o}',this)">${o}</div>`
+  ).join('');
+}
+
+function nextQuiz() { generateQuiz(); }
+
+function checkQuizAnswer(choice, el) {
+  qTotal++;
+  if (String(choice) === String(quizAnswer)) {
+    qScore++;
+    el.classList.add('correct');
+  } else {
+    el.classList.add('wrong');
+    document.querySelectorAll('.quiz-opt').forEach(o => {
+      if (o.textContent === String(quizAnswer)) o.classList.add('correct');
+    });
+  }
+  document.querySelectorAll('.quiz-opt').forEach(o => o.style.pointerEvents = 'none');
+  document.getElementById('score').textContent = `得分：${qScore} / ${qTotal}`;
+}
+
+initInputs();
+drawChart();
+generateQuiz();
+</script>
+</body>
+</html>

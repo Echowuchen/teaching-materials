@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>除数是两位数的除法 - 四年级数学</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(135deg,#00695C,#26A69A);min-height:100vh;padding:20px;color:#333}
+  .container{max-width:800px;margin:0 auto}
+  .header{text-align:center;padding:20px;background:rgba(255,255,255,0.2);border-radius:20px;color:#fff;margin-bottom:20px;box-shadow:0 4px 20px rgba(0,0,0,0.2)}
+  .header h1{font-size:1.8em;margin-bottom:4px}
+  .header p{font-size:0.95em;opacity:0.9}
+  .card{background:white;border-radius:20px;padding:24px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,0.08)}
+  .section-title{font-size:1.1em;font-weight:600;color:#00695C;margin:16px 0 10px;display:flex;align-items:center;gap:8px}
+  .btn{display:inline-block;padding:12px 24px;background:linear-gradient(135deg,#00695C,#26A69A);color:white;border:none;border-radius:12px;font-size:1em;font-weight:600;cursor:pointer;transition:all .2s;margin:4px}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,105,92,0.3)}
+  .btn-outline{background:transparent;border:2px solid #00695C;color:#00695C}
+  .input-row{display:flex;gap:12px;align-items:center;justify-content:center;margin:16px 0;flex-wrap:wrap}
+  .input-row input{padding:10px;border:2px solid #e0e0e0;border-radius:8px;font-size:1.2em;width:100px;text-align:center;font-family:monospace}
+  .vertical-calc{font-family:monospace;font-size:1.2em;line-height:1.8;text-align:right;padding:16px;background:#f8f9fa;border-radius:12px;margin:16px 0}
+  .vertical-calc .line{border-top:1.5px solid #00695C;margin:2px 20px}
+  .vertical-calc .quotient{color:#00695C;font-weight:bold}
+  .vertical-calc .remain{color:#C62828}
+  .step-list{margin:12px 0}
+  .step-item{padding:6px 10px;margin:3px 0;border-radius:6px;font-size:.85em;transition:all .3s}
+  .step-item.active{background:#e0f2f1;border-left:3px solid #00695C}
+  .score{text-align:center;font-size:1.1em;color:#00695C;padding:8px}
+  .timer{text-align:center;font-size:1em;color:#C62828;font-weight:600}
+  .history{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0}
+  .history-item{padding:3px 8px;border-radius:6px;font-size:.8em}
+  .history-item.correct{background:#e8f5e9;color:#2E7D32}
+  .history-item.wrong{background:#ffebee;color:#C62828}
+  .back-link{display:block;text-align:center;padding:16px;color:rgba(255,255,255,0.8);text-decoration:none;font-size:.9em;margin-top:20px}
+  @media(max-width:500px){body{padding:10px}.header h1{font-size:1.4em}.input-row{flex-direction:column;align-items:stretch}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header"><h1>➗ 除数是两位数的除法</h1><p>掌握竖式除法计算方法</p></div>
+
+  <div class="card">
+    <div class="section-title">📝 竖式除法练习器</div>
+    <div class="input-row">
+      <span>被除数：</span><input type="number" id="dividend" value="845" min="100" max="9999">
+      <span>÷</span>
+      <span>除数：</span><input type="number" id="divisor" value="15" min="10" max="99">
+      <button class="btn" onclick="calculateDiv()">计算</button>
+    </div>
+    <div class="vertical-calc" id="divCalc"></div>
+    <div class="step-list" id="divSteps"></div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">⚡ 速算练习</div>
+    <div class="score" id="score">得分：0 / 0</div>
+    <div class="timer" id="timer">⏱️ 准备好了吗？</div>
+    <div style="text-align:center;margin:16px 0">
+      <div style="font-size:1.8em;font-weight:bold;color:#00695C;margin:16px 0" id="practiceProblem">点击开始</div>
+      <div class="input-row">
+        <span>商：</span><input type="number" id="ansQuotient" placeholder="?" style="width:80px">
+        <span>余数：</span><input type="number" id="ansRemainder" placeholder="?" style="width:80px">
+        <button class="btn" onclick="checkDivAnswer()">提交</button>
+      </div>
+    </div>
+    <div style="text-align:center">
+      <button class="btn" onclick="startDivPractice()">开始练习</button>
+      <button class="btn btn-outline" onclick="resetDivScore()">重置得分</button>
+    </div>
+    <div class="history" id="divHistory"></div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">📚 重点知识</div>
+    <ul style="padding-left:16px;font-size:.9em;color:#444;line-height:1.8">
+      <li><strong>试商方法：</strong>用四舍五入法把除数看作整十数来试商</li>
+      <li><strong>除法竖式：</strong>先试商，再用商乘除数，最后相减</li>
+      <li><strong>有余数除法：</strong>余数一定比除数小</li>
+      <li><strong>商不变规律：</strong>被除数和除数同时乘或除以同一个数（0除外），商不变</li>
+    </ul>
+  </div>
+
+  <a href="../index.html" class="back-link">← 返回目录</a>
+</div>
+
+<script>
+function calculateDiv() {
+  const dividend = parseInt(document.getElementById('dividend').value) || 845;
+  const divisor = parseInt(document.getElementById('divisor').value) || 15;
+  if (divisor === 0) { alert('除数不能为0'); return; }
+  const quotient = Math.floor(dividend / divisor);
+  const remainder = dividend % divisor;
+
+  let html = `<div style="display:inline-block;text-align:left">`;
+  html += `<div style="text-align:right;padding-right:4px">商：<span class="quotient">${quotient}</span>${remainder > 0 ? `...<span class="remain">${remainder}</span>` : ''}</div>`;
+  html += `<div class="line"></div>`;
+  html += `<div>${dividend} ÷ ${divisor}</div>`;
+  html += `<div class="line"></div>`;
+  html += `<div>${quotient} × ${divisor} = ${quotient * divisor}</div>`;
+  html += `<div class="line"></div>`;
+  html += `<div>${dividend} - ${quotient * divisor} = ${remainder}</div>`;
+  html += `</div>`;
+  document.getElementById('divCalc').innerHTML = html;
+
+  let steps = `<div class="step-item active"><span class="step-num">①</span> 试商：${divisor} 接近 ${Math.round(divisor / 10) * 10}，试商 ${quotient}</div>`;
+  steps += `<div class="step-item"><span class="step-num">②</span> 验证：${quotient} × ${divisor} = ${quotient * divisor} ≤ ${dividend}</div>`;
+  steps += `<div class="step-item"><span class="step-num">③</span> 相减：${dividend} - ${quotient * divisor} = ${remainder}${remainder > 0 ? ` < ${divisor} ✓` : ''}</div>`;
+  document.getElementById('divSteps').innerHTML = steps;
+}
+
+let dScore = 0, dTotal = 0, dDividend = 0, dDivisor = 0;
+let dHistory = [];
+
+function startDivPractice() {
+  dDivisor = 10 + Math.floor(Math.random() * 40);
+  dDividend = dDivisor * (5 + Math.floor(Math.random() * 20)) + Math.floor(Math.random() * dDivisor);
+  document.getElementById('practiceProblem').textContent = `${dDividend} ÷ ${dDivisor} = ?...?`;
+  document.getElementById('ansQuotient').value = '';
+  document.getElementById('ansRemainder').value = '';
+  document.getElementById('ansQuotient').focus();
+}
+
+function checkDivAnswer() {
+  const q = parseInt(document.getElementById('ansQuotient').value);
+  const r = parseInt(document.getElementById('ansRemainder').value);
+  if (isNaN(q) || isNaN(r)) return;
+  dTotal++;
+  const correctQ = Math.floor(dDividend / dDivisor);
+  const correctR = dDividend % dDivisor;
+  const isCorrect = q === correctQ && r === correctR;
+  if (isCorrect) dScore++;
+  dHistory.push(isCorrect);
+  document.getElementById('score').textContent = `得分：${dScore} / ${dTotal}`;
+  document.getElementById('divHistory').innerHTML = dHistory.map(c =>
+    `<span class="history-item ${c ? 'correct' : 'wrong'}">${c ? '✓' : '✗'}</span>`
+  ).join('');
+  startDivPractice();
+}
+
+function resetDivScore() {
+  dScore = 0; dTotal = 0; dHistory = [];
+  document.getElementById('score').textContent = '得分：0 / 0';
+  document.getElementById('divHistory').innerHTML = '';
+  document.getElementById('timer').textContent = '准备好了吗？';
+  document.getElementById('practiceProblem').textContent = '点击开始';
+}
+
+calculateDiv();
+</script>
+</body>
+</html>

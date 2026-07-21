@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>家国情怀 - 四年级语文</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(180deg,#fce4ec 0%,#ffebee 100%);min-height:100vh;padding:16px}
+  .container{max-width:800px;margin:0 auto}
+  .header{text-align:center;padding:24px 16px;background:linear-gradient(135deg,#C62828,#EF5350);border-radius:20px;color:#fff;margin-bottom:16px;box-shadow:0 4px 20px rgba(198,40,40,0.3)}
+  .header h1{font-size:1.6em;margin-bottom:4px}
+  .header p{font-size:0.85em;opacity:.9;line-height:1.4}
+  .tab-bar{display:flex;gap:4px;overflow-x:auto;padding:4px 0;-webkit-overflow-scrolling:touch;margin-bottom:12px}
+  .tab-btn{flex-shrink:0;padding:10px 18px;border:none;border-radius:12px 12px 0 0;font-size:0.85em;font-weight:600;cursor:pointer;background:#e0e0e0;color:#666;transition:all .2s;-webkit-tap-highlight-color:transparent}
+  .tab-btn.active{background:#fff;color:#C62828;box-shadow:0 -2px 8px rgba(0,0,0,.06)}
+  .tab-btn:active{transform:scale(.95)}
+  .content-area{background:#fff;border-radius:0 16px 16px 16px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,.06);min-height:400px}
+  .tab-content{display:none}
+  .tab-content.active{display:block;animation:fadeIn .3s ease}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .lesson-title{font-size:1.2em;font-weight:700;color:#1a237e;margin-bottom:12px;padding-bottom:8px;border-bottom:3px solid #ffebee}
+  .section-title{font-size:.95em;font-weight:600;color:#555;margin:14px 0 8px;display:flex;align-items:center;gap:6px}
+  .section-title::before{content:'';display:inline-block;width:3px;height:14px;background:#C62828;border-radius:2px}
+  .char-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+  .char-card{display:inline-flex;flex-direction:column;align-items:center;padding:8px 12px;background:linear-gradient(135deg,#ffebee,#fce4ec);border-radius:10px;cursor:pointer;transition:all .2s;border:1.5px solid transparent;min-width:52px}
+  .char-card:active{transform:scale(.9)}
+  .char-card .char{font-size:1.3em;font-weight:700;color:#1a237e}
+  .char-card .pinyin{font-size:.7em;color:#888;margin-top:2px}
+  .char-card.zi{background:linear-gradient(135deg,#fff3e0,#ffe0b2);border-color:#ffcc80}
+  .word-list{display:flex;flex-wrap:wrap;gap:6px}
+  .word-tag{padding:4px 12px;background:#f5f5f5;border-radius:16px;font-size:.85em;color:#555;border:1px solid #e0e0e0}
+  .key-points{padding-left:16px}
+  .key-points li{font-size:.9em;color:#444;line-height:1.7;margin-bottom:4px}
+  .back-link{display:block;text-align:center;padding:16px;color:#888;text-decoration:none;font-size:.85em;margin-top:16px}
+  @media(max-width:500px){body{padding:10px}.header h1{font-size:1.3em}.tab-btn{padding:8px 12px;font-size:.8em}.content-area{padding:14px;border-radius:0 12px 12px 12px}.char-card{padding:6px 10px;min-width:44px}.char-card .char{font-size:1.1em}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header"><h1>🇨🇳 家国情怀</h1><p>四年级上册 · 第七单元 · 点击下方标签切换课文</p></div>
+  <div class="tab-bar" id="tabBar"></div>
+  <div class="content-area" id="contentArea"></div>
+  <a href="../index.html" class="back-link">← 返回目录</a>
+</div>
+<script>
+const lessons=[
+  {
+    id:'yanchuan', label:'延安，我把你追寻', title:'24 延安，我把你追寻',
+    renzi:'延(yán) 锹(qiāo) 峙(zhì)',
+    xiezi:['延','锹','嶂'],
+    ciyu:['延安','追寻','昔日','茅屋','土炕','明媚','满目琳琅','毫不犹豫'],
+    yaodian:[
+      '延安精神：自力更生、艰苦奋斗',
+      '追寻的是延安精神，不是物质生活',
+      '革命传统的继承和发扬',
+      '用诗歌形式表达对延安的热爱'
+    ]
+  },
+  {
+    id:'xizuo', label:'学写倡议书', title:'✍️ 习作：学写倡议书',
+    renzi:'',xiezi:[],ciyu:[],
+    yaodian:[
+      '了解倡议书的基本格式',
+      '写清楚倡议的原因和目的',
+      '提出具体可行的建议',
+      '号召大家共同行动',
+      '注意语气真诚有力'
+    ]
+  },
+  {
+    id:'ywd', label:'语文园地', title:'📚 语文园地',
+    renzi:'',xiezi:[],ciyu:[],
+    yaodian:[
+      '积累与家国情怀相关的名言警句',
+      '"天下兴亡，匹夫有责"——顾炎武',
+      '"为中华之崛起而读书"——周恩来',
+      '感受中华儿女的爱国精神'
+    ]
+  }
+];
+function init(){const tabBar=document.getElementById('tabBar'),content=document.getElementById('contentArea');lessons.forEach((l,i)=>{const tab=document.createElement('button');tab.className='tab-btn'+(i===0?' active':'');tab.textContent=l.label;tab.onclick=()=>switchTab(i);tabBar.appendChild(tab);const div=document.createElement('div');div.className='tab-content'+(i===0?' active':'');div.innerHTML=buildContent(l);content.appendChild(div)})}
+function buildContent(l){let h=`<div class="lesson-title">${l.title}</div>`;if(l.renzi){h+=`<div class="section-title">会认字</div><div class="char-grid">`;l.renzi.split(' ').forEach(c=>{if(!c)return;const m=c.match(/(.)\(([^)]+)\)/);if(m)h+=`<div class="char-card"><span class="char">${m[1]}</span><span class="pinyin">${m[2]}</span></div>`});h+=`</div>`}if(l.xiezi&&l.xiezi.length){h+=`<div class="section-title">会写字</div><div class="char-grid">`;l.xiezi.forEach(c=>{h+=`<div class="char-card zi"><span class="char">${c}</span><span class="pinyin">✍️</span></div>`});h+=`</div>`}if(l.ciyu&&l.ciyu.length){h+=`<div class="section-title">重点词语</div><div class="word-list">`;l.ciyu.forEach(w=>{h+=`<span class="word-tag">${w}</span>`});h+=`</div>`}if(l.yaodian&&l.yaodian.length){h+=`<div class="section-title">课文要点</div><ul class="key-points">`;l.yaodian.forEach(p=>{h+=`<li>${p}</li>`});h+=`</ul>`}return h}
+function switchTab(i){document.querySelectorAll('.tab-btn').forEach((t,j)=>{t.classList.toggle('active',j===i)});document.querySelectorAll('.tab-content').forEach((c,j)=>{c.classList.toggle('active',j===i)})}
+init();
+</script>
+</body>
+</html>

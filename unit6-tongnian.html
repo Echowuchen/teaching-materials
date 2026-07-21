@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>童年往事 - 四年级语文</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(180deg,#e1f5fe 0%,#e3f2fd 100%);min-height:100vh;padding:16px}
+  .container{max-width:800px;margin:0 auto}
+  .header{text-align:center;padding:24px 16px;background:linear-gradient(135deg,#1565C0,#42A5F5);border-radius:20px;color:#fff;margin-bottom:16px;box-shadow:0 4px 20px rgba(21,101,192,0.3)}
+  .header h1{font-size:1.6em;margin-bottom:4px}
+  .header p{font-size:0.85em;opacity:.9;line-height:1.4}
+  .tab-bar{display:flex;gap:4px;overflow-x:auto;padding:4px 0;-webkit-overflow-scrolling:touch;margin-bottom:12px}
+  .tab-btn{flex-shrink:0;padding:10px 18px;border:none;border-radius:12px 12px 0 0;font-size:0.85em;font-weight:600;cursor:pointer;background:#e0e0e0;color:#666;transition:all .2s;-webkit-tap-highlight-color:transparent}
+  .tab-btn.active{background:#fff;color:#1565C0;box-shadow:0 -2px 8px rgba(0,0,0,.06)}
+  .tab-btn:active{transform:scale(.95)}
+  .content-area{background:#fff;border-radius:0 16px 16px 16px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,.06);min-height:400px}
+  .tab-content{display:none}
+  .tab-content.active{display:block;animation:fadeIn .3s ease}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .lesson-title{font-size:1.2em;font-weight:700;color:#1a237e;margin-bottom:12px;padding-bottom:8px;border-bottom:3px solid #e3f2fd}
+  .section-title{font-size:.95em;font-weight:600;color:#555;margin:14px 0 8px;display:flex;align-items:center;gap:6px}
+  .section-title::before{content:'';display:inline-block;width:3px;height:14px;background:#1565C0;border-radius:2px}
+  .char-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+  .char-card{display:inline-flex;flex-direction:column;align-items:center;padding:8px 12px;background:linear-gradient(135deg,#e3f2fd,#e8eaf6);border-radius:10px;cursor:pointer;transition:all .2s;border:1.5px solid transparent;min-width:52px}
+  .char-card:active{transform:scale(.9)}
+  .char-card .char{font-size:1.3em;font-weight:700;color:#1a237e}
+  .char-card .pinyin{font-size:.7em;color:#888;margin-top:2px}
+  .char-card.zi{background:linear-gradient(135deg,#fff3e0,#ffe0b2);border-color:#ffcc80}
+  .word-list{display:flex;flex-wrap:wrap;gap:6px}
+  .word-tag{padding:4px 12px;background:#f5f5f5;border-radius:16px;font-size:.85em;color:#555;border:1px solid #e0e0e0}
+  .key-points{padding-left:16px}
+  .key-points li{font-size:.9em;color:#444;line-height:1.7;margin-bottom:4px}
+  .poem-box{background:linear-gradient(135deg,#e3f2fd,#e8eaf6);border-radius:14px;padding:18px;margin:10px 0;border-left:4px solid #1565C0;line-height:2;text-align:center}
+  .poem-box .poem-title{font-weight:700;color:#1565C0;margin-bottom:6px;font-size:.95em}
+  .poem-box .poem-text{font-size:.9em;color:#555;white-space:pre-line}
+  .back-link{display:block;text-align:center;padding:16px;color:#888;text-decoration:none;font-size:.85em;margin-top:16px}
+  @media(max-width:500px){body{padding:10px}.header h1{font-size:1.3em}.tab-btn{padding:8px 12px;font-size:.8em}.content-area{padding:14px;border-radius:0 12px 12px 12px}.char-card{padding:6px 10px;min-width:44px}.char-card .char{font-size:1.1em}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header"><h1>🎈 童年往事</h1><p>四年级上册 · 第六单元 · 点击下方标签切换课文</p></div>
+  <div class="tab-bar" id="tabBar"></div>
+  <div class="content-area" id="contentArea"></div>
+  <a href="../index.html" class="back-link">← 返回目录</a>
+</div>
+<script>
+const lessons=[
+  {
+    id:'gushi3', label:'古诗三首', title:'21 古诗三首',
+    renzi:'逢(féng) 骚(sāo)',
+    xiezi:['暮','吟','题','侧','峰','庐','缘','降','阁'],
+    ciyu:['暮江吟','残阳','瑟瑟','可怜','真珠','琴','林','霜'],
+    poems:[
+      {title:'暮江吟（白居易）',text:'一道残阳铺水中\n半江瑟瑟半江红\n可怜九月初三夜\n露似真珠月似弓'},
+      {title:'题西林壁（苏轼）',text:'横看成岭侧成峰\n远近高低各不同\n不识庐山真面目\n只缘身在此山中'},
+      {title:'雪梅（卢梅坡）',text:'梅雪争春未肯降\n骚人阁笔费评章\n梅须逊雪三分白\n雪却输梅一段香'}
+    ],
+    yaodian:[
+      '三首古诗描写不同的自然景色',
+      '《暮江吟》：比喻手法，描绘秋江晚景',
+      '《题西林壁》：角度不同，看到的也不同——蕴含哲理',
+      '《雪梅》：各有所长，各有所短——学会比较'
+    ]
+  },
+  {
+    id:'weizhonghua', label:'为中华之崛起而读书', title:'22 为中华之崛起而读书',
+    renzi:'崛(jué) 范(fàn) 肃(sù) 振(zhèn)',
+    xiezi:['范','帝','义','租','振','胸','怀','效','凡','训','斥'],
+    ciyu:['崛起','帝国主义','伯父','巡警','吵嚷','惩处','抱负','胸怀','灯红酒绿','热闹非凡'],
+    yaodian:[
+      '少年周恩来立志"为中华之崛起而读书"',
+      '在租界目睹中国人被欺凌',
+      '从"为家父读书"到"为中华崛起"的思想转变',
+      '少年要有远大的志向和报国理想'
+    ]
+  },
+  {
+    id:'meilanfang', label:'梅兰芳蓄须', title:'23 梅兰芳蓄须',
+    renzi:'蓄(xū) 迫(pò) 纠(jiū) 缠(chán)',
+    xiezi:['蓄','迫','纠','缠','邀','扰','拒','签','订','宁','要'],
+    ciyu:['蓄须','避免','纠缠','邀请','骚扰','拒绝','签订','宁可','明志','民族气节'],
+    yaodian:[
+      '梅兰芳拒绝为日本人演戏',
+      '蓄须明志：宁可不唱戏也不给侵略者表演',
+      '面对威逼利诱始终不屈服',
+      '体现艺术家的爱国情怀和民族气节'
+    ]
+  },
+  {
+    id:'xiezuo', label:'习作', title:'✍️ 习作：写信',
+    renzi:'',xiezi:[],ciyu:[],
+    yaodian:[
+      '了解书信的格式：称呼、问候语、正文、祝福语、署名、日期',
+      '学写一封信给亲人或朋友',
+      '说清楚想说的内容',
+      '注意书信的语气要亲切自然'
+    ]
+  }
+];
+function init(){const tabBar=document.getElementById('tabBar'),content=document.getElementById('contentArea');lessons.forEach((l,i)=>{const tab=document.createElement('button');tab.className='tab-btn'+(i===0?' active':'');tab.textContent=l.label;tab.onclick=()=>switchTab(i);tabBar.appendChild(tab);const div=document.createElement('div');div.className='tab-content'+(i===0?' active':'');div.innerHTML=buildContent(l);content.appendChild(div)})}
+function buildContent(l){let h=`<div class="lesson-title">${l.title}</div>`;if(l.renzi){h+=`<div class="section-title">会认字</div><div class="char-grid">`;l.renzi.split(' ').forEach(c=>{if(!c)return;const m=c.match(/(.)\(([^)]+)\)/);if(m)h+=`<div class="char-card"><span class="char">${m[1]}</span><span class="pinyin">${m[2]}</span></div>`});h+=`</div>`}if(l.xiezi&&l.xiezi.length){h+=`<div class="section-title">会写字</div><div class="char-grid">`;l.xiezi.forEach(c=>{h+=`<div class="char-card zi"><span class="char">${c}</span><span class="pinyin">✍️</span></div>`});h+=`</div>`}if(l.ciyu&&l.ciyu.length){h+=`<div class="section-title">重点词语</div><div class="word-list">`;l.ciyu.forEach(w=>{h+=`<span class="word-tag">${w}</span>`});h+=`</div>`}if(l.poems){l.poems.forEach(p=>{h+=`<div class="poem-box"><div class="poem-title">${p.title}</div><div class="poem-text">${p.text}</div></div>`})}if(l.yaodian&&l.yaodian.length){h+=`<div class="section-title">课文要点</div><ul class="key-points">`;l.yaodian.forEach(p=>{h+=`<li>${p}</li>`});h+=`</ul>`}return h}
+function switchTab(i){document.querySelectorAll('.tab-btn').forEach((t,j)=>{t.classList.toggle('active',j===i)});document.querySelectorAll('.tab-content').forEach((c,j)=>{c.classList.toggle('active',j===i)})}
+init();
+</script>
+</body>
+</html>

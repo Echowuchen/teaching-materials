@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>历史故事 - 四年级语文</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(180deg,#fff3e0 0%,#fbe9e7 100%);min-height:100vh;padding:16px}
+  .container{max-width:800px;margin:0 auto}
+  .header{text-align:center;padding:24px 16px;background:linear-gradient(135deg,#BF360C,#FF5722);border-radius:20px;color:#fff;margin-bottom:16px;box-shadow:0 4px 20px rgba(191,54,12,0.3)}
+  .header h1{font-size:1.6em;margin-bottom:4px}
+  .header p{font-size:0.85em;opacity:.9;line-height:1.4}
+  .tab-bar{display:flex;gap:4px;overflow-x:auto;padding:4px 0;-webkit-overflow-scrolling:touch;margin-bottom:12px}
+  .tab-btn{flex-shrink:0;padding:10px 18px;border:none;border-radius:12px 12px 0 0;font-size:0.85em;font-weight:600;cursor:pointer;background:#e0e0e0;color:#666;transition:all .2s;-webkit-tap-highlight-color:transparent}
+  .tab-btn.active{background:#fff;color:#BF360C;box-shadow:0 -2px 8px rgba(0,0,0,.06)}
+  .tab-btn:active{transform:scale(.95)}
+  .content-area{background:#fff;border-radius:0 16px 16px 16px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,.06);min-height:400px}
+  .tab-content{display:none}
+  .tab-content.active{display:block;animation:fadeIn .3s ease}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .lesson-title{font-size:1.2em;font-weight:700;color:#1a237e;margin-bottom:12px;padding-bottom:8px;border-bottom:3px solid #fbe9e7}
+  .section-title{font-size:.95em;font-weight:600;color:#555;margin:14px 0 8px;display:flex;align-items:center;gap:6px}
+  .section-title::before{content:'';display:inline-block;width:3px;height:14px;background:#BF360C;border-radius:2px}
+  .char-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+  .char-card{display:inline-flex;flex-direction:column;align-items:center;padding:8px 12px;background:linear-gradient(135deg,#fbe9e7,#fff3e0);border-radius:10px;cursor:pointer;transition:all .2s;border:1.5px solid transparent;min-width:52px}
+  .char-card:active{transform:scale(.9)}
+  .char-card .char{font-size:1.3em;font-weight:700;color:#1a237e}
+  .char-card .pinyin{font-size:.7em;color:#888;margin-top:2px}
+  .char-card.zi{background:linear-gradient(135deg,#fff3e0,#ffe0b2);border-color:#ffcc80}
+  .word-list{display:flex;flex-wrap:wrap;gap:6px}
+  .word-tag{padding:4px 12px;background:#f5f5f5;border-radius:16px;font-size:.85em;color:#555;border:1px solid #e0e0e0}
+  .key-points{padding-left:16px}
+  .key-points li{font-size:.9em;color:#444;line-height:1.7;margin-bottom:4px}
+  .poem-box{background:linear-gradient(135deg,#fbe9e7,#fff3e0);border-radius:14px;padding:18px;margin:10px 0;border-left:4px solid #BF360C;line-height:2;text-align:center}
+  .poem-box .poem-title{font-weight:700;color:#BF360C;margin-bottom:6px;font-size:.95em}
+  .poem-box .poem-text{font-size:.9em;color:#555;white-space:pre-line}
+  .back-link{display:block;text-align:center;padding:16px;color:#888;text-decoration:none;font-size:.85em;margin-top:16px}
+  @media(max-width:500px){body{padding:10px}.header h1{font-size:1.3em}.tab-btn{padding:8px 12px;font-size:.8em}.content-area{padding:14px;border-radius:0 12px 12px 12px}.char-card{padding:6px 10px;min-width:44px}.char-card .char{font-size:1.1em}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header"><h1>📜 历史故事</h1><p>四年级上册 · 第八单元 · 点击下方标签切换课文</p></div>
+  <div class="tab-bar" id="tabBar"></div>
+  <div class="content-area" id="contentArea"></div>
+  <a href="../index.html" class="back-link">← 返回目录</a>
+</div>
+<script>
+const lessons=[
+  {
+    id:'wangrong', label:'王戎不取道旁李', title:'25 王戎不取道旁李（《世说新语》）',
+    renzi:'戎(róng) 诸(zhū) 竞(jìng)',
+    xiezi:['戎','尝','诸','竞','唯'],
+    ciyu:['王戎','诸小儿','道旁','李树','多子折枝','竞走取之','唯戎不动','信然'],
+    poems:[{title:'王戎不取道旁李',text:'王戎七岁\n尝与诸小儿游\n看道边李树多子折枝\n诸儿竞走取之\n唯戎不动\n人问之\n答曰\n树在道旁而多子\n此必苦李\n取之信然'}],
+    yaodian:[
+      '文言文：理解古文意思',
+      '王戎善于观察和推理，不盲从他人',
+      '道旁苦李的推理过程',
+      '关键词：尝、竞走、唯、信然'
+    ]
+  },
+  {
+    id:'ximenbao', label:'西门豹治邺', title:'26 西门豹治邺',
+    renzi:'豹(bào) 魏(wèi) 巫(wū) 硬(yìng)',
+    xiezi:['豹','派','娶','媳','妇','淹','硬','逼','浮'],
+    ciyu:['西门豹','邺','官绅','巫婆','硬逼','管理','田地','荒芜','人烟稀少','开凿'],
+    yaodian:[
+      '西门豹到邺地了解百姓疾苦',
+      '破除"河伯娶媳妇"的迷信',
+      '惩治巫婆和官绅，兴修水利',
+      '西门豹的智慧和为民除害的精神'
+    ]
+  },
+  {
+    id:'gushi2ze', label:'故事二则', title:'故事二则：扁鹊治病 + 纪昌学射',
+    renzi:'扁(biǎn) 鹊(què) 蔡(cài) 昌(chāng) 纪(jì)',
+    xiezi:['扁','鹊','蔡','纪','昌'],
+    ciyu:['扁鹊','蔡桓侯','皮肤病','深入骨髓','纪昌','学射','眼力','聚精会神'],
+    yaodian:[
+      '扁鹊治病：蔡桓侯不听劝告，病情加重',
+      '道理：防微杜渐，善于听取正确意见',
+      '纪昌学射：先练眼力，打好基本功',
+      '道理：学习需要坚持不懈，打好基础'
+    ]
+  },
+  {
+    id:'kouyu', label:'口语交际', title:'🗣️ 口语交际：讲历史故事',
+    renzi:'',xiezi:[],ciyu:[],
+    yaodian:[
+      '选择一个自己熟悉的历史故事',
+      '用自己的话讲清楚故事的经过',
+      '可以加入自己的理解和感受',
+      '注意语言表达的连贯性和吸引力'
+    ]
+  },
+  {
+    id:'xiezuo', label:'习作', title:'✍️ 习作：我的心儿怦怦跳',
+    renzi:'',xiezi:[],ciyu:[],
+    yaodian:[
+      '选一件让自己紧张害怕的事',
+      '写出当时的感受和心情',
+      '运用心理描写手法',
+      '把事情的经过写具体'
+    ]
+  }
+];
+function init(){const tabBar=document.getElementById('tabBar'),content=document.getElementById('contentArea');lessons.forEach((l,i)=>{const tab=document.createElement('button');tab.className='tab-btn'+(i===0?' active':'');tab.textContent=l.label;tab.onclick=()=>switchTab(i);tabBar.appendChild(tab);const div=document.createElement('div');div.className='tab-content'+(i===0?' active':'');div.innerHTML=buildContent(l);content.appendChild(div)})}
+function buildContent(l){let h=`<div class="lesson-title">${l.title}</div>`;if(l.renzi){h+=`<div class="section-title">会认字</div><div class="char-grid">`;l.renzi.split(' ').forEach(c=>{if(!c)return;const m=c.match(/(.)\(([^)]+)\)/);if(m)h+=`<div class="char-card"><span class="char">${m[1]}</span><span class="pinyin">${m[2]}</span></div>`});h+=`</div>`}if(l.xiezi&&l.xiezi.length){h+=`<div class="section-title">会写字</div><div class="char-grid">`;l.xiezi.forEach(c=>{h+=`<div class="char-card zi"><span class="char">${c}</span><span class="pinyin">✍️</span></div>`});h+=`</div>`}if(l.ciyu&&l.ciyu.length){h+=`<div class="section-title">重点词语</div><div class="word-list">`;l.ciyu.forEach(w=>{h+=`<span class="word-tag">${w}</span>`});h+=`</div>`}if(l.poems){l.poems.forEach(p=>{h+=`<div class="poem-box"><div class="poem-title">${p.title}</div><div class="poem-text">${p.text}</div></div>`})}if(l.yaodian&&l.yaodian.length){h+=`<div class="section-title">课文要点</div><ul class="key-points">`;l.yaodian.forEach(p=>{h+=`<li>${p}</li>`});h+=`</ul>`}return h}
+function switchTab(i){document.querySelectorAll('.tab-btn').forEach((t,j)=>{t.classList.toggle('active',j===i)});document.querySelectorAll('.tab-content').forEach((c,j)=>{c.classList.toggle('active',j===i)})}
+init();
+</script>
+</body>
+</html>

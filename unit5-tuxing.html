@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>平行四边形和梯形 - 四年级数学</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(135deg,#E65100,#FF9800);min-height:100vh;padding:20px;color:#333}
+  .container{max-width:800px;margin:0 auto}
+  .header{text-align:center;padding:20px;background:rgba(255,255,255,0.2);border-radius:20px;color:#fff;margin-bottom:20px;box-shadow:0 4px 20px rgba(0,0,0,0.2)}
+  .header h1{font-size:1.8em;margin-bottom:4px}
+  .header p{font-size:0.95em;opacity:0.9}
+  .card{background:white;border-radius:20px;padding:24px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,0.08)}
+  .section-title{font-size:1.1em;font-weight:600;color:#E65100;margin:16px 0 10px;display:flex;align-items:center;gap:8px}
+  canvas{display:block;margin:0 auto;border-radius:12px;background:#f8f9fa;border:2px solid #e0e0e0}
+  .btn{display:inline-block;padding:12px 24px;background:linear-gradient(135deg,#E65100,#FF9800);color:white;border:none;border-radius:12px;font-size:1em;font-weight:600;cursor:pointer;transition:all .2s;margin:4px}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(230,81,0,0.3)}
+  .btn-outline{background:transparent;border:2px solid #E65100;color:#E65100}
+  .shape-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin:16px 0}
+  .shape-card{padding:16px;border-radius:12px;border:2px solid #e0e0e0;text-align:center;cursor:pointer;transition:all .2s}
+  .shape-card:hover{border-color:#E65100;transform:translateY(-2px)}
+  .shape-card.selected{border-color:#E65100;background:#fff3e0}
+  .shape-card svg{width:80px;height:60px;margin-bottom:8px}
+  .shape-name{font-weight:600;font-size:.9em}
+  .quiz-area{text-align:center;padding:16px}
+  .quiz-shape{margin:16px auto}
+  .quiz-options{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:12px 0}
+  .quiz-opt{padding:10px 20px;border:2px solid #e0e0e0;border-radius:12px;cursor:pointer;transition:all .2s;font-weight:600}
+  .quiz-opt:hover{border-color:#E65100;background:#fff3e0}
+  .quiz-opt.correct{border-color:#4CAF50;background:#e8f5e9;color:#2E7D32}
+  .quiz-opt.wrong{border-color:#C62828;background:#ffebee;color:#C62828}
+  .quiz-result{text-align:center;padding:12px;border-radius:12px;margin:8px 0;font-weight:600;display:none}
+  .quiz-result.show{display:block}
+  .quiz-result.correct{background:#e8f5e9;color:#2E7D32}
+  .quiz-result.wrong{background:#ffebee;color:#C62828}
+  .quiz-score{text-align:center;font-size:1.1em;color:#E65100;font-weight:600}
+  .prop-list{padding:12px;background:#f8f9fa;border-radius:12px;margin:8px 0}
+  .prop-list h4{color:#E65100;margin-bottom:8px}
+  .prop-list ul{padding-left:16px;font-size:.9em;color:#444;line-height:1.7}
+  .back-link{display:block;text-align:center;padding:16px;color:rgba(255,255,255,0.8);text-decoration:none;font-size:.9em;margin-top:20px}
+  @media(max-width:500px){body{padding:10px}.header h1{font-size:1.4em}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header"><h1>🔷 平行四边形和梯形</h1><p>认识图形、分类与应用</p></div>
+
+  <div class="card">
+    <div class="section-title">🎨 图形认识</div>
+    <canvas id="shapeCanvas" width="400" height="200"></canvas>
+    <div class="shape-grid">
+      <div class="shape-card selected" onclick="showShape('parallelogram')">
+        <svg viewBox="0 0 80 60"><polygon points="20,10 70,10 60,50 10,50" fill="#E65100" fill-opacity="0.2" stroke="#E65100" stroke-width="2"/></svg>
+        <div class="shape-name">平行四边形</div>
+      </div>
+      <div class="shape-card" onclick="showShape('trapezoid')">
+        <svg viewBox="0 0 80 60"><polygon points="25,10 55,10 70,50 10,50" fill="#1565C0" fill-opacity="0.2" stroke="#1565C0" stroke-width="2"/></svg>
+        <div class="shape-name">梯形</div>
+      </div>
+      <div class="shape-card" onclick="showShape('rectangle')">
+        <svg viewBox="0 0 80 60"><rect x="10" y="10" width="60" height="40" fill="#2E7D32" fill-opacity="0.2" stroke="#2E7D32" stroke-width="2"/></svg>
+        <div class="shape-name">长方形</div>
+      </div>
+      <div class="shape-card" onclick="showShape('square')">
+        <svg viewBox="0 0 80 60"><rect x="15" y="5" width="50" height="50" fill="#6A1B9A" fill-opacity="0.2" stroke="#6A1B9A" stroke-width="2"/></svg>
+        <div class="shape-name">正方形</div>
+      </div>
+    </div>
+    <div class="prop-list" id="propList">
+      <h4>平行四边形的特征</h4>
+      <ul><li>两组对边分别平行</li><li>两组对边分别相等</li><li>对角相等</li></ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">🧩 分类练习</div>
+    <div class="quiz-area">
+      <p style="color:#666;margin-bottom:12px">判断下面是什么图形？</p>
+      <canvas id="quizCanvas" width="200" height="150"></canvas>
+      <div class="quiz-options" id="quizOptions"></div>
+      <div class="quiz-result" id="quizResult"></div>
+      <div class="quiz-score" id="quizScore">正确：0 / 0</div>
+      <button class="btn" onclick="nextQuiz()">下一题</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">📚 重点知识</div>
+    <ul style="padding-left:16px;font-size:.9em;color:#444;line-height:1.8">
+      <li><strong>平行四边形：</strong>两组对边分别平行且相等</li>
+      <li><strong>梯形：</strong>只有一组对边平行</li>
+      <li><strong>等腰梯形：</strong>两腰相等的梯形</li>
+      <li><strong>长方形、正方形</strong>都是特殊的平行四边形</li>
+      <li>四边形关系：正方形 ⊂ 长方形 ⊂ 平行四边形</li>
+    </ul>
+  </div>
+
+  <a href="../index.html" class="back-link">← 返回目录</a>
+</div>
+
+<script>
+const shapes = {
+  parallelogram: {
+    name: '平行四边形', color: '#E65100',
+    props: ['两组对边分别平行', '两组对边分别相等', '对角相等', '不稳定性（易变形）'],
+    points: [[60,30],[170,30],[200,120],[90,120]]
+  },
+  trapezoid: {
+    name: '梯形', color: '#1565C0',
+    props: ['只有一组对边平行', '平行的两边叫做上底和下底', '不平行的两边叫做腰', '等腰梯形：两腰相等'],
+    points: [[80,30],[160,30],[200,120],[40,120]]
+  },
+  rectangle: {
+    name: '长方形', color: '#2E7D32',
+    props: ['两组对边平行且相等', '四个角都是直角', '是特殊的平行四边形', '周长 = (长+宽)×2'],
+    points: [[40,30],[200,30],[200,120],[40,120]]
+  },
+  square: {
+    name: '正方形', color: '#6A1B9A',
+    props: ['四条边都相等', '四个角都是直角', '是特殊的长方形', '周长 = 边长×4'],
+    points: [[60,20],[180,20],[180,140],[60,140]]
+  }
+};
+
+function showShape(type) {
+  document.querySelectorAll('.shape-card').forEach((el, i) => {
+    el.classList.toggle('selected', ['parallelogram','trapezoid','rectangle','square'][i] === type);
+  });
+  const s = shapes[type];
+  const c = document.getElementById('shapeCanvas');
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0, 0, c.width, c.height);
+  ctx.beginPath();
+  ctx.moveTo(s.points[0][0], s.points[0][1]);
+  s.points.forEach(p => ctx.lineTo(p[0], p[1]));
+  ctx.closePath();
+  ctx.fillStyle = s.color + '33';
+  ctx.fill();
+  ctx.strokeStyle = s.color;
+  ctx.lineWidth = 3;
+  ctx.stroke();
+  // Draw parallel markers
+  if (type === 'parallelogram') {
+    drawParallelMark(ctx, s.points[0], s.points[1], s.color);
+    drawParallelMark(ctx, s.points[3], s.points[2], s.color);
+  }
+  // Label
+  ctx.fillStyle = s.color;
+  ctx.font = 'bold 16px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(s.name, c.width / 2, 190);
+
+  document.getElementById('propList').innerHTML = `<h4>${s.name}的特征</h4><ul>${s.props.map(p => '<li>' + p + '</li>').join('')}</ul>`;
+}
+
+function drawParallelMark(ctx, p1, p2, color) {
+  const mx = (p1[0] + p2[0]) / 2;
+  const my = (p1[1] + p2[1]) / 2;
+  ctx.fillStyle = color;
+  ctx.font = '14px sans-serif';
+  ctx.fillText('∥', mx, my - 5);
+}
+
+let quizCorrect = 0, quizTotal = 0;
+const quizTypes = ['parallelogram','trapezoid','rectangle','square'];
+let currentQuizType = '';
+
+function nextQuiz() {
+  currentQuizType = quizTypes[Math.floor(Math.random() * quizTypes.length)];
+  const s = shapes[currentQuizType];
+  const c = document.getElementById('quizCanvas');
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0, 0, c.width, c.height);
+  const scale = 0.7;
+  const offsetX = (c.width - 200 * scale) / 2;
+  const offsetY = (c.height - 150 * scale) / 2;
+  ctx.beginPath();
+  ctx.moveTo(s.points[0][0] * scale + offsetX, s.points[0][1] * scale + offsetY);
+  s.points.forEach(p => ctx.lineTo(p[0] * scale + offsetX, p[1] * scale + offsetY));
+  ctx.closePath();
+  ctx.fillStyle = '#3332';
+  ctx.fill();
+  ctx.strokeStyle = '#333';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  const opts = quizTypes.slice().sort(() => Math.random() - 0.5);
+  document.getElementById('quizOptions').innerHTML = opts.map(t =>
+    `<div class="quiz-opt" onclick="checkQuiz('${t}',this)">${shapes[t].name}</div>`
+  ).join('');
+  document.getElementById('quizResult').className = 'quiz-result';
+  document.getElementById('quizResult').textContent = '';
+}
+
+function checkQuiz(choice, el) {
+  quizTotal++;
+  const result = document.getElementById('quizResult');
+  if (choice === currentQuizType) {
+    quizCorrect++;
+    result.className = 'quiz-result show correct';
+    result.textContent = '🎉 正确！这是' + shapes[currentQuizType].name;
+    el.classList.add('correct');
+  } else {
+    result.className = 'quiz-result show wrong';
+    result.textContent = '❌ 这是' + shapes[currentQuizType].name + '，不是' + shapes[choice].name;
+    el.classList.add('wrong');
+  }
+  document.getElementById('quizScore').textContent = `正确：${quizCorrect} / ${quizTotal}`;
+  document.querySelectorAll('.quiz-opt').forEach(o => o.style.pointerEvents = 'none');
+}
+
+showShape('parallelogram');
+nextQuiz();
+</script>
+</body>
+</html>

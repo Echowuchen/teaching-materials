@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>公顷和平方千米 - 四年级数学</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: linear-gradient(135deg, #2E7D32, #66BB6A);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+  }
+  .container { max-width: 800px; margin: 0 auto; 
+  .header {
+    text-align: center;
+    padding: 20px;
+    background:; }
+  .header {
+    text-align: center;
+    padding: 20px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 20px;
+    color: white;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+  .header h1 { font-size: 1.8em; margin-bottom: 4px; }
+  .header p { font-size: 0.95em; opacity: 0.9; }
+  
+  .card {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  .section-title {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #2E7D32;
+    margin: 16px 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .visual-area {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  .area-box {
+    background: #f8f9fa;
+    border: 2px dashed #ddd;
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    min-width: 100px;
+    transition: all 0.3s;
+    flex: 1;
+    min-height: 80px;
+  }
+  .area-box.active {
+    border-color: #2E7D32;
+    background: #e8f5e9;
+    transform: scale(1.05);
+  }
+  .area-label {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 8px;
+  }
+  .area-value {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #2E7D32;
+  }
+  
+  .calculator {
+    background: #f8f9fa;
+    border-radius: 16px;
+    padding: 20px;
+    margin: 20px 0;
+  }
+  .input-group {
+    display: flex;
+    gap: 12px;
+    margin: 12px 0;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .input-group label {
+    min-width: 80px;
+    font-weight: 500;
+  }
+  .input-group input {
+    flex: 1;
+    min-width: 100px;
+    padding: 10px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1em;
+  }
+  .input-group select {
+    flex: 1;
+    min-width: 100px;
+    padding: 10px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1em;
+    background: white;
+  }
+  .result-box {
+    margin-top: 20px;
+    padding: 16px;
+    background: #e8f5e9;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #2E7D32;
+  }
+  
+  .game-area {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .game-card {
+    background: #f8f9fa;
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 2px dashed #ddd;
+    position: relative;
+    overflow: hidden;
+  }
+  .game-card:hover {
+    border-color: #2E7D32;
+    background: #f0f9f0;
+    transform: translateY(-4px);
+  }
+  .game-card.matched {
+    border-color: #4CAF50;
+    background: #e8f5e9;
+    cursor: default;
+  }
+  .game-icon {
+    font-size: 2.5em;
+    margin-bottom: 12px;
+  }
+  .game-label {
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .examples {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .example-box {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  .example-icon {
+    font-size: 3em;
+    margin-bottom: 12px;
+    color: #2E7D32;
+  }
+  .example-text {
+    font-size: 1.1em;
+    font-weight: 500;
+    color: #555;
+  }
+  
+  .btn {
+    display: inline-block;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #2E7D32, #4CAF50);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin: 8px 4px;
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(46,125,50,0.3);
+  }
+  .btn:active {
+    transform: translateY(0);
+  }
+  
+  .back-link {
+    display: block;
+    text-align: center;
+    padding: 16px;
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    font-size: 0.9em;
+    margin-top: 20px;
+  }
+  
+  @media (max-width: 500px) {
+    body { padding: 10px; }
+    .container { padding: 0; }
+    .header h1 { font-size: 1.4em; }
+    .area-box { min-width: 80px; padding: 15px; }
+    .input-group { flex-direction: column; align-items: stretch; }
+    .input-group label { min-width: 100%; margin-bottom: 4px; }
+    .game-area { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>📏 公顷和平方千米</h1>
+    <p>面积单位换算可视化学习工具</p>
+  </div>
+
+  <div class="card">
+    <div class="section-title">📐 面积单位可视化</div>
+    <div class="visual-area" id="visualArea">
+      <!-- Visualized -->
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">🔢 换算计算器</div>
+    <div class="calculator">
+      <div class="input type="hidden" id="selectedUnit" value="cm2">
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">🧮 换算计算器</div>
+    <div class="calculator">
+      <div class="input-group">
+        <label for="inputValue">数值:</label>
+        <input type="number" id="inputValue" value="1" min="0" step="0.01">
+      </div>
+      <div class="input-group">
+        <label for="inputUnit">单位:</label>
+        <select id="inputUnit">
+          <option value="cm2">平方厘米 (cm²)</option>
+          <option value="dm2">平方分米 (dm²)</option>
+          <option value="m2">平方米 (m²)</option>
+          <option value="ha">公顷 (ha)</option>
+          <option value="km2">平方千米 (km²)</option>
+        </select>
+      </div>
+      <button class="btn" onclick="convertArea()">转换</button>
+      <div class="result-box" id="resultBox">结果将显示在这里</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">🎯 匹配游戏</div>
+    <div class="game-area" id="gameArea"></div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">📚 重点知识</div>
+    <div class="examples">
+      <div class="example-box">
+        <div class="example-icon">💅</div>
+        <div class="example-text">1平方厘米 = 1cm²<br>（指甲盖大小）</div>
+      </div>
+      <div class="example-box">
+        <div class="example-icon">✋</div>
+        <div class="example-text">1平方分米 = 1dm²<br>（手掌大小）</div>
+      </div>
+      <div class="example-box">
+        <div class="example-icon">🍽️</div>
+        <div class="example-text">1平方米 = 1m²<br>（餐桌大小）</div>
+      </div>
+      <div class="example-box">
+        <div class="example-icon">⚽</div>
+        <div class="example-text">1公顷 = 10000平方米<br>（约一个足球场）</div>
+      </div>
+      <div class="example-box">
+        <div class="example-icon">🏙️</div>
+        <div class="example-text">1平方千米 = 100公顷<br>（约140个足球场）</div>
+      </div>
+    </div>
+    <div class="section-title" style="margin-top: 24px;">🔄 换算关系</div>
+    <div style="background: #f8f9fa; padding: 16px; border-radius: 12px;">
+      <p>1公顷 = 10000平方米</p>
+      <p>1平方千米 = 100公顷 = 1000000平方米</p>
+      <p>1平方米 = 100平方分米 = 10000平方厘米</p>
+      <p>1平方分米 = 100平方厘米</p>
+    </div>
+  </div>
+
+  <a href="../index.html" class="back-link">← 返回目录</a>
+</div>
+
+<script>
+  // Area unit conversion factors (relative to 1 square meter)
+  const areaUnits = {
+    cm2: { value: 0.0001, label: '平方厘米', symbol: 'cm²', icon: '💅' },
+    dm2: { value: 0.01, label: '平方分米', symbol: 'dm²', icon: '✋' },
+    m2:  { value: 1, label: '平方米', symbol: 'm²', icon: '🍽️' },
+    ha:  { value: 10000, label: '公顷', symbol: 'ha', icon: '⚽' },
+    km2: { value: 1000000, label: '平方千米', symbol: 'km²', icon: '🏙️' }
+  };
+
+  // Initialize the app
+  function init() {
+    renderVisualArea();
+    renderGame();
+    updateConversion();
+  }
+
+  // Render visual area units
+  function renderVisualArea() {
+    const container = document.getElementById('visualArea');
+    container.innerHTML = '';
+    
+    Object.entries(areaUnits).forEach(([key, unit]) => {
+      const box = document.createElement('div');
+      box.className = 'area-box';
+      box.dataset.unit = key;
+      box.innerHTML = `
+        <div class="area-value">${unit.value === 1 ? '1' : unit.value === 0.0001 ? '0.0001' : unit.value === 0.01 ? '0.01' : unit.value === 10000 ? '10000' : '1000000'}</div>
+        <div class="area-label">${unit.symbol}</div>
+        <div style="font-size: 0.8em; color: #999; margin-top: 4px;">${unit.label}</div>
+      `;
+      box.onclick = () => selectUnit(key);
+      container.appendChild(box);
+    });
+  }
+
+  // Select a unit for visualization
+  function selectUnit(unitKey) {
+    document.getElementById('selectedUnit').value = unitKey;
+    document.querySelectorAll('.area-box').forEach(box => {
+      box.classList.toggle('active', box.dataset.unit === unitKey);
+    });
+    updateConversion();
+  }
+
+  // Convert area and update display
+  function convertArea() {
+    const value = parseFloat(document.getElementById('inputValue').value) || 0;
+    const unit = document.getElementById('inputUnit').value;
+    const baseValue = value * areaUnits[unit].value; // Convert to square meters
+    
+    let resultHTML = `<strong>${value.toLocaleString()} ${areaUnits[unit].symbol}</strong> = `;
+    const results = [];
+    
+    Object.entries(areaUnits).forEach(([key, unitInfo]) => {
+      const converted = baseValue / unitInfo.value;
+      if (converted >= 1 || converted === 0) {
+        results.push(`${converted.toLocaleString(undefined, {maximumFractionDigits: 2, minimumFractionDigits: 0})} ${unitInfo.symbol}`);
+      } else if (converted > 0) {
+        results.push(`${converted.toLocaleString(undefined, {maximumFractionDigits: 4, minimumFractionDigits: 2})} ${unitInfo.symbol}`);
+      }
+    });
+    
+    resultHTML += results.join(' = ');
+    document.getElementById('resultBox').innerHTML = resultHTML;
+  }
+
+  // Update conversion when input changes
+  function updateConversion() {
+    const inputValue = document.getElementById('inputValue').value || '1';
+    document.getElementById('inputValue').value = inputValue;
+    convertArea();
+  }
+
+  // Create matching game
+  function renderGame() {
+    const container = document.getElementById('gameArea');
+    container.innerHTML = '';
+    
+    // Create pairs: unit name and value
+    const units = [
+      { id: 'cm2', name: '平方厘米', value: '0.0001 m²', icon: '💅' },
+      { id: 'dm2', name: '平方分米', value: '0.01 m²', icon: '✋' },
+      { id: 'm2',  name: '平方米',  value: '1 m²',   icon: '🍽️' },
+      { id: 'ha',  name: '公顷',   value: '10000 m²', icon: '⚽' },
+      { id: 'km2', name: '平方千米',value: '1000000 m²',icon: '🏙️' }
+    ];
+    
+    // Create cards: one set with names/icons, another with values
+    const cards = [];
+    units.forEach(unit => {
+      // Name card
+      cards.push({
+        id: `${unit.id}-name`,
+        type: 'name',
+        content: `
+          <div class="game-icon">${unit.icon}</div>
+          <div class="game-label">${unit.name}</div>
+        `,
+        matchId: `${unit.id}-value`
+      });
+      // Value card
+      cards.push({
+        id: `${unit.id}-value`,
+        type: 'value',
+        content: `
+          <div class="game-icon">📏</div>
+          <div class="game-label">${unit.value}</div>
+        `,
+        matchId: `${unit.id}-name`
+      });
+    });
+    
+    // Shuffle cards
+    for (let i = cards.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [cards[i], cards[j]] = [cards[j], cards[i]];
+    }
+    
+    // Create card elements
+    cards.forEach(card => {
+      const cardEl = document.createElement('div');
+      cardEl.className = 'game-card';
+      cardEl.dataset.id = card.id;
+      cardEl.dataset.type = card.type;
+      cardEl.dataset.matchId = card.matchId;
+      cardEl.innerHTML = card.content;
+      cardEl.onclick = () => selectCard(cardEl);
+      container.appendChild(cardEl);
+    });
+  }
+  
+  let selectedCard = null;
+  
+  function selectCard(cardEl) {
+    if (cardEl.classList.contains('matched')) return;
+    
+    if (selectedCard === null) {
+      // First card selected
+      selectedCard = cardEl;
+      cardEl.classList.add('selected');
+    } else {
+      // Second card selected
+      if (selectedCard.dataset.matchId === cardEl.dataset.id) {
+        // Match!
+        selectedCard.classList.add('matched');
+        cardEl.classList.add('matched');
+        selectedCard.classList.remove('selected');
+        selectedCard = null;
+        
+        // Check if all matched
+        const allMatched = document.querySelectorAll('.game-card.matched').length === document.querySelectorAll('.game-card').length;
+        if (allMatched) {
+          setTimeout(() => {
+            alert('恭喜！所有匹配都完成了！');
+            renderGame(); // Reset game
+          }, 500);
+        }
+      } else {
+        // Not a match
+        cardEl.classList.add('selected');
+        setTimeout(() => {
+          selectedCard.classList.remove('selected');
+          cardEl.classList.remove('selected');
+          selectedCard = null;
+        }, 800);
+      }
+    }
+  }
+
+  // Initialize
+  init();
+</script>
+</body>
+</html>

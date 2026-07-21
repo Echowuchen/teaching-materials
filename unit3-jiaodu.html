@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>角的度量 - 四年级数学</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(135deg,#1565C0,#42A5F5);min-height:100vh;padding:20px;color:#333}
+  .container{max-width:800px;margin:0 auto}
+  .header{text-align:center;padding:20px;background:rgba(255,255,255,0.2);border-radius:20px;color:#fff;margin-bottom:20px;box-shadow:0 4px 20px rgba(0,0,0,0.2)}
+  .header h1{font-size:1.8em;margin-bottom:4px}
+  .header p{font-size:0.95em;opacity:0.9}
+  .card{background:white;border-radius:20px;padding:24px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,0.08)}
+  .section-title{font-size:1.1em;font-weight:600;color:#1565C0;margin:16px 0 10px;display:flex;align-items:center;gap:8px}
+  canvas{display:block;margin:0 auto;border-radius:12px;background:#f8f9fa;border:2px solid #e0e0e0}
+  .controls{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:16px 0;align-items:center}
+  .angle-display{text-align:center;font-size:2em;font-weight:bold;color:#1565C0;padding:12px;background:#e3f2fd;border-radius:12px;margin:12px 0}
+  .btn{display:inline-block;padding:12px 24px;background:linear-gradient(135deg,#1565C0,#42A5F5);color:white;border:none;border-radius:12px;font-size:1em;font-weight:600;cursor:pointer;transition:all .2s;margin:4px}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(21,101,192,0.3)}
+  .btn:active{transform:translateY(0)}
+  .btn-outline{background:transparent;border:2px solid #1565C0;color:#1565C0}
+  .angle-types{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:16px 0}
+  .angle-type{text-align:center;padding:16px;border-radius:12px;border:2px solid #e0e0e0;cursor:pointer;transition:all .2s}
+  .angle-type.active{border-color:#1565C0;background:#e3f2fd}
+  .angle-type svg{width:60px;height:60px;margin-bottom:8px}
+  .angle-type-name{font-weight:600;color:#333;font-size:.9em}
+  .angle-type-desc{font-size:.75em;color:#888;margin-top:4px}
+  .practice-result{text-align:center;padding:12px;border-radius:12px;margin:12px 0;font-weight:600;display:none}
+  .practice-result.correct{display:block;background:#e8f5e9;color:#2E7D32}
+  .practice-result.wrong{display:block;background:#ffebee;color:#C62828}
+  .back-link{display:block;text-align:center;padding:16px;color:rgba(255,255,255,0.8);text-decoration:none;font-size:.9em;margin-top:20px}
+  input[type=number]{padding:10px;border:2px solid #e0e0e0;border-radius:8px;font-size:1em;width:100px;text-align:center}
+  @media(max-width:500px){body{padding:10px}.header h1{font-size:1.4em}.controls{flex-direction:column;align-items:stretch}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>📐 角的度量</h1>
+    <p>认识角、度量角、画角</p>
+  </div>
+
+  <div class="card">
+    <div class="section-title">🎨 交互式量角器</div>
+    <canvas id="protractorCanvas" width="360" height="280"></canvas>
+    <div class="angle-display" id="angleDisplay">0°</div>
+    <div class="controls">
+      <button class="btn" onclick="setAngle(0)">0°</button>
+      <button class="btn" onclick="setAngle(30)">30°</button>
+      <button class="btn" onclick="setAngle(45)">45°</button>
+      <button class="btn" onclick="setAngle(60)">60°</button>
+      <button class="btn" onclick="setAngle(90)">90°</button>
+      <button class="btn" onclick="setAngle(120)">120°</button>
+      <button class="btn" onclick="setAngle(180)">180°</button>
+    </div>
+    <p style="text-align:center;color:#888;font-size:.85em;margin-top:8px">点击按钮或拖动画布来设置角度</p>
+  </div>
+
+  <div class="card">
+    <div class="section-title">🔍 角的分类</div>
+    <div class="angle-types">
+      <div class="angle-type" onclick="showAngleType('acute')">
+        <svg viewBox="0 0 60 60"><line x1="10" y1="50" x2="50" y2="50" stroke="#1565C0" stroke-width="3"/><line x1="10" y1="50" x2="45" y2="25" stroke="#1565C0" stroke-width="3"/><path d="M 20 50 A 10 10 0 0 1 17 43" stroke="#42A5F5" fill="none" stroke-width="1.5"/></svg>
+        <div class="angle-type-name">锐角</div>
+        <div class="angle-type-desc">&lt; 90°</div>
+      </div>
+      <div class="angle-type" onclick="showAngleType('right')">
+        <svg viewBox="0 0 60 60"><line x1="10" y1="50" x2="50" y2="50" stroke="#1565C0" stroke-width="3"/><line x1="10" y1="50" x2="10" y2="10" stroke="#1565C0" stroke-width="3"/><rect x="10" y="40" width="10" height="10" fill="none" stroke="#42A5F5" stroke-width="1.5"/></svg>
+        <div class="angle-type-name">直角</div>
+        <div class="angle-type-desc">= 90°</div>
+      </div>
+      <div class="angle-type" onclick="showAngleType('obtuse')">
+        <svg viewBox="0 0 60 60"><line x1="10" y1="50" x2="50" y2="50" stroke="#1565C0" stroke-width="3"/><line x1="10" y1="50" x2="20" y2="15" stroke="#1565C0" stroke-width="3"/><path d="M 18 50 A 10 10 0 0 1 12 43" stroke="#42A5F5" fill="none" stroke-width="1.5"/></svg>
+        <div class="angle-type-name">钝角</div>
+        <div class="angle-type-desc">&gt; 90° 且 &lt; 180°</div>
+      </div>
+      <div class="angle-type" onclick="showAngleType('straight')">
+        <svg viewBox="0 0 60 60"><line x1="5" y1="50" x2="55" y2="50" stroke="#1565C0" stroke-width="3"/><path d="M 15 50 A 15 15 0 0 1 45 50" stroke="#42A5F5" fill="none" stroke-width="1.5"/></svg>
+        <div class="angle-type-name">平角</div>
+        <div class="angle-type-desc">= 180°</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">✏️ 角度练习</div>
+    <p style="text-align:center;color:#666;margin-bottom:12px">估计下面的角度，然后验证</p>
+    <canvas id="practiceCanvas" width="300" height="200"></canvas>
+    <div style="text-align:center;margin:12px 0">
+      <span>你的估计：</span>
+      <input type="number" id="estimateInput" min="0" max="180" placeholder="?°">
+      <button class="btn" onclick="checkEstimate()">验证</button>
+      <button class="btn btn-outline" onclick="newPractice()">下一题</button>
+    </div>
+    <div class="practice-result" id="practiceResult"></div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">📚 重点知识</div>
+    <ul style="padding-left:16px;font-size:.9em;color:#444;line-height:1.8">
+      <li><strong>角的度量单位：</strong>度（°）</li>
+      <li><strong>1周角 = 360°</strong>，<strong>1平角 = 180°</strong>，<strong>1直角 = 90°</strong></li>
+      <li><strong>锐角</strong> &lt; 90°，<strong>钝角</strong> &gt; 90° 且 &lt; 180°</li>
+      <li><strong>量角器使用方法：</strong>中心对顶点，零线对一边，看另一边度数</li>
+    </ul>
+  </div>
+
+  <a href="../index.html" class="back-link">← 返回目录</a>
+</div>
+
+<script>
+let currentAngle = 0;
+const canvas = document.getElementById('protractorCanvas');
+const ctx = canvas.getContext('2d');
+const practiceCanvas = document.getElementById('practiceCanvas');
+const pctx = practiceCanvas.getContext('2d');
+let practiceAngle = 45;
+
+function drawProtractor(angle) {
+  const w = canvas.width, h = canvas.height;
+  const cx = w / 2, cy = h - 20;
+  const r = Math.min(w, h) - 40;
+  ctx.clearRect(0, 0, w, h);
+  // Draw protractor arc
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, Math.PI, 0);
+  ctx.strokeStyle = '#ddd';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  // Draw tick marks and labels
+  for (let i = 0; i <= 180; i += 10) {
+    const rad = (Math.PI * (180 - i)) / 180;
+    const x1 = cx + r * Math.cos(rad);
+    const y1 = cy - r * Math.sin(rad);
+    const len = i % 30 === 0 ? 12 : i % 10 === 0 ? 8 : 5;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x1 - len * Math.cos(rad), y1 + len * Math.sin(rad));
+    ctx.strokeStyle = i % 30 === 0 ? '#1565C0' : '#aaa';
+    ctx.lineWidth = i % 30 === 0 ? 2 : 1;
+    ctx.stroke();
+    if (i % 30 === 0) {
+      ctx.fillStyle = '#1565C0';
+      ctx.font = '12px sans-serif';
+      ctx.textAlign = 'center';
+      const tx = cx + (r - 18) * Math.cos(rad);
+      const ty = cy - (r - 18) * Math.sin(rad);
+      ctx.fillText(i + '°', tx, ty + 4);
+    }
+  }
+  // Draw angle lines
+  const rad = (Math.PI * angle) / 180;
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.lineTo(cx + r * Math.cos(Math.PI - rad), cy - r * Math.sin(Math.PI - rad));
+  ctx.strokeStyle = '#C62828';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+  // Base line
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.lineTo(cx - r, cy);
+  ctx.strokeStyle = '#C62828';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+  // Angle arc
+  ctx.beginPath();
+  ctx.arc(cx, cy, 40, Math.PI, Math.PI - rad, true);
+  ctx.strokeStyle = '#FF9800';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+}
+
+function setAngle(a) {
+  currentAngle = a;
+  document.getElementById('angleDisplay').textContent = a + '°';
+  drawProtractor(a);
+}
+
+// Touch/mouse drag on protractor
+let dragging = false;
+canvas.addEventListener('mousedown', (e) => { dragging = true; updateAngleFromMouse(e); });
+canvas.addEventListener('mousemove', (e) => { if (dragging) updateAngleFromMouse(e); });
+canvas.addEventListener('mouseup', () => { dragging = false; });
+canvas.addEventListener('touchstart', (e) => { e.preventDefault(); updateAngleFromTouch(e); });
+canvas.addEventListener('touchmove', (e) => { e.preventDefault(); updateAngleFromTouch(e); });
+canvas.addEventListener('touchend', () => { dragging = false; });
+
+function updateAngleFromMouse(e) {
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left - canvas.width / 2;
+  const y = -(e.clientY - rect.top - (canvas.height - 20));
+  let angle = Math.atan2(y, -x) * (180 / Math.PI);
+  if (angle < 0) angle = 0;
+  if (angle > 180) angle = 180;
+  setAngle(Math.round(angle));
+}
+
+function updateAngleFromTouch(e) {
+  const touch = e.touches[0];
+  const rect = canvas.getBoundingClientRect();
+  const x = touch.clientX - rect.left - canvas.width / 2;
+  const y = -(touch.clientY - rect.top - (canvas.height - 20));
+  let angle = Math.atan2(y, -x) * (180 / Math.PI);
+  if (angle < 0) angle = 0;
+  if (angle > 180) angle = 180;
+  setAngle(Math.round(angle));
+}
+
+function showAngleType(type) {
+  const angles = { acute: 45, right: 90, obtuse: 120, straight: 180 };
+  setAngle(angles[type] || 45);
+  document.querySelectorAll('.angle-type').forEach(el => el.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+}
+
+function drawPracticeAngle(angle) {
+  const w = practiceCanvas.width, h = practiceCanvas.height;
+  const cx = w / 2, cy = h - 30;
+  const r = Math.min(w / 2 - 20, h - 40);
+  pctx.clearRect(0, 0, w, h);
+  const rad = (Math.PI * angle) / 180;
+  pctx.beginPath();
+  pctx.moveTo(cx, cy);
+  pctx.lineTo(cx + r * Math.cos(Math.PI - rad), cy - r * Math.sin(Math.PI - rad));
+  pctx.strokeStyle = '#1565C0';
+  pctx.lineWidth = 3;
+  pctx.stroke();
+  pctx.beginPath();
+  pctx.moveTo(cx, cy);
+  pctx.lineTo(cx - r, cy);
+  pctx.strokeStyle = '#1565C0';
+  pctx.lineWidth = 3;
+  pctx.stroke();
+}
+
+function newPractice() {
+  practiceAngle = Math.round(Math.random() * 150) + 15;
+  drawPracticeAngle(practiceAngle);
+  document.getElementById('estimateInput').value = '';
+  document.getElementById('practiceResult').className = 'practice-result';
+  document.getElementById('practiceResult').textContent = '';
+}
+
+function checkEstimate() {
+  const est = parseInt(document.getElementById('estimateInput').value);
+  const result = document.getElementById('practiceResult');
+  if (isNaN(est)) { result.className = 'practice-result wrong'; result.textContent = '请输入一个数字'; return; }
+  const diff = Math.abs(est - practiceAngle);
+  if (diff === 0) {
+    result.className = 'practice-result correct'; result.textContent = '🎉 完全正确！就是 ' + practiceAngle + '°';
+  } else if (diff <= 5) {
+    result.className = 'practice-result correct'; result.textContent = '👍 很接近！实际角度是 ' + practiceAngle + '°，你估了 ' + est + '°';
+  } else {
+    result.className = 'practice-result wrong'; result.textContent = '❌ 实际角度是 ' + practiceAngle + '°，差了 ' + diff + '°，再试试！';
+  }
+}
+
+setAngle(0);
+newPractice();
+</script>
+</body>
+</html>

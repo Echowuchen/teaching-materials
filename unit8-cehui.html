@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>数学广角——优化 - 四年级数学</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(135deg,#AD1457,#EC407A);min-height:100vh;padding:20px;color:#333}
+  .container{max-width:800px;margin:0 auto}
+  .header{text-align:center;padding:20px;background:rgba(255,255,255,0.2);border-radius:20px;color:#fff;margin-bottom:20px;box-shadow:0 4px 20px rgba(0,0,0,0.2)}
+  .header h1{font-size:1.8em;margin-bottom:4px}
+  .header p{font-size:0.95em;opacity:0.9}
+  .card{background:white;border-radius:20px;padding:24px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,0.08)}
+  .section-title{font-size:1.1em;font-weight:600;color:#AD1457;margin:16px 0 10px;display:flex;align-items:center;gap:8px}
+  .btn{display:inline-block;padding:12px 24px;background:linear-gradient(135deg,#AD1457,#EC407A);color:white;border:none;border-radius:12px;font-size:1em;font-weight:600;cursor:pointer;transition:all .2s;margin:4px}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(173,20,87,0.3)}
+  .btn-outline{background:transparent;border:2px solid #AD1457;color:#AD1457}
+  .btn-sm{padding:8px 16px;font-size:.85em}
+  .pan-area{text-align:center;margin:16px 0}
+  .pan-visual{display:flex;gap:16px;justify-content:center;align-items:center;margin:16px 0;flex-wrap:wrap}
+  .pan{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5em;transition:all .3s}
+  .pan.empty{background:#f5f5f5;border:2px dashed #ddd}
+  .pan.cooking{background:#FFF3E0;border:2px solid #FF9800;animation:pulse 1s infinite}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+  .pan.done{background:#E8F5E9;border:2px solid #4CAF50}
+  .step-display{background:#f8f9fa;border-radius:12px;padding:16px;margin:12px 0;font-size:.9em;line-height:1.8}
+  .step-item{padding:4px 8px;border-radius:6px;margin:2px 0}
+  .step-item.active{background:#FCE4EC;border-left:3px solid #AD1457}
+  .result-box{text-align:center;padding:16px;border-radius:12px;margin:12px 0;font-weight:600;font-size:1.2em}
+  .result-box.success{background:#E8F5E9;color:#2E7D32}
+  .result-box.info{background:#E3F2FD;color:#1565C0}
+  .input-row{display:flex;gap:12px;align-items:center;justify-content:center;margin:12px 0;flex-wrap:wrap}
+  .input-row input{padding:10px;border:2px solid #e0e0e0;border-radius:8px;font-size:1.1em;width:80px;text-align:center}
+  .tea-steps{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:12px 0}
+  .tea-step{padding:12px 16px;background:#f8f9fa;border:2px solid #e0e0e0;border-radius:12px;cursor:pointer;transition:all .2s;user-select:none}
+  .tea-step:hover{border-color:#AD1457;background:#FCE4EC}
+  .tea-step.placed{opacity:.4;pointer-events:none}
+  .tea-step .time{font-size:.8em;color:#888}
+  .tea-order{display:flex;gap:6px;flex-wrap:wrap;min-height:50px;padding:12px;background:#f8f9fa;border-radius:12px;margin:8px 0;border:2px dashed #ddd}
+  .tea-order .tea-step{cursor:default;background:#E8F5E9;border-color:#4CAF50}
+  .quiz-area{text-align:center;padding:16px;background:#f8f9fa;border-radius:12px;margin:12px 0}
+  .quiz-area .question{font-size:1.1em;font-weight:600;color:#AD1457;margin-bottom:12px}
+  .options{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+  .opt{padding:10px 20px;border:2px solid #e0e0e0;border-radius:12px;cursor:pointer;transition:all .2s;font-weight:600}
+  .opt:hover{border-color:#AD1457;background:#FCE4EC}
+  .opt.correct{border-color:#4CAF50;background:#E8F5E9;color:#2E7D32}
+  .opt.wrong{border-color:#C62828;background:#FFE5E5;color:#C62828}
+  .back-link{display:block;text-align:center;padding:16px;color:rgba(255,255,255,0.8);text-decoration:none;font-size:.9em;margin-top:20px}
+  @media(max-width:500px){body{padding:10px}.header h1{font-size:1.4em}.input-row{flex-direction:column;align-items:stretch}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header"><h1>🧠 数学广角——优化</h1><p>用数学思维解决生活中的最优方案</p></div>
+
+  <!-- 烙饼问题 -->
+  <div class="card">
+    <div class="section-title">🫓 烙饼问题</div>
+    <p style="text-align:center;color:#666;margin-bottom:12px">一个锅每次最多烙2张饼，两面都要烙，每面3分钟。怎样安排最省时间？</p>
+    <div class="input-row">
+      <span>饼的数量：</span>
+      <input type="number" id="pancakeCount" value="3" min="1" max="10">
+      <button class="btn" onclick="solvePancake()">计算最优方案</button>
+    </div>
+    <div class="pan-area" id="pancakeVisual"></div>
+    <div class="step-display" id="pancakeSteps"></div>
+    <div class="result-box info" id="pancakeResult"></div>
+  </div>
+
+  <!-- 泡茶问题 -->
+  <div class="card">
+    <div class="section-title">🍵 泡茶问题</div>
+    <p style="text-align:center;color:#666;margin-bottom:12px">拖拽安排泡茶步骤，找出最短时间方案</p>
+    <div class="tea-steps" id="teaSteps"></div>
+    <p style="text-align:center;font-size:.85em;color:#888">👆 点击上方步骤，按顺序安排</p>
+    <div class="tea-order" id="teaOrder"><span style="color:#aaa;font-size:.85em">点击步骤添加到安排中...</span></div>
+    <div style="text-align:center;margin:12px 0">
+      <button class="btn btn-outline" onclick="resetTea()">重置</button>
+      <button class="btn" onclick="checkTea()">验证方案</button>
+    </div>
+    <div class="result-box" id="teaResult" style="display:none"></div>
+  </div>
+
+  <!-- 博弈问题 -->
+  <div class="card">
+    <div class="section-title">🎯 取石子游戏</div>
+    <p style="text-align:center;color:#666;margin-bottom:12px">两人轮流取石子，每次取1-3个，取到最后一个的人赢。你能找到必胜策略吗？</p>
+    <div class="quiz-area">
+      <div class="question">一共有12个石子，你是先手。请制定你的策略！</div>
+      <p style="color:#888;font-size:.85em;margin:8px 0">提示：关键在于每轮你和对手取的总数控制在4</p>
+      <div style="margin:16px 0">
+        <p>你先取几个？</p>
+        <div class="options">
+          <div class="opt" onclick="pickStones(1)">取1个</div>
+          <div class="opt" onclick="pickStones(2)">取2个</div>
+          <div class="opt" onclick="pickStones(3)">取3个</div>
+        </div>
+      </div>
+      <div id="stoneGame"></div>
+      <div class="result-box" id="stoneResult" style="display:none"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">📚 重点知识</div>
+    <ul style="padding-left:16px;font-size:.9em;color:#444;line-height:1.8">
+      <li><strong>烙饼问题：</strong>每次烙2张，n张饼最少需要 n×3分钟（n≥2时可交替烙）</li>
+      <li><strong>沏茶问题：</strong>合理安排同时进行的步骤，节省等待时间</li>
+      <li><strong>田忌赛马：</strong>用下等马对上等马，上等马对中等马，中等马对下等马——以弱胜强的策略</li>
+      <li><strong>优化思维：</strong>在生活学习中寻找最合理、最高效的方案</li>
+    </ul>
+  </div>
+
+  <a href="../index.html" class="back-link">← 返回目录</a>
+</div>
+
+<script>
+// 烙饼问题
+function solvePancake() {
+  const n = parseInt(document.getElementById('pancakeCount').value) || 3;
+  const steps = document.getElementById('pancakeSteps');
+  const visual = document.getElementById('pancakeVisual');
+  const result = document.getElementById('pancakeResult');
+
+  if (n <= 0) { result.textContent = '请输入有效数字'; return; }
+
+  let totalTime, stepText;
+  if (n === 1) {
+    totalTime = 6;
+    stepText = `<div class="step-item active">第1面：烙第1张（3分钟）</div><div class="step-item">第2面：烙第1张反面（3分钟）</div>`;
+  } else {
+    totalTime = n * 3;
+    stepText = `<div class="step-item active">⚡ 交替烙法：每轮同时烙2张饼的各1面（3分钟）</div>`;
+    stepText += `<div class="step-item">交替进行，确保锅中始终有2张饼在烙</div>`;
+    stepText += `<div class="step-item">总时间 = ${n} × 3 = ${totalTime} 分钟</div>`;
+    // Show specific steps for small n
+    if (n === 2) {
+      stepText = `<div class="step-item active">第1轮（3分钟）：饼A正面 + 饼B正面</div>`;
+      stepText += `<div class="step-item">第2轮（3分钟）：饼A反面 + 饼B反面</div>`;
+    } else if (n === 3) {
+      stepText = `<div class="step-item active">第1轮（3分钟）：饼1正面 + 饼2正面</div>`;
+      stepText += `<div class="step-item">第2轮（3分钟）：饼1反面 + 饼3正面</div>`;
+      stepText += `<div class="step-item">第3轮（3分钟）：饼2反面 + 饼3反面</div>`;
+    }
+  }
+  steps.innerHTML = stepText;
+
+  // Visual
+  let html = '';
+  for (let i = 0; i < Math.min(n, 6); i++) {
+    html += `<div class="pan done">🫓${i + 1}</div>`;
+  }
+  if (n > 6) html += `<div style="font-size:1.2em;color:#888">...共${n}张</div>`;
+  visual.innerHTML = html;
+
+  result.className = 'result-box success';
+  result.textContent = `✅ ${n}张饼最短需要 ${totalTime} 分钟`;
+}
+
+// 泡茶问题
+const teaTaskDefs = [
+  { name: '洗水壶', time: 1, canParallel: false },
+  { name: '烧水', time: 8, canParallel: true },
+  { name: '洗茶壶', time: 2, canParallel: true },
+  { name: '洗茶杯', time: 2, canParallel: true },
+  { name: '拿茶叶', time: 1, canParallel: true },
+  { name: '沏茶', time: 1, canParallel: false }
+];
+let teaOrder = [];
+
+function initTea() {
+  const container = document.getElementById('teaSteps');
+  container.innerHTML = teaTaskDefs.map((t, i) =>
+    `<div class="tea-step" id="tea-${i}" onclick="addTeaStep(${i})">${t.name}<br><span class="time">${t.time}分钟</span></div>`
+  ).join('');
+}
+
+function addTeaStep(idx) {
+  if (teaOrder.includes(idx)) return;
+  teaOrder.push(idx);
+  renderTeaOrder();
+  document.getElementById(`tea-${idx}`).classList.add('placed');
+}
+
+function renderTeaOrder() {
+  const container = document.getElementById('teaOrder');
+  if (teaOrder.length === 0) {
+    container.innerHTML = '<span style="color:#aaa;font-size:.85em">点击步骤添加到安排中...</span>';
+    return;
+  }
+  container.innerHTML = teaOrder.map((idx, i) =>
+    `<div class="tea-step">${teaTaskDefs[idx].name}<br><span class="time">${teaTaskDefs[idx].time}分钟</span>${i < teaOrder.length - 1 ? ' →' : ''}</div>`
+  ).join('');
+}
+
+function resetTea() {
+  teaOrder = [];
+  renderTeaOrder();
+  teaTaskDefs.forEach((_, i) => document.getElementById(`tea-${i}`).classList.remove('placed'));
+  document.getElementById('teaResult').style.display = 'none';
+}
+
+function checkTea() {
+  const result = document.getElementById('teaResult');
+  if (teaOrder.length === 0) { result.style.display = 'block'; result.className = 'result-box info'; result.textContent = '请先安排步骤'; return; }
+
+  // Optimal: 洗水壶(1) → 烧水(8, parallel: 洗茶壶2+洗茶杯2+拿茶叶1) → 沏茶(1) = 1+8+1 = 10分钟
+  const totalTime = Math.max(
+    teaOrder.slice(0, -1).reduce((sum, idx) => sum + teaTaskDefs[idx].time, 0), // Sequential
+    10 // Optimal is 10
+  );
+
+  // Check if optimal
+  const isOptimal = teaOrder.length === 6 &&
+    teaOrder[0] === 0 && // 洗水壶 first
+    teaOrder[5] === 5;   // 沸茶 last
+
+  result.style.display = 'block';
+  if (isOptimal) {
+    result.className = 'result-box success';
+    result.textContent = '🎉 最优方案！洗水壶 → 烧水(同时洗茶壶、洗茶杯、拿茶叶) → 沸茶，共10分钟';
+  } else {
+    result.className = 'result-box info';
+    result.textContent = '💡 提示：最优方案是10分钟。试试先洗水壶，然后烧水的同时做其他准备，最后沏茶。';
+  }
+}
+
+// 取石子游戏
+let stones = 12;
+let playerFirst = true;
+
+function pickStones(n) {
+  stones -= n;
+  const result = document.getElementById('stoneResult');
+  const game = document.getElementById('stoneGame');
+
+  if (stones <= 0) {
+    result.style.display = 'block';
+    result.className = 'result-box success';
+    result.textContent = '🎉 你赢了！';
+    game.innerHTML = '';
+    return;
+  }
+
+  // AI picks 1-3, trying to leave multiple of 4
+  let aiPick = (stones % 4 === 0) ? 1 : stones % 4;
+  // AI tries to leave (stones - aiPick) as multiple of 4
+  const target = Math.floor((stones - 1) / 4) * 4;
+  aiPick = Math.max(1, Math.min(3, stones - target));
+
+  stones -= aiPick;
+
+  game.innerHTML = `<p style="font-size:1em;color:#666;margin:8px 0">你取了 ${n} 个，AI取了 ${aiPick} 个，剩余 <strong>${stones}</strong> 个</p>`;
+  result.style.display = 'none';
+
+  if (stones <= 0) {
+    result.style.display = 'block';
+    result.className = 'result-box info';
+    result.textContent = '😢 AI赢了！不过没关系，再试试！';
+    game.innerHTML = '';
+  }
+}
+
+solvePancake();
+initTea();
+</script>
+</body>
+</html>

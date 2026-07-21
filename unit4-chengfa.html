@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>三位数乘两位数 - 四年级数学</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(135deg,#6A1B9A,#AB47BC);min-height:100vh;padding:20px;color:#333}
+  .container{max-width:800px;margin:0 auto}
+  .header{text-align:center;padding:20px;background:rgba(255,255,255,0.2);border-radius:20px;color:#fff;margin-bottom:20px;box-shadow:0 4px 20px rgba(0,0,0,0.2)}
+  .header h1{font-size:1.8em;margin-bottom:4px}
+  .header p{font-size:0.95em;opacity:0.9}
+  .card{background:white;border-radius:20px;padding:24px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,0.08)}
+  .section-title{font-size:1.1em;font-weight:600;color:#6A1B9A;margin:16px 0 10px;display:flex;align-items:center;gap:8px}
+  .btn{display:inline-block;padding:12px 24px;background:linear-gradient(135deg,#6A1B9A,#AB47BC);color:white;border:none;border-radius:12px;font-size:1em;font-weight:600;cursor:pointer;transition:all .2s;margin:4px}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(106,27,154,0.3)}
+  .btn-outline{background:transparent;border:2px solid #6A1B9A;color:#6A1B9A}
+  .input-row{display:flex;gap:12px;align-items:center;justify-content:center;margin:16px 0;flex-wrap:wrap}
+  .input-row input{padding:10px;border:2px solid #e0e0e0;border-radius:8px;font-size:1.2em;width:100px;text-align:center;font-family:monospace}
+  .vertical-calc{font-family:monospace;font-size:1.3em;line-height:2;text-align:center;padding:20px;background:#f8f9fa;border-radius:12px;margin:16px 0;min-height:120px}
+  .vertical-calc .num{display:block;text-align:right;padding:0 40px}
+  .vertical-calc .line{border-top:2px solid #6A1B9A;margin:4px 40px;width:calc(100% - 80px)}
+  .vertical-calc .partial{color:#6A1B9A}
+  .vertical-calc .answer{color:#C62828;font-weight:bold}
+  .step-list{margin:12px 0}
+  .step-item{padding:8px 12px;margin:4px 0;border-radius:8px;font-size:.9em;transition:all .3s}
+  .step-item.active{background:#f3e5f5;border-left:4px solid #6A1B9A}
+  .step-item .step-num{color:#6A1B9A;font-weight:700}
+  .score{text-align:center;font-size:1.2em;color:#6A1B9A;padding:8px}
+  .timer{text-align:center;font-size:1.1em;color:#C62828;font-weight:600}
+  .history{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+  .history-item{padding:4px 10px;border-radius:8px;font-size:.85em}
+  .history-item.correct{background:#e8f5e9;color:#2E7D32}
+  .history-item.wrong{background:#ffebee;color:#C62828}
+  .back-link{display:block;text-align:center;padding:16px;color:rgba(255,255,255,0.8);text-decoration:none;font-size:.9em;margin-top:20px}
+  @media(max-width:500px){body{padding:10px}.header h1{font-size:1.4em}.input-row{flex-direction:column;align-items:stretch}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header"><h1>🔢 三位数乘两位数</h1><p>掌握乘法竖式计算方法</p></div>
+
+  <div class="card">
+    <div class="section-title">📝 竖式计算器</div>
+    <div class="input-row">
+      <span>三位数：</span><input type="number" id="num1" value="123" min="100" max="999">
+      <span>×</span>
+      <span>两位数：</span><input type="number" id="num2" value="45" min="10" max="99">
+      <button class="btn" onclick="calculate()">计算</button>
+    </div>
+    <div class="vertical-calc" id="verticalCalc"></div>
+    <div class="step-list" id="stepList"></div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">⚡ 速算练习</div>
+    <div class="score" id="score">得分：0 / 0</div>
+    <div class="timer" id="timer">⏱️ 准备好了吗？</div>
+    <div style="text-align:center;margin:16px 0" id="practiceArea">
+      <div style="font-size:2em;font-weight:bold;color:#6A1B9A;margin:16px 0" id="practiceProblem">点击开始</div>
+      <div class="input-row">
+        <input type="number" id="practiceAnswer" placeholder="?" style="width:150px" onkeydown="if(event.key==='Enter')checkSpeedAnswer()">
+        <button class="btn" onclick="checkSpeedAnswer()">提交</button>
+      </div>
+    </div>
+    <div style="text-align:center">
+      <button class="btn" onclick="startSpeedPractice()">开始练习</button>
+      <button class="btn btn-outline" onclick="resetScore()">重置得分</button>
+    </div>
+    <div class="history" id="history"></div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">📚 重点知识</div>
+    <ul style="padding-left:16px;font-size:.9em;color:#444;line-height:1.8">
+      <li><strong>三位数乘两位数的笔算方法：</strong>先用两位数个位乘三位数，再用十位乘，最后相加</li>
+      <li><strong>竖式对齐：</strong>两位数的个位对齐三位数的个位</li>
+      <li><strong>因数末尾有0：</strong>可以先算非0部分，再在积的末尾添0</li>
+      <li><strong>估算：</strong>把因数看成整十、整百数来估算</li>
+    </ul>
+  </div>
+
+  <a href="../index.html" class="back-link">← 返回目录</a>
+</div>
+
+<script>
+function calculate() {
+  const a = parseInt(document.getElementById('num1').value) || 123;
+  const b = parseInt(document.getElementById('num2').value) || 45;
+  const ones = b % 10;
+  const tens = Math.floor(b / 10);
+  const p1 = a * ones;
+  const p2 = a * tens * 10;
+  const result = a * b;
+
+  let html = `<span class="num">${a}</span><span class="num">× ${b}</span><div class="line"></div>`;
+  html += `<span class="num partial">(${p1}) ← ${a} × ${ones}</span>`;
+  if (tens > 0) html += `<span class="num partial">(${p2}) ← ${a} × ${tens}0</span>`;
+  html += `<div class="line"></div><span class="num answer">= ${result.toLocaleString()}</span>`;
+  document.getElementById('verticalCalc').innerHTML = html;
+
+  let steps = `<div class="step-item active"><span class="step-num">①</span> 用个位 ${ones} 乘 ${a} = ${p1}</div>`;
+  if (tens > 0) steps += `<div class="step-item"><span class="step-num">②</span> 用十位 ${tens} 乘 ${a} = ${a * tens}，再乘10 = ${p2}</div>`;
+  steps += `<div class="step-item"><span class="step-num">${tens > 0 ? '③' : '②'}</span> 两个部分积相加 = ${result.toLocaleString()}</div>`;
+  document.getElementById('stepList').innerHTML = steps;
+}
+
+let score = 0, total = 0, correctAnswer = 0;
+let speedHistory = [];
+
+function startSpeedPractice() {
+  const a = 100 + Math.floor(Math.random() * 900);
+  const b = 10 + Math.floor(Math.random() * 90);
+  correctAnswer = a * b;
+  document.getElementById('practiceProblem').textContent = `${a} × ${b} = ?`;
+  document.getElementById('practiceAnswer').value = '';
+  document.getElementById('practiceAnswer').focus();
+  document.getElementById('timer').textContent = '⏱️ 输入答案后按回车或点击提交';
+}
+
+function checkSpeedAnswer() {
+  const ans = parseInt(document.getElementById('practiceAnswer').value);
+  if (isNaN(ans)) return;
+  total++;
+  const isCorrect = ans === correctAnswer;
+  if (isCorrect) score++;
+  speedHistory.push(isCorrect);
+  document.getElementById('score').textContent = `得分：${score} / ${total}`;
+  document.getElementById('history').innerHTML = speedHistory.map((c, i) =>
+    `<span class="history-item ${c ? 'correct' : 'wrong'}">${c ? '✓' : '✗'}</span>`
+  ).join('');
+  startSpeedPractice();
+}
+
+function resetScore() {
+  score = 0; total = 0; speedHistory = [];
+  document.getElementById('score').textContent = '得分：0 / 0';
+  document.getElementById('history').innerHTML = '';
+  document.getElementById('timer').textContent = '准备好了吗？';
+  document.getElementById('practiceProblem').textContent = '点击开始';
+}
+
+calculate();
+</script>
+</body>
+</html>
