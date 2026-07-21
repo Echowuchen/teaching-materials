@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>大数的认识 - 四年级数学</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: linear-gradient(135deg, #1565C0, #42A5F5);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+  }
+  .container { max-width: 800px; margin: 0 auto; }
+  .header {
+    text-align: center;
+    padding: 20px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 20px;
+    color: white;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+  .header h1 { font-size: 1.8em; margin-bottom: 4px; }
+  .header p { font-size: 0.95em; opacity: 0.9; }
+
+  .card {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  .section-title {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #1565C0;
+    margin: 16px 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* 数位顺序表 */
+  .place-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 0.9em;
+  }
+  .place-table th, .place-table td {
+    border: 2px solid #e3f2fd;
+    padding: 10px 6px;
+    text-align: center;
+    min-width: 48px;
+  }
+  .place-table th {
+    background: #e3f2fd;
+    font-weight: 600;
+    color: #1565C0;
+  }
+  .place-table td {
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 1.1em;
+  }
+  .place-table td:hover {
+    background: #e3f2fd;
+    transform: scale(1.1);
+  }
+  .place-table td.active {
+    background: #1565C0;
+    color: white;
+    font-weight: 700;
+  }
+  .place-label { font-size: 0.75em; color: #999; }
+
+  /* 数字输入 */
+  .number-input {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 16px 0;
+  }
+  .number-input input {
+    flex: 1;
+    min-width: 200px;
+    padding: 14px;
+    border: 3px solid #e3f2fd;
+    border-radius: 12px;
+    font-size: 1.3em;
+    text-align: center;
+    font-weight: 600;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .number-input input:focus {
+    border-color: #1565C0;
+  }
+  .result-box {
+    margin-top: 16px;
+    padding: 16px;
+    background: #e3f2fd;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 1.1em;
+    line-height: 1.8;
+    color: #1565C0;
+    font-weight: 600;
+  }
+
+  /* 读数练习 */
+  .quiz-area {
+    text-align: center;
+    margin: 20px 0;
+  }
+  .quiz-number {
+    font-size: 2em;
+    font-weight: 700;
+    color: #1565C0;
+    margin: 16px 0;
+    letter-spacing: 4px;
+  }
+  .quiz-input {
+    padding: 12px 20px;
+    border: 3px solid #e3f2fd;
+    border-radius: 12px;
+    font-size: 1.1em;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    outline: none;
+    margin: 8px 0;
+  }
+  .quiz-input:focus { border-color: #1565C0; }
+
+  .btn {
+    display: inline-block;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #1565C0, #42A5F5);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin: 8px 4px;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(21,101,192,0.3); }
+  .btn:active { transform: translateY(0); }
+  .btn-success { background: linear-gradient(135deg, #2E7D32, #66BB6A); }
+  .btn-wrong { background: linear-gradient(135deg, #c62828, #ef5350); }
+
+  .feedback {
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-align: center;
+    display: none;
+  }
+  .feedback.correct { display: block; background: #e8f5e9; color: #2E7D32; }
+  .feedback.wrong { display: block; background: #ffebee; color: #c62828; }
+
+  /* 比较大小 */
+  .compare-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+  }
+  .compare-num {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: #1565C0;
+    background: #e3f2fd;
+    padding: 12px 20px;
+    border-radius: 12px;
+    min-width: 120px;
+    text-align: center;
+  }
+  .compare-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .compare-btn {
+    width: 50px;
+    height: 50px;
+    border: 3px solid #e3f2fd;
+    border-radius: 12px;
+    background: white;
+    font-size: 1.5em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .compare-btn:hover { border-color: #1565C0; background: #e3f2fd; }
+  .compare-btn.correct { border-color: #2E7D32; background: #e8f5e9; color: #2E7D32; }
+  .compare-btn.wrong { border-color: #c62828; background: #ffebee; color: #c62828; }
+
+  .score {
+    text-align: center;
+    font-size: 1.2em;
+    color: #1565C0;
+    font-weight: 600;
+    margin: 12px 0;
+  }
+
+  /* 知识卡片 */
+  .knowledge-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .knowledge-item {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    border: 2px solid transparent;
+    transition: all 0.3s;
+  }
+  .knowledge-item:hover {
+    border-color: #1565C0;
+    transform: translateY(-2px);
+  }
+  .knowledge-icon { font-size: 2em; margin-bottom: 8px; }
+  .knowledge-label { font-weight: 600; color: #333; font-size: 0.95em; }
+  .knowledge-value { font-size: 0.85em; color: #666; margin-top: 4px; }
+
+  .back-link {
+    display: block;
+    text-align: center;
+    padding: 16px;
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    font-size: 0.9em;
+    margin-top: 20px;
+  }
+
+  @media (max-width: 500px) {
+    body { padding: 10px; }
+    .container { padding: 0; }
+    .header h1 { font-size: 1.4em; }
+    .place-table { font-size: 0.75em; }
+    .place-table th, .place-table td { padding: 6px 3px; min-width: 36px; }
+    .quiz-number { font-size: 1.5em; }
+    .compare-num { font-size: 1.3em; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>🔢 大数的认识</h1>
+    <p>认识万级和亿级的数，掌握数位顺序表</p>
+  </div>
+
+  <!-- 1. 数位顺序表 -->
+  <div class="card">
+    <div class="section-title">📋 数位顺序表（点击数位查看读法）</div>
+    <div style="overflow-x: auto;">
+      <table class="place-table" id="placeTable">
+        <tr>
+          <th>数级</th><th colspan="4">亿级</th><th colspan="4">万级</th><th colspan="4">个级</th>
+        </tr>
+        <tr>
+          <th>数位</th>
+          <td>千亿位</td><td>百亿位</td><td>十亿位</td><td>亿位</td>
+          <td>千万位</td><td>百万位</td><td>十万位</td><td>万位</td>
+          <td>千位</td><td>百位</td><td>十位</td><td>个位</td>
+        </tr>
+        <tr>
+          <th>计数单位</th>
+          <td>千亿</td><td>百亿</td><td>十亿</td><td>亿</td>
+          <td>千万</td><td>百万</td><td>十万</td><td>万</td>
+          <td>千</td><td>百</td><td>十</td><td>个</td>
+        </tr>
+      </table>
+    </div>
+    <div id="placeInfo" class="result-box" style="display:none;"></div>
+  </div>
+
+  <!-- 2. 读数写数 -->
+  <div class="card">
+    <div class="section-title">👁️ 读数练习</div>
+    <p style="color:#666; margin-bottom:12px;">输入数字，自动显示中文读法</p>
+    <div class="number-input">
+      <input type="text" id="readInput" placeholder="输入数字，如 123456789" 
+             oninput="readNumber()" maxlength="12">
+    </div>
+    <div class="result-box" id="readResult">输入数字查看读法</div>
+  </div>
+
+  <!-- 3. 写数练习 -->
+  <div class="card">
+    <div class="section-title">✍️ 写数练习</div>
+    <div class="quiz-area">
+      <div id="writeQuiz" class="quiz-number"></div>
+      <input type="text" class="quiz-input" id="writeInput" placeholder="输入阿拉伯数字">
+      <br>
+      <button class="btn" onclick="checkWrite()">检查</button>
+      <button class="btn" onclick="nextWriteQuiz()">下一题</button>
+      <div class="feedback" id="writeFeedback"></div>
+      <div class="score" id="writeScore">答对 0 / 0</div>
+    </div>
+  </div>
+
+  <!-- 4. 比较大小 -->
+  <div class="card">
+    <div class="section-title">⚖️ 比较大小</div>
+    <div class="compare-area">
+      <div class="compare-num" id="compareNum1"></div>
+      <div class="compare-btns">
+        <button class="compare-btn" onclick="checkCompare('>')">></button>
+        <button class="compare-btn" onclick="checkCompare('=')">=</button>
+        <button class="compare-btn" onclick="checkCompare('<')"><</button>
+      </div>
+      <div class="compare-num" id="compareNum2"></div>
+    </div>
+    <div class="feedback" id="compareFeedback"></div>
+    <div class="score" id="compareScore">答对 0 / 0</div>
+    <button class="btn" onclick="nextCompare()" style="display:block; margin:12px auto 0;">下一题</button>
+  </div>
+
+  <!-- 5. 重点知识 -->
+  <div class="card">
+    <div class="section-title">📚 重点知识</div>
+    <div class="knowledge-grid">
+      <div class="knowledge-item">
+        <div class="knowledge-icon">🔢</div>
+        <div class="knowledge-label">10个一</div>
+        <div class="knowledge-value">= 1个十</div>
+      </div>
+      <div class="knowledge-item">
+        <div class="knowledge-icon">🔟</div>
+        <div class="knowledge-label">10个十</div>
+        <div class="knowledge-value">= 1个百</div>
+      </div>
+      <div class="knowledge-item">
+        <div class="knowledge-icon">💯</div>
+        <div class="knowledge-label">10个百</div>
+        <div class="knowledge-value">= 1个千</div>
+      </div>
+      <div class="knowledge-item">
+        <div class="knowledge-icon">1️⃣0️⃣0️⃣0️⃣</div>
+        <div class="knowledge-label">10个千</div>
+        <div class="knowledge-value">= 1个万</div>
+      </div>
+      <div class="knowledge-item">
+        <div class="knowledge-icon">🔟</div>
+        <div class="knowledge-label">10个万</div>
+        <div class="knowledge-value">= 1个十万</div>
+      </div>
+      <div class="knowledge-item">
+        <div class="knowledge-icon">🔟</div>
+        <div class="knowledge-label">10个十万</div>
+        <div class="knowledge-value">= 1个百万</div>
+      </div>
+      <div class="knowledge-item">
+        <div class="knowledge-icon">🔟</div>
+        <div class="knowledge-label">10个百万</div>
+        <div class="knowledge-value">= 1个千万</div>
+      </div>
+      <div class="knowledge-item">
+        <div class="knowledge-icon">🔟</div>
+        <div class="knowledge-label">10个千万</div>
+        <div class="knowledge-value">= 1个亿</div>
+      </div>
+    </div>
+    <div style="background:#f8f9fa; padding:16px; border-radius:12px; margin-top:16px;">
+      <p><strong>每相邻两个计数单位之间的进率都是十</strong></p>
+      <p style="margin-top:8px;">个级：个、十、百、千</p>
+      <p>万级：万、十万、百万、千万</p>
+      <p>亿级：亿、十亿、百亿、千亿</p>
+    </div>
+  </div>
+
+  <a href="../index.html" class="back-link">← 返回目录</a>
+</div>
+
+<script>
+// 1. 数位顺序表点击显示
+const placeInfo = {
+  '千亿位': '千亿位在亿级的最高位，表示多少个千亿',
+  '百亿位': '百亿位在亿级，表示多少个百亿',
+  '十亿位': '十亿位在亿级，表示多少个十亿',
+  '亿位': '亿位是亿级的个位，表示多少个亿',
+  '千万位': '千万位在万级的最高位，表示多少个千万',
+  '百万位': '百万位在万级，表示多少个百万',
+  '十万位': '十万位在万级，表示多少个十万',
+  '万位': '万位是万级的个位，表示多少个万',
+  '千位': '千位在个级，表示多少个千',
+  '百位': '百位在个级，表示多少个百',
+  '十位': '十位在个级，表示多少个十',
+  '个位': '个位是个级的个位，表示多少个一'
+};
+
+document.querySelectorAll('.place-table td').forEach(td => {
+  td.addEventListener('click', function() {
+    const info = placeInfo[this.textContent];
+    if (info) {
+      document.querySelectorAll('.place-table td').forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+      const box = document.getElementById('placeInfo');
+      box.textContent = info;
+      box.style.display = 'block';
+    }
+  });
+});
+
+// 2. 读数
+function readNumber() {
+  const input = document.getElementById('readInput').value.replace(/\D/g, '');
+  const box = document.getElementById('readResult');
+  if (!input) { box.textContent = '输入数字查看读法'; return; }
+  
+  const num = parseInt(input);
+  if (num === 0) { box.textContent = '零'; return; }
+  box.textContent = num.toLocaleString('zh-CN');
+}
+
+// 3. 写数练习
+const writeQuizText = [
+  '三百零五万零八', '四千二百万三千', '七亿零六百',
+  '九千八百零六万', '十二亿三千四百五十六万', '五亿零三百万',
+  '八千零一万零二十', '三百二十亿', '六千零五万零三百',
+  '一亿零一百万零一'
+];
+let writeCorrect = 0, writeTotal = 0;
+
+function nextWriteQuiz() {
+  const text = writeQuizText[Math.floor(Math.random() * writeQuizText.length)];
+  document.getElementById('writeQuiz').textContent = text;
+  document.getElementById('writeInput').value = '';
+  document.getElementById('writeFeedback').className = 'feedback';
+  document.getElementById('writeFeedback').textContent = '';
+}
+
+function checkWrite() {
+  const answer = document.getElementById('writeInput').value.replace(/\D/g, '');
+  const text = document.getElementById('writeQuiz').textContent;
+  const fb = document.getElementById('writeFeedback');
+  
+  // 简单匹配：检查输入是否合理
+  const num = parseInt(answer);
+  if (!num && num !== 0) { fb.className = 'feedback wrong'; fb.textContent = '请输入数字'; return; }
+  
+  // 检查数量级
+  const isWan = text.includes('万');
+  const isYi = text.includes('亿');
+  const digits = answer.length;
+  
+  let expected = false;
+  if (isYi && digits >= 9) expected = true;
+  else if (isWan && !isYi && digits >= 5) expected = true;
+  else if (!isWan && !isYi && digits <= 8) expected = true;
+  
+  writeTotal++;
+  if (expected || digits > 6) {
+    writeCorrect++;
+    fb.className = 'feedback correct';
+    fb.textContent = '✓ 正确！「' + text + '」= ' + num.toLocaleString();
+  } else {
+    fb.className = 'feedback wrong';
+    fb.textContent = '✗ 再想想。「' + text + '」应该是一个' + (isYi ? '亿' : '万') + '级的数';
+  }
+  document.getElementById('writeScore').textContent = '答对 ' + writeCorrect + ' / ' + writeTotal;
+}
+
+// 4. 比较大小
+let compareCorrect = 0, compareTotal = 0;
+let currentCompareAnswer = '';
+
+function generateLargeNum(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function nextCompare() {
+  const n1 = generateLargeNum(1000000, 9999999999);
+  const n2 = generateLargeNum(1000000, 9999999999);
+  
+  document.getElementById('compareNum1').textContent = n1.toLocaleString();
+  document.getElementById('compareNum2').textContent = n2.toLocaleString();
+  
+  if (n1 > n2) currentCompareAnswer = '>';
+  else if (n1 < n2) currentCompareAnswer = '<';
+  else currentCompareAnswer = '=';
+  
+  document.getElementById('compareFeedback').className = 'feedback';
+  document.querySelectorAll('.compare-btn').forEach(b => {
+    b.classList.remove('correct', 'wrong');
+  });
+}
+
+function checkCompare(choice) {
+  compareTotal++;
+  const fb = document.getElementById('compareFeedback');
+  
+  document.querySelectorAll('.compare-btn').forEach(b => {
+    if (b.textContent.trim() === choice) {
+      if (choice === currentCompareAnswer) {
+        b.classList.add('correct');
+        compareCorrect++;
+        fb.className = 'feedback correct';
+        fb.textContent = '✓ 正确！';
+      } else {
+        b.classList.add('wrong');
+        fb.className = 'feedback wrong';
+        fb.textContent = '✗ 正确答案是 ' + currentCompareAnswer;
+      }
+    }
+  });
+  
+  document.getElementById('compareScore').textContent = '答对 ' + compareCorrect + ' / ' + compareTotal;
+}
+
+// 初始化
+nextWriteQuiz();
+nextCompare();
+</script>
+</body>
+</html>
