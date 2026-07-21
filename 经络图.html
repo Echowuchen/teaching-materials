@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>十二经络速查图</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .tab {
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid transparent;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+            font-weight: 500;
+        }
+        .tab:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+        .tab.active {
+            border-color: #f5576c;
+            background: rgba(245, 87, 108, 0.2);
+        }
+        .meridian-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        .meridian-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .meridian-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(245, 87, 108, 0.2);
+            border-color: rgba(245, 87, 108, 0.5);
+        }
+        .meridian-card.highlight {
+            border-color: #f5576c;
+            background: rgba(245, 87, 108, 0.1);
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .icon {
+            font-size: 2.5em;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+        }
+        .card-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #fff;
+        }
+        .card-subtitle {
+            color: #aaa;
+            font-size: 0.9em;
+        }
+        .info-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .info-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+        .badge-route { background: rgba(52, 152, 219, 0.3); color: #3498db; }
+        .badge-organ { background: rgba(46, 204, 113, 0.3); color: #2ecc71; }
+        .badge-direction { background: rgba(155, 89, 182, 0.3); color: #9b59b6; }
+        .symptoms {
+            margin-top: 12px;
+            padding: 12px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+        }
+        .symptoms-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #f39c12;
+        }
+        .symptom-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .symptom-tag {
+            padding: 4px 10px;
+            background: rgba(243, 156, 18, 0.2);
+            border-radius: 12px;
+            font-size: 0.85em;
+        }
+        .cause {
+            margin-top: 12px;
+            padding: 12px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+        }
+        .cause-title {
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: #2ecc71;
+        }
+        .human-body {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        .body-svg {
+            width: 300px;
+            height: 500px;
+        }
+        .path-line {
+            stroke-width: 3;
+            fill: none;
+            opacity: 0.8;
+            transition: all 0.3s;
+        }
+        .path-line:hover {
+            stroke-width: 5;
+            opacity: 1;
+        }
+        .path-dot {
+            r: 6;
+            opacity: 0.9;
+            transition: all 0.3s;
+        }
+        .path-dot:hover {
+            r: 10;
+        }
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+        }
+        .legend-color {
+            width: 20px;
+            height: 3px;
+            border-radius: 2px;
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8em; }
+            .meridian-grid { grid-template-columns: 1fr; }
+            .tabs { gap: 8px; }
+            .tab { padding: 8px 16px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏥 十二经络速查图</h1>
+        <p class="subtitle">点击经络卡片查看详情 · 一问一答学习经络循行</p>
+        
+        <div class="tabs">
+            <div class="tab active" data-group="all">全部</div>
+            <div class="tab" data-group="hand-yin">手三阴</div>
+            <div class="tab" data-group="hand-yang">手三阳</div>
+            <div class="tab" data-group="foot-yang">足三阳</div>
+            <div class="tab" data-group="foot-yin">足三阴</div>
+        </div>
+        
+        <div class="meridian-grid" id="meridianGrid">
+            <!-- Cards will be inserted by JS -->
+        </div>
+    </div>
+
+    <script>
+        const meridians = [
+            {
+                id: 1,
+                name: "手太阴肺经",
+                icon: "🫁",
+                group: "hand-yin",
+                route: "胸→上肢内侧前缘→拇指",
+                organ: "肺→大肠",
+                direction: "胸→手",
+                symptoms: ["咳嗽", "气喘", "咽喉肿痛", "肩背痛"],
+                cause: "肺主皮毛、主宣发肃降，外邪犯肺则咳喘",
+                color: "#95a5a6"
+            },
+            {
+                id: 2,
+                name: "手少阴心经",
+                icon: "❤️",
+                group: "hand-yin",
+                route: "胸→上肢内侧后缘→小指",
+                organ: "心→小肠",
+                direction: "胸→手",
+                symptoms: ["心痛", "咽干", "口渴", "手臂内侧痛"],
+                cause: "心主血脉，心血不足则心悸心痛",
+                color: "#e74c3c"
+            },
+            {
+                id: 3,
+                name: "手厥阴心包经",
+                icon: "🧡",
+                group: "hand-yin",
+                route: "胸→上肢内侧中间→中指",
+                organ: "心包→三焦",
+                direction: "胸→手",
+                symptoms: ["心悸", "胸痛", "掌中热"],
+                cause: "心包代心受邪，保护心脏",
+                color: "#f39c12"
+            },
+            {
+                id: 4,
+                name: "手阳明大肠经",
+                icon: "🦷",
+                group: "hand-yang",
+                route: "食指→上肢外侧前缘→颈部→面部",
+                organ: "大肠→肺",
+                direction: "手→头",
+                symptoms: ["下牙痛", "面颊肿", "咽喉肿痛", "腹痛"],
+                cause: "大肠经循行下齿，经气不利则牙痛",
+                color: "#2ecc71"
+            },
+            {
+                id: 5,
+                name: "手太阳小肠经",
+                icon: "👂",
+                group: "hand-yang",
+                route: "小指→上肢外侧后缘→颈部→耳前",
+                organ: "小肠→心",
+                direction: "手→头",
+                symptoms: ["耳聋", "耳鸣", "颈项痛", "咽喉痛"],
+                cause: "小肠经走耳前，经气不通则耳疾",
+                color: "#3498db"
+            },
+            {
+                id: 6,
+                name: "手少阳三焦经",
+                icon: "🔥",
+                group: "hand-yang",
+                route: "无名指→上肢外侧中间→颈部→耳后",
+                organ: "三焦→心包",
+                direction: "手→头",
+                symptoms: ["耳鸣", "耳聋", "咽喉肿痛", "侧头痛"],
+                cause: "三焦主气机，气滞则耳鸣",
+                color: "#e67e22"
+            },
+            {
+                id: 7,
+                name: "足阳明胃经",
+                icon: "🍚",
+                group: "foot-yang",
+                route: "面部→胸腹→下肢前外侧→足背",
+                organ: "胃→脾",
+                direction: "头→足",
+                symptoms: ["胃痛", "呕吐", "膝关节痛", "足背痛"],
+                cause: "胃主受纳腐熟，胃气不降则呕",
+                color: "#1abc9c"
+            },
+            {
+                id: 8,
+                name: "足太阳膀胱经",
+                icon: "🏔️",
+                group: "foot-yang",
+                route: "头→后背→腰部→下肢后侧→足小趾",
+                organ: "膀胱→肾",
+                direction: "头→足",
+                symptoms: ["后头痛", "项强", "腰背痛", "腿后侧痛"],
+                cause: "膀胱经走后背最长，是最易受邪的经脉",
+                color: "#9b59b6"
+            },
+            {
+                id: 9,
+                name: "足少阳胆经",
+                icon: "🌙",
+                group: "foot-yang",
+                route: "头侧→胁肋→下肢外侧→足背",
+                organ: "胆→肝",
+                direction: "头→足",
+                symptoms: ["侧头痛", "胁肋胀痛", "口苦", "目眩"],
+                cause: "胆主疏泄，胆火上炎则口苦目眩",
+                color: "#f1c40f"
+            },
+            {
+                id: 10,
+                name: "足太阴脾经",
+                icon: "🟡",
+                group: "foot-yin",
+                route: "足大趾→下肢内侧→腹部→胸部",
+                organ: "脾→胃",
+                direction: "足→胸",
+                symptoms: ["腹胀", "便溏", "舌强", "身重无力"],
+                cause: "脾主运化，脾虚则运化失常",
+                color: "#f1c40f"
+            },
+            {
+                id: 11,
+                name: "足少阴肾经",
+                icon: "💧",
+                group: "foot-yin",
+                route: "足小趾→下肢内侧后缘→腹部→胸部",
+                organ: "肾→膀胱",
+                direction: "足→胸",
+                symptoms: ["腰痛", "足心热", "月经不调", "哮喘"],
+                cause: "肾藏精，肾虚则腰膝酸软",
+                color: "#2980b9"
+            },
+            {
+                id: 12,
+                name: "足厥阴肝经",
+                icon: "🌿",
+                group: "foot-yin",
+                route: "足大趾→下肢内侧→胁肋→腹部",
+                organ: "肝→胆",
+                direction: "足→胸",
+                symptoms: ["胁肋胀痛", "少腹胀", "疝气", "月经不调"],
+                cause: "肝主疏泄，肝气郁结则胁痛",
+                color: "#27ae60"
+            }
+        ];
+
+        function renderMeridians(filter = 'all') {
+            const grid = document.getElementById('meridianGrid');
+            grid.innerHTML = '';
+            
+            meridians.filter(m => filter === 'all' || m.group === filter).forEach(m => {
+                const card = document.createElement('div');
+                card.className = 'meridian-card';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="icon">${m.icon}</div>
+                        <div>
+                            <div class="card-title">${m.name}</div>
+                            <div class="card-subtitle">${m.organ}</div>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-badge badge-route">📍 ${m.route}</span>
+                        <span class="info-badge badge-direction">➡️ ${m.direction}</span>
+                    </div>
+                    <div class="symptoms">
+                        <div class="symptoms-title">🔍 常见病症</div>
+                        <div class="symptom-list">
+                            ${m.symptoms.map(s => `<span class="symptom-tag">${s}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div class="cause">
+                        <div class="cause-title">💡 原因</div>
+                        <p>${m.cause}</p>
+                    </div>
+                `;
+                card.style.borderLeft = `4px solid ${m.color}`;
+                grid.appendChild(card);
+            });
+        }
+
+        // Tab click handlers
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                renderMeridians(tab.dataset.group);
+            });
+        });
+
+        // Initial render
+        renderMeridians();
+    </script>
+</body>
+</html>
