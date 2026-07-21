@@ -91,10 +91,10 @@ class RazHandler(BaseHTTPRequestHandler):
 
         # Serve static files
         if path == "/" or path == "/index.html":
-            file_path = os.path.join(BASE, "index_online.html")
+            file_path = os.path.join(BASE, "index.html")
         elif path.startswith("/day") and path.endswith(".html"):
             day = path.replace("/", "").replace(".html", "")
-            file_path = os.path.join(BASE, f"{day}_online.html")
+            file_path = os.path.join(BASE, f"{day}.html")
         elif path.startswith("/day") and "/audio/" in path:
             # Redirect audio requests to API proxy
             qs_path = path
@@ -121,7 +121,7 @@ def main():
     build_media_map()
     port = int(os.environ.get("PORT", 8080))
     server = HTTPServer(("0.0.0.0", port), RazHandler)
-    print(f"Server running on http://localhost:{port}")
+    print(f"RAZ server running on http://localhost:{port}")
     server.serve_forever()
 
 if __name__ == "__main__":
