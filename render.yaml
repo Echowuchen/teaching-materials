@@ -1,7 +1,8 @@
 services:
-  - type: web
-    name: raz-week1
-    env: python
-    buildCommand: pip install -r raz/requirements.txt
-    startCommand: cd raz && python server.py
-    plan: free
+  - type: static
+    name: teaching-materials
+    staticPublishPath: .
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
