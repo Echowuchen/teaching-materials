@@ -6,7 +6,10 @@ from urllib.parse import urlparse, parse_qs
 import re
 
 BASE = os.path.dirname(os.path.abspath(__file__))
-CREDS_PATH = os.path.expanduser("~/.baidu_netdisk/credentials.json")
+# 先找项目目录下的凭证，再找用户目录
+PROJECT_CREDS = os.path.join(BASE, ".baidu_netdisk", "credentials.json")
+HOME_CREDS = os.path.expanduser("~/.baidu_netdisk/credentials.json")
+CREDS_PATH = PROJECT_CREDS if os.path.exists(PROJECT_CREDS) else HOME_CREDS
 
 # Cache for dlinks (they expire in 8h, we cache for 1h)
 DLINK_CACHE = {}
