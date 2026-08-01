@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>景德镇·上饶之旅</title>
+<style>
+:root {
+  --blue-deep: #1e3a5f;
+  --blue-mid: #26456e;
+  --blue-light: #3d6a9e;
+  --gold: #c9a227;
+  --gold-soft: #e8d48b;
+  --bg: #f5f2ec;
+  --card: #ffffff;
+  --text: #2b3441;
+  --text-soft: #6b7686;
+  --line: #e5e0d5;
+  --green: #3a7d44;
+  --radius: 16px;
+  --shadow: 0 4px 20px rgba(30, 58, 95, 0.08);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* ── Hero ── */
+.hero {
+  background: linear-gradient(150deg, #1a2f4d 0%, var(--blue-mid) 45%, var(--blue-light) 100%);
+  color: #fff;
+  padding: 64px 24px 56px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(201,162,39,0.25) 0, transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(201,162,39,0.15) 0, transparent 40%);
+}
+.hero > * { position: relative; }
+.hero .route-emojis { font-size: 1.6em; letter-spacing: 8px; margin-bottom: 12px; }
+.hero h1 { font-size: 2.2em; letter-spacing: 4px; font-weight: 700; margin-bottom: 10px; text-shadow: 0 2px 8px rgba(0,0,0,0.25); }
+.hero .sub { opacity: 0.92; font-size: 1.05em; letter-spacing: 1px; }
+.hero .badge {
+  display: inline-block; margin-top: 18px;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.35);
+  backdrop-filter: blur(4px);
+  padding: 6px 18px; border-radius: 999px;
+  font-size: 0.85em; letter-spacing: 2px;
+}
+.hero .badge b { color: var(--gold-soft); }
+
+/* ── Sticky nav ── */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+  padding: 10px 16px;
+  display: flex; gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.nav::-webkit-scrollbar { display: none; }
+.nav a {
+  flex-shrink: 0;
+  text-decoration: none;
+  color: var(--text-soft);
+  padding: 7px 18px;
+  border-radius: 999px;
+  font-size: 0.9em;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+.nav a:hover { color: var(--blue-mid); background: #eef3f9; }
+.nav a.active {
+  background: var(--blue-mid);
+  color: #fff;
+  border-color: var(--blue-mid);
+}
+
+/* ── Sections ── */
+main { max-width: 860px; margin: 0 auto; padding: 32px 20px 60px; }
+section { margin-bottom: 48px; scroll-margin-top: 70px; }
+.sec-title {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 1.35em; font-weight: 700;
+  color: var(--blue-deep);
+  margin-bottom: 18px;
+}
+.sec-title .num {
+  width: 32px; height: 32px;
+  background: var(--blue-mid); color: #fff;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8em; font-weight: 600;
+}
+.sec-title .emoji { font-size: 1.1em; }
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 22px;
+  margin-bottom: 16px;
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.card.visible { opacity: 1; transform: translateY(0); }
+
+/* ── Route steps ── */
+.route-steps { display: flex; flex-direction: column; gap: 0; }
+.route-step {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 0;
+  position: relative;
+}
+.route-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 23px; top: 62px; bottom: -14px;
+  width: 2px;
+  background: linear-gradient(var(--blue-light), var(--gold));
+  opacity: 0.4;
+}
+.route-icon {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue-mid), var(--blue-light));
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3em;
+  flex-shrink: 0;
+  z-index: 1;
+  box-shadow: 0 3px 10px rgba(38,69,110,0.3);
+}
+.route-info { flex: 1; }
+.route-info h4 { font-size: 1em; color: var(--blue-deep); margin-bottom: 2px; }
+.route-info p { font-size: 0.88em; color: var(--text-soft); }
+.route-tag {
+  font-size: 0.75em;
+  background: #eef3f9;
+  color: var(--blue-mid);
+  padding: 3px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  border: 1px solid #d8e2ef;
+}
+
+/* ── Tables ── */
+.tbl-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 0.92em; }
+th {
+  background: var(--blue-deep); color: #fff;
+  padding: 11px 12px; text-align: left;
+  font-weight: 500; white-space: nowrap;
+}
+th:first-child { border-radius: 10px 0 0 0; }
+th:last-child { border-radius: 0 10px 0 0; }
+td {
+  padding: 12px; border-bottom: 1px solid var(--line);
+  color: var(--text); vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+td .note { color: var(--text-soft); font-size: 0.85em; }
+.hl { color: var(--gold); font-weight: 600; }
+.hl-blue { color: var(--blue-mid); font-weight: 600; }
+
+/* ── Option cards (上饶) ── */
+.opts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.opt {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  border-top: 4px solid var(--blue-light);
+  position: relative;
+}
+.opt .tag-rec {
+  position: absolute; top: -11px; right: 14px;
+  background: var(--gold); color: #fff;
+  font-size: 0.72em; padding: 3px 10px;
+  border-radius: 999px; font-weight: 600;
+}
+.opt h4 { color: var(--blue-deep); font-size: 1.05em; margin-bottom: 6px; }
+.opt .sub-line { color: var(--text-soft); font-size: 0.85em; margin-bottom: 10px; }
+.opt ul { list-style: none; }
+.opt li { font-size: 0.88em; padding: 4px 0; padding-left: 20px; position: relative; color: var(--text); }
+.opt li::before { content: "◆"; position: absolute; left: 2px; color: var(--gold); font-size: 0.7em; top: 7px; }
+.opt .price { display: inline-block; margin-top: 12px; font-size: 0.85em; background: #fdf6e3; border: 1px solid #f0e0a8; color: #8a6d1a; padding: 4px 12px; border-radius: 999px; }
+
+/* ── Day cards with checklist ── */
+.day-head {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 12px;
+}
+.day-badge {
+  background: linear-gradient(135deg, var(--blue-mid), var(--blue-light));
+  color: #fff; padding: 6px 14px;
+  border-radius: 10px; font-size: 0.85em; font-weight: 600;
+  letter-spacing: 1px;
+}
+.day-title { font-size: 1.05em; font-weight: 700; color: var(--blue-deep); }
+.day-progress { margin-left: auto; font-size: 0.8em; color: var(--text-soft); }
+.progress-bar {
+  height: 6px; background: #ece7dc;
+  border-radius: 999px; overflow: hidden;
+  margin: 10px 0 14px;
+}
+.progress-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--blue-light), var(--gold));
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+.check-list { list-style: none; }
+.check-list li {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 11px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+  user-select: none;
+}
+.check-list li:hover { background: #f4f7fb; }
+.check-list li input[type="checkbox"] {
+  appearance: none; -webkit-appearance: none;
+  width: 22px; height: 22px; flex-shrink: 0;
+  border: 2px solid #c3ccd8;
+  border-radius: 7px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+  margin-top: 2px;
+}
+.check-list li input[type="checkbox"]:checked {
+  background: var(--blue-mid);
+  border-color: var(--blue-mid);
+}
+.check-list li input[type="checkbox"]:checked::after {
+  content: "✓";
+  color: #fff;
+  font-size: 0.8em;
+  font-weight: 700;
+}
+.check-list li .txt { font-size: 0.92em; }
+.check-list li .txt small { display: block; color: var(--text-soft); font-size: 0.8em; margin-top: 2px; }
+.check-list li.done .txt { color: #9aa4b2; text-decoration: line-through; }
+
+/* ── 民宿 ── */
+.ms-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.ms-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  text-align: center;
+  border-bottom: 3px solid var(--blue-light);
+}
+.ms-card .ico { font-size: 2em; margin-bottom: 8px; }
+.ms-card h4 { color: var(--blue-deep); font-size: 0.98em; margin-bottom: 4px; }
+.ms-card .area { color: var(--text-soft); font-size: 0.82em; margin-bottom: 8px; }
+.ms-card .hotel { font-size: 0.9em; font-weight: 600; color: var(--blue-mid); margin-bottom: 6px; }
+.ms-card p { font-size: 0.82em; color: var(--text-soft); }
+.ms-note {
+  background: #fdf6e3; border: 1px solid #f0e0a8;
+  color: #8a6d1a;
+  border-radius: 12px;
+  padding: 13px 16px;
+  font-size: 0.88em;
+  margin-top: 16px;
+}
+
+/* ── 清单 ── */
+.tip {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px 20px;
+  margin-bottom: 14px;
+}
+.tip h4 { display: flex; align-items: center; gap: 8px; color: var(--blue-deep); font-size: 1em; margin-bottom: 8px; }
+.tip ul { list-style: none; }
+.tip li {
+  font-size: 0.88em; padding: 5px 0 5px 22px;
+  position: relative; color: var(--text);
+}
+.tip li::before { content: "•"; position: absolute; left: 6px; color: var(--gold); font-weight: 700; }
+.tip li b { color: var(--blue-mid); }
+
+footer {
+  text-align: center;
+  padding: 36px 20px;
+  color: var(--text-soft);
+  font-size: 0.9em;
+  letter-spacing: 2px;
+  border-top: 1px solid var(--line);
+}
+
+@media (max-width: 720px) {
+  .opts, .ms-grid { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 1.8em; }
+  .route-tag { display: none; }
+}
+
+/* reveal fallback */
+.no-js .card { opacity: 1; transform: none; }
+</style>
+</head>
+<body class="no-js">
+
+<header class="hero">
+  <div class="route-emojis">🚄 🏔️ 🏯</div>
+  <h1>景德镇 · 上饶之旅</h1>
+  <p class="sub">11人 · 6号出发 · 常德 → 上饶 → 景德镇</p>
+  <div class="badge">📅 出发日期 <b>8月6日</b> · 全程 <b>3-4天</b></div>
+</header>
+
+<nav class="nav" id="topNav">
+  <a href="#route" class="active">🧭 路线</a>
+  <a href="#transport">🚆 交通</a>
+  <a href="#shangrao">🏔️ 上饶</a>
+  <a href="#jingdezhen">🏯 景德镇</a>
+  <a href="#minsu">🏠 民宿</a>
+  <a href="#checklist">📋 清单</a>
+</nav>
+
+<main>
+
+<!-- 路线总览 -->
+<section id="route">
+  <h2 class="sec-title"><span class="num">01</span><span class="emoji">🧭</span> 路线总览</h2>
+  <div class="card">
+    <div class="route-steps">
+      <div class="route-step">
+        <div class="route-icon">🚄</div>
+        <div class="route-info">
+          <h4>常德 · 出发（6号晚上）</h4>
+          <p>K1374 / K377 等普速列车 · 约10.5小时</p>
+        </div>
+        <span class="route-tag">🌙 卧铺过夜</span>
+      </div>
+      <div class="route-step">
+        <div class="route-icon">🏔️</div>
+        <div class="route-info">
+          <h4>上饶 · 7号早上到达</h4>
+          <p>好玩就停留一天 · 三清山 / 婺源篁岭 / 望仙谷</p>
+        </div>
+        <span class="route-tag">📍 可选停留</span>
+      </div>
+      <div class="route-step">
+        <div class="route-icon">🏯</div>
+        <div class="route-info">
+          <h4>景德镇 · 高铁1小时</h4>
+          <p>G1649 / G869 · 主目的地 · 陶瓷之都2日游</p>
+        </div>
+        <span class="route-tag">🎯 核心行程</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 交通方案 -->
+<section id="transport">
+  <h2 class="sec-title"><span class="num">02</span><span class="emoji">🚆</span> 交通方案</h2>
+  <div class="card">
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>路段</th><th>车次</th><th>时间</th><th>票价</th><th>备注</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>常德 → 上饶</b></td>
+            <td>K1374 / K377</td>
+            <td>21:16 → 次日 07:47</td>
+            <td class="hl-blue">卧铺 ~¥200/人</td>
+            <td class="note">夜车卧铺，省一晚住宿 🌙</td>
+          </tr>
+          <tr>
+            <td><b>上饶 → 景德镇北</b></td>
+            <td>G1649</td>
+            <td>10:07 → 11:00</td>
+            <td class="hl-blue">二等座 ¥65.5</td>
+            <td class="note">约 53 分钟</td>
+          </tr>
+          <tr>
+            <td><b>上饶 → 景德镇北</b></td>
+            <td>G869</td>
+            <td>12:51 → 13:52</td>
+            <td class="hl-blue">二等座 ¥65.5</td>
+            <td class="note">约 1 小时</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:0.85em;color:var(--text-soft);margin-top:12px;">
+      💡 常德 → 上饶 <span class="hl">无直达高铁</span>，仅有过夜普速。建议 6 号晚出发，7 号早到上饶。
+    </p>
+  </div>
+</section>
+
+<!-- 上饶 -->
+<section id="shangrao">
+  <h2 class="sec-title"><span class="num">03</span><span class="emoji">🏔️</span> 上饶一日游（7号）</h2>
+  <div class="opts">
+    <div class="opt">
+      <span class="tag-rec">体力型 · 推荐</span>
+      <h4>⛰️ 三清山</h4>
+      <p class="sub-line">世界自然遗产 · 奇峰云海 · 道教文化</p>
+      <ul>
+        <li>南清园：东方女神、巨蟒出山</li>
+        <li>阳光海岸高空栈道 · 观云海</li>
+        <li>上饶站乘大巴约 1.5h（¥30/人）</li>
+      </ul>
+      <span class="price">🎫 门票+索道 ¥160-240</span>
+    </div>
+    <div class="opt">
+      <span class="tag-rec">休闲型</span>
+      <h4>🌾 婺源篁岭</h4>
+      <p class="sub-line">中国最美乡村 · 晒秋人家 · 梯田花海</p>
+      <ul>
+        <li>索道上下 · 晒工坊 · 玻璃栈道</li>
+        <li>徽派古村 · 慢生活</li>
+        <li>距上饶站约 1.5h（包车/班车）</li>
+      </ul>
+      <span class="price">🎫 门票 ¥140</span>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <p style="font-size:0.9em;">
+      ✨ <b style="color:var(--blue-mid)">望仙谷</b>（热门新景点）：悬崖峭壁景观，如时间充裕可顺路打卡。
+    </p>
+  </div>
+</section>
+
+<!-- 景德镇 -->
+<section id="jingdezhen">
+  <h2 class="sec-title"><span class="num">04</span><span class="emoji">🏯</span> 景德镇行程（8-9号）</h2>
+
+  <div class="card">
+    <div class="day-head">
+      <span class="day-badge">Day 1 · 8号</span>
+      <span class="day-title">古城历史 + 夜市烟火</span>
+      <span class="day-progress" id="prog1-label">0 / 4</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="prog1-fill"></div></div>
+    <ul class="check-list" id="list1">
+      <li>
+        <input type="checkbox" id="d1c1">
+        <label class="txt" for="d1c1">陶阳里 · 御窑博物馆
+          <small>红砖拱形建筑，免费需预约，拍照封神 📷</small>
+        </label>
+      </li>
+      <li>
+        <input type="checkbox" id="d1c2">
+        <label class="txt" for="d1c2">抚州弄小吃街
+          <small>冷粉、牛骨粉、饺子粑、油条包麻糍 🍜</small>
+        </label>
+      </li>
+      <li>
+        <input type="checkbox" id="d1c3">
+        <label class="txt" for="d1c3">中国陶瓷博物馆
+          <small>免费，提前3-5天"畅游景德镇"小程序预约，6楼网红"无语佛"</small>
+        </label>
+      </li>
+      <li>
+        <input type="checkbox" id="d1c4">
+        <label class="txt" for="d1c4">陶溪川文创街区
+          <small>免费，周五-周日大学生市集，19:00亮灯夜景 🌃</small>
+        </label>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="day-head">
+      <span class="day-badge">Day 2 · 9号</span>
+      <span class="day-title">淘瓷手作 + 山野艺术</span>
+      <span class="day-progress" id="prog2-label">0 / 3</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="prog2-fill"></div></div>
+    <ul class="check-list" id="list2">
+      <li>
+        <input type="checkbox" id="d2c1">
+        <label class="txt" for="d2c1">雕塑瓷厂 · 乐天市集
+          <small>周六 9:00-12:30，平价淘瓷圣地 🏺</small>
+        </label>
+      </li>
+      <li>
+        <input type="checkbox" id="d2c2">
+        <label class="txt" for="d2c2">三宝国际陶艺村
+          <small>免费，山野艺术氛围，陶艺DIY ¥50-200/人 🎨</small>
+        </label>
+      </li>
+      <li>
+        <input type="checkbox" id="d2c3">
+        <label class="txt" for="d2c3">古窑民俗博览区（可选）
+          <small>5A，¥85，看制瓷七十二道工序，非遗师傅现场演示</small>
+        </label>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- 民宿 -->
+<section id="minsu">
+  <h2 class="sec-title"><span class="num">05</span><span class="emoji">🏠</span> 民宿推荐</h2>
+  <div class="ms-grid">
+    <div class="ms-card">
+      <div class="ico">🏮</div>
+      <h4>陶溪川周边</h4>
+      <div class="area">首选 · 步行到夜市</div>
+      <div class="hotel">铂格酒店 / 川上行</div>
+      <p>步行可达街区，夜景结束不赶路，¥300-800/间</p>
+    </div>
+    <div class="ms-card">
+      <div class="ico">🏺</div>
+      <h4>御窑厂附近</h4>
+      <div class="area">文艺氛围浓</div>
+      <div class="hotel">如院 · 天空之城</div>
+      <p>步行3分钟到御窑博物馆，新中式含本地早餐</p>
+    </div>
+    <div class="ms-card">
+      <div class="ico">🌿</div>
+      <h4>三宝村</h4>
+      <div class="area">山野慢生活</div>
+      <div class="hotel">无用合器美宿</div>
+      <p>山林安静，陶艺工作室多，适合慢度假（离市区稍远）</p>
+    </div>
+  </div>
+  <div class="ms-note">
+    ⚠️ <b>11人建议</b>：在陶溪川周边订 <b>4-5 间房</b> 或直接包整栋民宿；旺季（9-11月）需 <b>提前15天预订</b>。
+  </div>
+</section>
+
+<!-- 清单 -->
+<section id="checklist">
+  <h2 class="sec-title"><span class="num">06</span><span class="emoji">📋</span> 实用清单</h2>
+  <div class="tip">
+    <h4>🎫 预约提醒（必做）</h4>
+    <ul>
+      <li><b>中国陶瓷博物馆</b>：提前 3-5 天，"畅游景德镇"小程序预约（周一闭馆）</li>
+      <li><b>御窑博物馆</b>：免费但需预约，20:30 后免票入园</li>
+      <li>带实体身份证入园 · 两大博物馆周一闭馆</li>
+    </ul>
+  </div>
+  <div class="tip">
+    <h4>🍜 必吃美食</h4>
+    <ul>
+      <li>冷粉 · 牛骨粉 · 饺子粑 · 油条包麻糍 · 碱水粑</li>
+      <li>正餐推荐：图味美·小黄鱼（本地菜），三爪煲、金牌酱鸭</li>
+    </ul>
+  </div>
+  <div class="tip">
+    <h4>🛵 交通贴士</h4>
+    <ul>
+      <li>市内首选：<b>共享电动车 ¥30/天</b>，随骑随停</li>
+      <li>打车起步 ¥6，短途划算；景德镇北站 → 陶溪川约 ¥20</li>
+      <li>去瑶里古镇较远（1h车程），如需去预留完整一天</li>
+    </ul>
+  </div>
+  <div class="tip">
+    <h4>🛒 买瓷避坑</h4>
+    <ul>
+      <li>家用餐具/平价杯：雕塑瓷厂乐天市集、陶阳新村</li>
+      <li>设计师原创：陶溪川周末市集（可砍价）</li>
+      <li>大件陶瓷：问清邮寄费用，快递比随身带省心</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<footer>🌸 祝你旅途愉快 · 景德镇·上饶之旅 🎉</footer>
+
+<script>
+(function () {
+  "use strict";
+  document.body.classList.remove("no-js");
+
+  /* ── Scroll reveal ── */
+  var cards = document.querySelectorAll(".card");
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add("visible");
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    cards.forEach(function (c) { io.observe(c); });
+  } else {
+    cards.forEach(function (c) { c.classList.add("visible"); });
+  }
+
+  /* ── Sticky nav active state ── */
+  var navLinks = document.querySelectorAll(".nav a");
+  var sections = document.querySelectorAll("main section");
+  if ("IntersectionObserver" in window) {
+    var navIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          navLinks.forEach(function (a) {
+            a.classList.toggle("active", a.getAttribute("href") === "#" + e.target.id);
+          });
+        }
+      });
+    }, { rootMargin: "-40% 0px -55% 0px" });
+    sections.forEach(function (s) { navIO.observe(s); });
+  }
+
+  /* ── Day checklists with localStorage ── */
+  var STORE_KEY = "jdz_travel_checklist_v1";
+  var state;
+  try {
+    state = JSON.parse(localStorage.getItem(STORE_KEY)) || {};
+  } catch (e) { state = {}; }
+
+  var lists = [
+    { list: document.getElementById("list1"), progLabel: document.getElementById("prog1-label"), progFill: document.getElementById("prog1-fill") },
+    { list: document.getElementById("list2"), progLabel: document.getElementById("prog2-label"), progFill: document.getElementById("prog2-fill") }
+  ];
+
+  lists.forEach(function (cfg, li) {
+    var items = cfg.list.querySelectorAll("li");
+    items.forEach(function (item) {
+      var box = item.querySelector("input[type=checkbox]");
+      var key = "day" + (li + 1) + "_" + box.id;
+      box.checked = !!state[key];
+      item.classList.toggle("done", box.checked);
+      box.addEventListener("change", function () {
+        state[key] = box.checked;
+        item.classList.toggle("done", box.checked);
+        try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {}
+        updateProgress(cfg);
+      });
+    });
+    updateProgress(cfg);
+  });
+
+  function updateProgress(cfg) {
+    var items = cfg.list.querySelectorAll("li");
+    var done = 0;
+    items.forEach(function (item) {
+      if (item.querySelector("input").checked) done++;
+    });
+    cfg.progLabel.textContent = done + " / " + items.length;
+    var pct = items.length ? (done / items.length * 100) : 0;
+    cfg.progFill.style.width = pct + "%";
+  }
+})();
+</script>
+</body>
+</html>
