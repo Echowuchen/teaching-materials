@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Storyfun 4 造句练习（Movers）</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: linear-gradient(160deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 16px;
+    padding-bottom: 80px;
+    color: #333;
+  }
+  .container { max-width: 820px; margin: 0 auto; }
+
+  /* ===== Header ===== */
+  .header {
+    text-align: center;
+    padding: 24px 16px;
+    background: rgba(255,255,255,0.18);
+    border-radius: 24px;
+    color: white;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+    backdrop-filter: blur(6px);
+  }
+  .header h1 { font-size: 1.7em; margin-bottom: 6px; }
+  .header p { font-size: 0.95em; opacity: 0.92; line-height: 1.6; }
+  .header .sub { font-size: 0.82em; opacity: 0.8; margin-top: 6px; }
+
+  /* ===== Unit selector ===== */
+  .unit-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 14px;
+  }
+  .unit-card {
+    background: white;
+    border-radius: 20px;
+    padding: 18px 14px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    min-height: 130px;
+    position: relative;
+    overflow: hidden;
+  }
+  .unit-card:active { transform: scale(0.96); }
+  .unit-card .uc-emoji { font-size: 2.2em; line-height: 1; }
+  .unit-card .uc-unit { font-size: 0.78em; font-weight: 700; color: #999; letter-spacing: 0.5px; }
+  .unit-card .uc-title { font-size: 1.05em; font-weight: 700; color: #333; }
+  .unit-card .uc-theme { font-size: 0.78em; color: #777; line-height: 1.4; }
+  .unit-card .uc-check { position: absolute; top: 12px; right: 12px; font-size: 1.1em; opacity: 0.35; }
+  .unit-card.done .uc-check { opacity: 1; }
+  .unit-card .uc-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: rgba(0,0,0,0.05); }
+  .unit-card .uc-bar i { display: block; height: 100%; background: #4ade80; width: 0%; transition: width 0.4s; border-radius: 0 4px 4px 0; }
+  .unit-card .uc-review {
+    position: absolute; bottom: 10px; right: 12px; font-size: 0.7em; font-weight: 700;
+    background: #ef4444; color: white; border-radius: 999px; padding: 2px 8px;
+    box-shadow: 0 2px 6px rgba(239,68,68,0.4);
+  }
+
+  /* ===== Detail view ===== */
+  #detailView { display: none; }
+  .detail-header {
+    background: white;
+    border-radius: 24px;
+    padding: 22px 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  }
+  .detail-header .dh-top { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .detail-header .dh-emoji { font-size: 2.4em; }
+  .detail-header .dh-unit { font-size: 0.8em; font-weight: 700; color: #999; }
+  .detail-header .dh-title { font-size: 1.35em; font-weight: 700; color: #333; }
+  .detail-header .dh-theme {
+    display: inline-block; margin-top: 8px; padding: 4px 12px;
+    background: #eef2ff; color: #4f46e5; border-radius: 999px;
+    font-size: 0.8em; font-weight: 600;
+  }
+  .intro-callout {
+    background: #fffbeb; border: 2px solid #fcd34d;
+    border-radius: 16px; padding: 14px 16px; margin-bottom: 16px;
+    font-size: 0.95em; line-height: 1.7; color: #92400e;
+  }
+  .usage-callout {
+    background: #eef2ff; border: 2px solid #c7d2fe;
+    border-radius: 16px; padding: 14px 16px; margin-bottom: 16px;
+    font-size: 0.92em; line-height: 1.8; color: #3730a3;
+  }
+
+  .card {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 14px rgba(0,0,0,0.08);
+  }
+  .section-title {
+    font-size: 1.05em; font-weight: 700; color: #4f46e5;
+    margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+  }
+
+  /* ===== Patterns ===== */
+  .pattern-table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+  .pattern-table tr { border-bottom: 1px solid #f1f5f9; }
+  .pattern-table tr:last-child { border-bottom: none; }
+  .pattern-table td { padding: 10px 6px; vertical-align: top; }
+  .pattern-table td:first-child { font-weight: 600; color: #4f46e5; width: 45%; }
+  .pattern-table td:last-child { color: #64748b; }
+
+  /* ===== Rounds ===== */
+  .round-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+  .round-tab {
+    padding: 8px 14px; border-radius: 999px; font-size: 0.82em; font-weight: 600;
+    background: #f1f5f9; color: #64748b; cursor: pointer; border: 2px solid transparent;
+    transition: all 0.2s; min-height: 40px;
+  }
+  .round-tab.active { background: #4f46e5; color: white; }
+  .round-tab.done { border-color: #4ade80; }
+  .tab-stars { font-size: 0.72em; opacity: 0.85; }
+
+  .round-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .round-progress .bar { flex: 1; height: 8px; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
+  .round-progress .bar i { display: block; height: 100%; background: linear-gradient(90deg,#4f46e5,#7c3aed); border-radius: 999px; transition: width 0.4s; }
+  .round-progress .label { font-size: 0.78em; color: #64748b; font-weight: 600; white-space: nowrap; }
+
+  .round-panel { display: none; }
+  .round-panel.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  .round-title { font-size: 1.02em; font-weight: 700; color: #1e293b; margin-bottom: 6px; }
+  .round-diff {
+    display: inline-block; font-size: 0.76em; font-weight: 700; color: #b45309;
+    background: #fef3c7; border-radius: 999px; padding: 2px 10px; margin-left: 8px;
+    vertical-align: 2px; white-space: nowrap;
+  }
+  .round-rule { font-size: 0.88em; color: #64748b; line-height: 1.7; margin-bottom: 14px; }
+
+  .word-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
+  .chip {
+    padding: 10px 14px; background: #eef2ff; border: 2px solid #e0e7ff;
+    border-radius: 12px; font-size: 0.88em; color: #3730a3;
+    cursor: pointer; transition: all 0.15s; min-height: 44px; user-select: none;
+  }
+  .chip:active { transform: scale(0.95); }
+  .chip.tapped { background: #4f46e5; color: white; border-color: #4f46e5; }
+  .chip-group-label { font-size: 0.8em; color: #94a3b8; margin: 8px 0 6px; font-weight: 600; }
+
+  .answer-box { display: none; margin-top: 12px; }
+  .answer-box.open { display: block; animation: fadeIn 0.3s ease; }
+  .answer-box .ab-title { font-size: 0.85em; font-weight: 700; color: #059669; margin-bottom: 8px; }
+  .answer-item {
+    background: #f0fdf4; border: 2px solid #bbf7d0; border-radius: 12px;
+    padding: 12px 14px; margin-bottom: 8px; font-size: 0.92em; line-height: 1.8; color: #14532d;
+  }
+  .answer-item .scene-label { font-weight: 700; color: #047857; }
+  .speaker-line { margin-bottom: 2px; }
+  .speaker-name { font-weight: 700; color: #065f46; }
+
+  .tip-box {
+    margin-top: 14px; background: #fefce8; border: 2px dashed #fde047;
+    border-radius: 14px; padding: 12px 14px; font-size: 0.88em; color: #713f12; line-height: 1.7;
+  }
+  .tip-box .tip-label { font-weight: 700; }
+
+  /* ===== Retell (故事复述) ===== */
+  .retell-intro { font-size: 0.85em; color: #64748b; line-height: 1.7; margin-bottom: 12px; }
+  .retell-label {
+    display: block; font-size: 0.85em; font-weight: 700; color: #4f46e5;
+    margin: 14px 0 6px; letter-spacing: 0.3px;
+  }
+  .retell-label:first-of-type { margin-top: 0; }
+  .retell-summary {
+    background: #f0f9ff; border: 2px solid #bae6fd; border-radius: 12px;
+    padding: 12px 14px; font-size: 0.92em; line-height: 1.8; color: #0c4a6e;
+  }
+  .retell-summary .retell-label { color: #0284c7; }
+  .retell-points { background: #faf5ff; border: 2px solid #e9d5ff; border-radius: 12px; padding: 6px 14px 12px; }
+  .retell-points .retell-label { color: #7c3aed; }
+  .retell-points ul { list-style: none; }
+  .retell-points li {
+    padding: 6px 0 6px 26px; position: relative; font-size: 0.92em; color: #334155; line-height: 1.6;
+  }
+  .retell-points li::before {
+    content: "✓"; position: absolute; left: 4px; top: 7px; color: #10b981; font-weight: 700;
+  }
+  .retell-words .word-chips { margin-top: 4px; }
+  .chip-static {
+    background: #f8fafc; border-color: #e2e8f0; color: #475569;
+    cursor: default; font-weight: 600;
+  }
+  .chip-static:active { transform: none; }
+  .chip-start { background: #fefce8; border-color: #fde047; color: #854d0e; }
+  .retell-challenge {
+    margin-top: 14px; background: linear-gradient(90deg,#fef3c7,#fde68a);
+    border: 2px solid #f59e0b; border-radius: 12px; padding: 12px 14px;
+    font-size: 0.9em; font-weight: 600; color: #92400e; line-height: 1.7;
+  }
+
+  /* ===== Buttons ===== */
+  .btn {
+    display: inline-block; padding: 12px 22px; border: none; border-radius: 14px;
+    font-size: 0.95em; font-weight: 600; cursor: pointer; transition: all 0.15s;
+    min-height: 44px;
+  }
+  .btn-show { background: #4f46e5; color: white; }
+  .btn-show:hover { background: #4338ca; }
+  .btn-nav { background: #f1f5f9; color: #334155; }
+  .btn-nav:hover { background: #e2e8f0; }
+  .btn-nav:disabled { opacity: 0.4; cursor: not-allowed; }
+  .round-nav { display: flex; justify-content: space-between; gap: 10px; margin-top: 16px; }
+
+  /* ===== Audio: 精听播放器（循环+变速，一次只放一段） ===== */
+  .audio-area {
+    margin-top: 10px; padding: 4px; background: #f8fafc;
+    border: 2px dashed #cbd5e1; border-radius: 14px;
+  }
+  .audio-placeholder { font-size: 0.82em; color: #94a3b8; display: flex; align-items: center; gap: 8px; padding: 8px; }
+  .listen-hint {
+    font-size: 0.8em; color: #64748b; line-height: 1.7; margin-bottom: 8px;
+    background: #fefce8; border: 1px dashed #fde047; border-radius: 10px; padding: 8px 12px;
+  }
+  .audio-track {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    padding: 8px 10px; border-bottom: 1px dashed #e2e8f0;
+  }
+  .audio-track:last-child { border-bottom: none; }
+  .track-name { flex: 1; font-size: 0.86em; color: #475569; font-weight: 600; min-width: 150px; line-height: 1.4; }
+  .play-btn, .loop-btn {
+    width: 38px; height: 38px; border-radius: 50%; border: none; cursor: pointer;
+    font-size: 0.95em; display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .play-btn { background: #4f46e5; color: white; }
+  .play-btn.playing { background: #ef4444; }
+  .play-btn:active, .loop-btn:active, .speed-btn:active { transform: scale(0.92); }
+  .loop-btn { background: #f1f5f9; }
+  .loop-btn.active { background: #10b981; color: white; }
+  .speed-btn {
+    height: 38px; padding: 0 12px; border: none; border-radius: 999px; cursor: pointer;
+    font-size: 0.8em; font-weight: 700; background: #eef2ff; color: #4f46e5;
+    transition: all 0.15s;
+  }
+
+  /* ===== Checkin ===== */
+  .checkin-item {
+    display: flex; align-items: center; gap: 12px; padding: 12px 8px;
+    border-bottom: 1px solid #f1f5f9; cursor: pointer; font-size: 0.92em;
+    min-height: 44px;
+  }
+  .checkin-item:last-child { border-bottom: none; }
+  .checkin-item .box {
+    width: 24px; height: 24px; border-radius: 8px; border: 2px solid #cbd5e1;
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 0.85em; color: white; transition: all 0.15s;
+  }
+  .checkin-item.checked .box { background: #4ade80; border-color: #4ade80; }
+  .checkin-item.checked .text { text-decoration: line-through; color: #94a3b8; }
+  .checkin-badge {
+    display: inline-block; margin-left: 8px; padding: 3px 10px;
+    background: #4ade80; color: white; border-radius: 999px;
+    font-size: 0.75em; font-weight: 700;
+  }
+
+  /* ===== Sticky back ===== */
+  .sticky-back {
+    position: fixed; left: 50%; transform: translateX(-50%);
+    bottom: 16px; z-index: 50; width: calc(100% - 32px); max-width: 820px;
+  }
+  .sticky-back .btn { width: 100%; background: rgba(255,255,255,0.95); color: #4f46e5; box-shadow: 0 4px 20px rgba(0,0,0,0.2); backdrop-filter: blur(6px); }
+  .sticky-back .btn:hover { background: white; }
+
+  #dataError {
+    display: none; background: #fef2f2; border: 2px solid #fecaca; color: #991b1b;
+    border-radius: 16px; padding: 20px; text-align: center; font-size: 0.95em;
+    margin-top: 20px;
+  }
+
+  @media (max-width: 480px) {
+    .unit-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .header h1 { font-size: 1.4em; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>📚 Storyfun 4 造句练习（Movers）</h1>
+    <p>跟着剑桥 Storyfun 4 的 8 个单元，用英语说出自己的故事！</p>
+    <p class="sub">先听磨耳朵 → 大声跟读 → 拿词卡造句（敢开口就赢）→ 对照答案 → 故事复述 → 完成打卡</p>
+  </div>
+
+  <!-- Data error fallback -->
+  <div id="dataError">⚠️ 数据文件 storyfun4-data.js 未找到。<br>请把本文件与 storyfun4-data.js 放在同一目录。</div>
+
+  <!-- Unit selector -->
+  <div id="selectorView">
+    <div class="unit-grid" id="unitGrid"></div>
+  </div>
+
+  <!-- Detail view -->
+  <div id="detailView"></div>
+
+</div>
+
+<!-- Sticky back button -->
+<div class="sticky-back" id="stickyBack" style="display:none;">
+  <button class="btn" onclick="showSelector()">← 返回单元列表</button>
+</div>
+
+<script src="storyfun4-data.js" onerror="handleDataError()"></script>
+<script>
+"use strict";
+
+/* ============ Audio helper: 精听播放器 ============ */
+/* 依据 english-learning SKILL 听力系统：精听反复听到能背出（🔁循环+变速 0.75x），一次只放一段 */
+window.STORYFUN4_AUDIO = {
+  _audio: new Audio(),
+  _currentBtn: null,
+  _currentSrc: null,
+  _state: null,
+  _speed: 1,
+
+  addUnitAudio: function (id, url, label) {
+    var host = document.getElementById("audio-" + id);
+    if (!host) return;
+    // Remove placeholder note + its empty wrapper once real audio exists
+    var ph = host.querySelector(".audio-placeholder");
+    if (ph) { var wrap = ph.parentElement; if (wrap && wrap.classList.contains("audio-area")) wrap.remove(); else ph.remove(); }
+
+    var self = this;
+    var track = document.createElement("div");
+    track.className = "audio-track";
+
+    var name = document.createElement("span");
+    name.className = "track-name";
+    name.textContent = label || ("Unit " + id + " 音频");
+
+    var play = document.createElement("button");
+    play.className = "play-btn";
+    play.type = "button";
+    play.textContent = "▶";
+    play.setAttribute("aria-label", "播放：" + label);
+    play.addEventListener("click", function () { self.togglePlay(play, url); });
+
+    var loop = document.createElement("button");
+    loop.className = "loop-btn";
+    loop.type = "button";
+    loop.textContent = "🔁";
+    loop.setAttribute("aria-label", "循环播放：" + label);
+    loop.addEventListener("click", function () { self.toggleLoop(loop); });
+
+    var speed = document.createElement("button");
+    speed.className = "speed-btn";
+    speed.type = "button";
+    speed.textContent = "1x";
+    speed.setAttribute("aria-label", "播放速度（精听可用慢速）");
+    speed.addEventListener("click", function () { self.cycleSpeed(speed); });
+
+    track.appendChild(name);
+    track.appendChild(play);
+    track.appendChild(loop);
+    track.appendChild(speed);
+    host.appendChild(track);
+  },
+
+  togglePlay: function (btn, url) {
+    var a = this._audio;
+    /* 同一按钮再次点击 = 停止（用 UI 状态而非 a.paused，保证按钮始终可控） */
+    if (this._currentBtn === btn && this._state === "playing") {
+      a.pause();
+      this._state = null;
+      btn.classList.remove("playing");
+      btn.textContent = "▶";
+      this._currentBtn = null;
+      return;
+    }
+    if (this._currentBtn && this._currentBtn !== btn) {
+      this._currentBtn.classList.remove("playing");
+      this._currentBtn.textContent = "▶";
+    }
+    if (this._currentSrc !== url) {
+      this._currentSrc = url;
+      a.src = url;
+      a.load();
+    }
+    a.playbackRate = this._speed;
+    a.play().catch(function () {});
+    this._state = "playing";
+    btn.classList.add("playing");
+    btn.textContent = "⏸";
+    this._currentBtn = btn;
+  },
+
+  toggleLoop: function (btn) {
+    this._audio.loop = !this._audio.loop;
+    btn.classList.toggle("active", this._audio.loop);
+  },
+
+  cycleSpeed: function (btn) {
+    /* 顺序：1x → 0.75x（精听慢速）→ 1.25x → 1x */
+    var speeds = [1, 0.75, 1.25];
+    var i = speeds.indexOf(this._speed);
+    this._speed = speeds[(i + 1) % speeds.length];
+    this._audio.playbackRate = this._speed;
+    btn.textContent = this._speed + "x";
+  }
+};
+window.STORYFUN4_AUDIO._audio.addEventListener("ended", function () {
+  var A = window.STORYFUN4_AUDIO;
+  A._state = null;
+  if (A._currentBtn) { A._currentBtn.classList.remove("playing"); A._currentBtn.textContent = "▶"; }
+  A._currentBtn = null;
+});
+
+/* ============ Storyfun 4 official audio track map ============ */
+/* Source: Storyfun 4 Teacher's Book p.62 "Audio track listing"（按时长验证） */
+var TRACK_MAP = {
+  1: { story: 2,  extra: [3, 4] },       // Jane's Clever Idea
+  2: { story: 5,  extra: [6, 7] },       // The Perfect Present
+  3: { story: 8,  extra: [9, 10, 11] },  // Daisy's Tiger Dream
+  4: { story: 12, extra: [13, 14, 15] }, // A Busy Monday
+  5: { story: 16, extra: [17, 18] },     // The Tomango Tree
+  6: { story: 19, extra: [20] },         // Do Whales Have Stomach-ache?
+  7: { story: 21, extra: [22, 23, 24] }, // The Grey Cloud
+  8: { story: 25, extra: [26, 27] }      // The Fancy-dress Shop
+};
+function trackFile(n) { return "audio/Storyfun 4 Track " + n + ".mp3"; }
+
+function wireAllAudio() {
+  if (typeof window.STORYFUN4 === "undefined") return;
+  window.STORYFUN4.forEach(function (u) {
+    var m = TRACK_MAP[u.id];
+    if (!m) return;
+    window.STORYFUN4_AUDIO.addUnitAudio(u.id, trackFile(m.story), "📖 故事：" + u.title);
+    m.extra.forEach(function (t, i) {
+      window.STORYFUN4_AUDIO.addUnitAudio(u.id, trackFile(t), "🎧 配套练习 Track " + t);
+    });
+  });
+}
+document.addEventListener("DOMContentLoaded", wireAllAudio);
+
+/* ============ Per-unit palette ============ */
+var PALETTES = [
+  { main: "#f59e0b", soft: "#fef3c7", light: "#fff7ed" },   // U1 amber
+  { main: "#06b6d4", soft: "#cffafe", light: "#ecfeff" },   // U2 cyan
+  { main: "#10b981", soft: "#d1fae5", light: "#ecfdf5" },   // U3 emerald
+  { main: "#ef4444", soft: "#fecaca", light: "#fef2f2" },   // U4 red
+  { main: "#8b5cf6", soft: "#ddd6fe", light: "#f5f3ff" },   // U5 violet
+  { main: "#f97316", soft: "#fed7aa", light: "#fff7ed" },   // U6 orange
+  { main: "#3b82f6", soft: "#bfdbfe", light: "#eff6ff" },   // U7 blue
+  { main: "#ec4899", soft: "#fbcfe8", light: "#fdf2f8" }    // U8 pink
+];
+
+var DATA = (typeof window.STORYFUN4 !== "undefined") ? window.STORYFUN4 : null;
+var currentUnit = null;
+var currentRound = 0;
+
+function handleDataError() {
+  if (typeof window.STORYFUN4 === "undefined") {
+    document.getElementById("dataError").style.display = "block";
+    document.getElementById("unitGrid").innerHTML = "";
+  }
+}
+
+function getCheckin(id) {
+  try { return JSON.parse(localStorage.getItem("storyfun4-checkin-" + id) || "[]"); }
+  catch (e) { return []; }
+}
+function saveCheckin(id, list) {
+  localStorage.setItem("storyfun4-checkin-" + id, JSON.stringify(list));
+}
+
+/* ============ 艾宾浩斯复习追踪（词汇系统：8 复习点 1/2/4/7/15 天） ============ */
+var EB_SCHEDULE = [1, 2, 4, 7, 15];
+function getLastPractice(id) {
+  try { return parseInt(localStorage.getItem("storyfun4-lastprac-" + id) || "0", 10) || 0; }
+  catch (e) { return 0; }
+}
+function recordPractice(id) {
+  try { localStorage.setItem("storyfun4-lastprac-" + id, String(Date.now())); } catch (e) {}
+}
+function reviewInfo(id) {
+  var last = getLastPractice(id);
+  if (!last) return { label: "未开始", due: false, since: null };
+  var since = Math.floor((Date.now() - last) / 86400000);
+  return { label: since >= 1 ? (since + " 天前 · 该复习") : "今天练过", due: since >= 1, since: since };
+}
+
+/* ============ 难度星级 ============ */
+function stars(n) {
+  n = Math.min(Math.max(n || 1, 1), 4);
+  var s = "";
+  for (var i = 1; i <= 4; i++) s += (i <= n ? "★" : "☆");
+  return s;
+}
+
+/* ============ Unit selector ============ */
+function renderSelector() {
+  var grid = document.getElementById("unitGrid");
+  grid.innerHTML = "";
+  DATA.forEach(function (u, idx) {
+    var pal = PALETTES[idx % PALETTES.length];
+    var checked = getCheckin(u.id);
+    var allDone = checked.length > 0 && checked.length >= u.checkin.length;
+    var card = document.createElement("div");
+    card.className = "unit-card" + (allDone ? " done" : "");
+    card.style.background = "linear-gradient(160deg, #ffffff 0%, " + pal.soft + " 100%)";
+    card.setAttribute("role", "button");
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("aria-label", "进入 " + u.unit + " " + u.title);
+    card.innerHTML =
+      '<span class="uc-emoji">' + u.emoji + '</span>' +
+      '<span class="uc-unit">' + u.unit + '</span>' +
+      '<span class="uc-title">' + u.title + '</span>' +
+      '<span class="uc-theme">' + u.theme + '</span>' +
+      '<span class="uc-check">' + (allDone ? "✅" : "⭐") + '</span>' +
+      (reviewInfo(u.id).due ? '<span class="uc-review">🔁 该复习</span>' : "") +
+      '<div class="uc-bar"><i style="width:' + Math.round(checked.length / u.checkin.length * 100) + '%"></i></div>';
+    card.addEventListener("click", function () { openUnit(idx); });
+    card.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openUnit(idx); }
+    });
+    grid.appendChild(card);
+  });
+}
+
+/* ============ Detail view ============ */
+function openUnit(idx) {
+  currentUnit = idx;
+  currentRound = 0;
+  recordPractice(DATA[idx].id);
+  renderDetail();
+  document.getElementById("selectorView").style.display = "none";
+  document.getElementById("detailView").style.display = "block";
+  document.getElementById("stickyBack").style.display = "block";
+  window.scrollTo(0, 0);
+}
+
+function showSelector() {
+  document.getElementById("detailView").style.display = "none";
+  document.getElementById("selectorView").style.display = "block";
+  document.getElementById("stickyBack").style.display = "none";
+  renderSelector();
+  window.scrollTo(0, 0);
+}
+
+/* Render answers: plain strings OR 场景A/B/C dialogue blocks */
+function renderAnswerHTML(ans) {
+  var sceneMatch = ans.match(/^场景([ABC])：/);
+  if (sceneMatch) {
+    var sceneLetter = sceneMatch[1];
+    var body = ans.substring(sceneMatch[0].length);
+    var lines = body.split(" / ").filter(function (s) { return s.trim(); });
+    var inner = lines.map(function (line) {
+      var sp = line.match(/^([^:：]+)[:：]\s*(.*)$/);
+      if (sp) {
+        return '<div class="speaker-line"><span class="speaker-name">' + sp[1].trim() + '：</span>' + sp[2] + '</div>';
+      }
+      return '<div class="speaker-line">' + line.trim() + '</div>';
+    }).join("");
+    return '<div class="answer-item"><div class="scene-label">场景' + sceneLetter + '</div>' + inner + '</div>';
+  }
+  return '<div class="answer-item">' + ans + '</div>';
+}
+
+/* 词卡解析：支持三种写法，并把 " / " 分隔的选项拆成独立词卡
+   1) "词卡 A（人物）：I / Jack / ..."   → 分组 A（人物），逐项拆分
+   2) "词卡（动词）：run / jump / ..."   → 无字母分组（动词），逐项拆分
+   3) "词卡：a / b / c"                  → 无标签分组，逐项拆分
+   4) 其余（如 "场景A：..."）             → 直接作为单个词卡 */
+function parseWordCards(cards) {
+  var groups = [];
+  var current = null;
+  function pushSplit(text) {
+    (text || "").split(/\s*\/\s*/).forEach(function (s) {
+      if (s) current.items.push(s);
+    });
+  }
+  cards.forEach(function (c) {
+    var m;
+    m = c.match(/^词卡\s*([A-Z])\s*[（(]([^）)]+)[)）]\s*[:：]?\s*(.*)$/);
+    if (m) { current = { letter: m[1], label: m[2], items: [] }; pushSplit(m[3]); groups.push(current); return; }
+    m = c.match(/^词卡\s*[（(]([^）)]+)[)）]\s*[:：]?\s*(.*)$/);
+    if (m) { current = { letter: "", label: m[1], items: [] }; pushSplit(m[2]); groups.push(current); return; }
+    m = c.match(/^词卡\s*[:：]\s*(.*)$/);
+    if (m) { current = { letter: "", label: "", items: [] }; pushSplit(m[1]); groups.push(current); return; }
+    if (!current) { current = { letter: "", label: "", items: [] }; groups.push(current); }
+    current.items.push(c);
+  });
+  return groups;
+}
+
+function renderWordCards(cards) {
+  var groups = parseWordCards(cards);
+  var html = "";
+  groups.forEach(function (g) {
+    if (g.label) {
+      html += '<div class="chip-group-label">词卡 ' + (g.letter ? g.letter + "（" + g.label + "）" : "（" + g.label + "）") + '</div>';
+    }
+    html += '<div class="word-chips">';
+    g.items.forEach(function (text) {
+      html += '<button class="chip" onclick="this.classList.toggle(\'tapped\')">' + text + '</button>';
+    });
+    html += '</div>';
+  });
+  return html;
+}
+
+function renderDetail() {
+  var u = DATA[currentUnit];
+  var pal = PALETTES[currentUnit % PALETTES.length];
+  var checked = getCheckin(u.id);
+  var allDone = checked.length > 0 && checked.length >= u.checkin.length;
+
+  var html = "";
+
+  /* Header */
+  html += '<div class="detail-header">';
+  html += '<div class="dh-top"><span class="dh-emoji">' + u.emoji + '</span><div>';
+  html += '<div class="dh-unit">' + u.unit + '</div>';
+  html += '<div class="dh-title">' + u.title + '</div>';
+  html += '</div></div>';
+  html += '<span class="dh-theme">🎯 ' + u.theme + '</span>';
+  html += '</div>';
+
+  /* 学习方法引导（english-learning SKILL：输出驱动 + 安全环境） */
+  html += '<div class="usage-callout"><strong>💡 学习方法（先听后说）：</strong>① 先听故事磨耳朵（🔁 循环反复听，可调慢速）→ ② 大声跟读模仿 → ③ 拿词卡造句——敢开口就赢！→ ④ 对照答案 → ⑤ 用提示词把故事讲出来 → ⑥ 完成打卡</div>';
+
+  /* Intro */
+  html += '<div class="intro-callout">💬 ' + u.intro + '</div>';
+
+  /* Audio reserved area */
+  html += '<div class="card"><div class="section-title">🔊 听一听</div>';
+  html += '<div class="listen-hint">👂 精听：🔁 循环反复听，直到能背出来（配慢速 0.75x）｜泛听：当背景音磨耳朵</div>';
+  html += '<div id="audio-' + u.id + '"><div class="audio-area"><div class="audio-placeholder">🎧 音频待添加（稍后挂载 Storyfun 原声音频）</div></div></div>';
+  html += '</div>';
+
+  /* Core patterns */
+  html += '<div class="card"><div class="section-title">📐 核心句型（语法知识点）</div>';
+  html += '<table class="pattern-table">';
+  u.corePatterns.forEach(function (p) {
+    html += '<tr><td>' + p.pattern + '</td><td>' + p.example + '</td></tr>';
+  });
+  html += '</table></div>';
+
+  /* Rounds */
+  html += '<div class="card"><div class="section-title">✍️ 造句练习 <span class="round-diff" style="margin-left:0;">难度由简到难 ★→★★★★</span></div>';
+  html += '<div class="round-tabs">';
+  u.rounds.forEach(function (r, i) {
+    html += '<button class="round-tab' + (i === 0 ? " active" : "") + '" onclick="goRound(' + i + ')">Round ' + (i + 1) + ' <span class="tab-stars">' + stars(r.difficulty) + '</span></button>';
+  });
+  html += '</div>';
+  html += '<div class="round-progress"><div class="bar"><i id="roundBar"></i></div><div class="label" id="roundLabel"></div></div>';
+
+  u.rounds.forEach(function (r, i) {
+    html += '<div class="round-panel' + (i === 0 ? " active" : "") + '" id="roundPanel-' + i + '">';
+    html += '<div class="round-title">' + r.title + '<span class="round-diff">难度 ' + stars(r.difficulty) + '</span></div>';
+    html += '<div class="round-rule">' + r.rule + '</div>';
+
+    /* Word cards */
+    html += renderWordCards(r.cards);
+
+    /* Answer toggle */
+    html += '<button class="btn btn-show" onclick="toggleAnswer(' + i + ')" aria-expanded="false">显示参考答案</button>';
+    html += '<div class="answer-box" id="answerBox-' + i + '"><div class="ab-title">✅ 参考答案</div>';
+    r.answers.forEach(function (a) { html += renderAnswerHTML(a); });
+    html += '</div>';
+
+    /* Tip */
+    html += '<div class="tip-box"><span class="tip-label">💡 学习小贴士：</span>' + r.tip + '</div>';
+
+    /* Round nav */
+    html += '<div class="round-nav">';
+    if (i > 0) html += '<button class="btn btn-nav" onclick="goRound(' + (i - 1) + ')">← 上一轮</button>';
+    else html += '<span></span>';
+    if (i < u.rounds.length - 1) html += '<button class="btn btn-nav" onclick="goRound(' + (i + 1) + ')">下一轮 →</button>';
+    else html += '<span></span>';
+    html += '</div>';
+    html += '</div>';
+  });
+  html += '</div>';
+
+  /* Retell (故事复述) */
+  if (u.retell) {
+    html += '<div class="card"><div class="section-title">🎤 故事复述</div>';
+    html += '<div class="retell-intro">看完故事、练完句型后，试着用自己的话把故事讲出来！先看中文梗概理解意思，再用英文提示词把故事串起来。讲一遍不完美没关系——敢开口就赢！</div>';
+    html += '<div class="retell-summary"><span class="retell-label">📖 故事梗概</span>' + u.retell.summary + '</div>';
+    html += '<div class="retell-points"><span class="retell-label">🗝️ 故事要点（英文提示）</span><ul>';
+    u.retell.storyPoints.forEach(function (p) { html += '<li>' + p + '</li>'; });
+    html += '</ul></div>';
+    html += '<div class="retell-words"><span class="retell-label">🔑 关键词</span><div class="word-chips">';
+    u.retell.keywords.forEach(function (k) { html += '<span class="chip chip-static">' + k + '</span>'; });
+    html += '</div></div>';
+    html += '<div class="retell-words"><span class="retell-label">🚀 开场句（帮你开头）</span><div class="word-chips">';
+    u.retell.sentenceStarters.forEach(function (s) { html += '<span class="chip chip-static chip-start">' + s + '</span>'; });
+    html += '</div></div>';
+    html += '<div class="retell-challenge">🏆 挑战升级：' + u.retell.challenge + '</div>';
+    html += '</div>';
+  }
+
+  /* Checkin */
+  html += '<div class="card"><div class="section-title">✅ 今日打卡' + (allDone ? '<span class="checkin-badge">完成！</span>' : "") + '</div>';
+  u.checkin.forEach(function (item, i) {
+    var isChecked = checked.indexOf(i) >= 0;
+    html += '<div class="checkin-item' + (isChecked ? " checked" : "") + '" onclick="toggleCheckin(' + i + ')" role="checkbox" aria-checked="' + isChecked + '" tabindex="0">';
+    html += '<span class="box">' + (isChecked ? "✓" : "") + '</span>';
+    html += '<span class="text">' + item + '</span>';
+    html += '</div>';
+  });
+  html += '</div>';
+
+  document.getElementById("detailView").innerHTML = html;
+  updateRoundProgress();
+  wireAllAudio();
+}
+
+/* ============ Round navigation ============ */
+function goRound(i) {
+  var u = DATA[currentUnit];
+  if (i < 0 || i >= u.rounds.length) return;
+  currentRound = i;
+  var tabs = document.querySelectorAll(".round-tab");
+  tabs.forEach(function (t, ti) { t.classList.toggle("active", ti === i); });
+  document.querySelectorAll(".round-panel").forEach(function (p, pi) { p.classList.toggle("active", pi === i); });
+  updateRoundProgress();
+}
+
+function updateRoundProgress() {
+  var u = DATA[currentUnit];
+  var pct = Math.round(((currentRound + 1) / u.rounds.length) * 100);
+  var bar = document.getElementById("roundBar");
+  var label = document.getElementById("roundLabel");
+  if (bar) bar.style.width = pct + "%";
+  if (label) label.textContent = "Round " + (currentRound + 1) + " / " + u.rounds.length;
+}
+
+function toggleAnswer(i) {
+  var box = document.getElementById("answerBox-" + i);
+  var btn = box.previousElementSibling;
+  var isOpen = box.classList.contains("open");
+  box.classList.toggle("open");
+  btn.textContent = isOpen ? "显示参考答案" : "收起参考答案";
+  btn.setAttribute("aria-expanded", String(!isOpen));
+}
+
+/* ============ Checkin ============ */
+function toggleCheckin(i) {
+  var u = DATA[currentUnit];
+  var checked = getCheckin(u.id);
+  var idx = checked.indexOf(i);
+  if (idx >= 0) checked.splice(idx, 1);
+  else checked.push(i);
+  checked.sort(function (a, b) { return a - b; });
+  saveCheckin(u.id, checked);
+  renderDetail();
+  updateRoundProgress();
+}
+
+/* ============ Init ============ */
+document.addEventListener("DOMContentLoaded", function () {
+  if (DATA && DATA.length) {
+    renderSelector();
+  } else {
+    handleDataError();
+  }
+});
+</script>
+</body>
+</html>
