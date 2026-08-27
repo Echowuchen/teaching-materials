@@ -73,6 +73,8 @@
   .word .py{font-size:13px; color:var(--aqua); font-weight:600}
   .word .m{font-size:14px; color:var(--muted); margin-top:6px}
   .word .sh{font-size:12px; color:var(--sand-deep); margin-top:6px}
+  .word img{width:100%; height:150px; object-fit:cover; border-radius:12px; margin-bottom:8px; display:block; box-shadow:0 4px 14px rgba(10,77,140,.15)}
+  .word .imgcap{font-size:12px; color:var(--muted); margin-top:4px}
   .word.flip{background:linear-gradient(160deg,var(--sand),var(--sand-deep)); color:#4a3200}
   .word.flip .w,.word.flip .m,.word.flip .py{color:#4a3200}
   .quiz-q{font-weight:800; margin:18px 0 12px; color:var(--deep)}
@@ -274,21 +276,21 @@
 <script>
 /* ---------- 生字新词卡 ---------- */
 const zi=[
-  {w:"屹立",py:"yì lì",m:"像山峰一样高耸而稳固地立着",g:"屹立不倒"},
-  {w:"薄雾",py:"bó wù",m:"淡薄的雾气",g:"蒙蒙薄雾"},
-  {w:"人声鼎沸",py:"rén shēng dǐng fèi",m:"人声喧闹，像水烧开一样沸腾",g:"人声鼎沸"},
-  {w:"横贯",py:"héng guàn",m:"横着贯穿过去",g:"横贯江面"},
+  {w:"屹立",py:"yì lì",m:"像山峰一样高耸而稳固地立着",g:"屹立不倒",img:"img/yili.jpg",cap:"高塔稳稳立在江岸"},
+  {w:"薄雾",py:"bó wù",m:"淡薄的雾气",g:"蒙蒙薄雾",img:"img/bowu.jpg",cap:"江面蒙着薄雾"},
+  {w:"人声鼎沸",py:"rén shēng dǐng fèi",m:"人声喧闹，像水烧开一样沸腾",g:"人山人海、人声鼎沸",img:"img/renshengdingfei.jpg",cap:"人群热闹喧腾"},
+  {w:"横贯",py:"héng guàn",m:"横着贯穿过去",g:"横贯江面",img:"img/hengguan.jpg",cap:"白线横贯江面"},
+  {w:"昂首",py:"áng shǒu",m:"抬头",g:"昂首东望",img:"img/angshou.jpg",cap:"人群抬头东望"},
+  {w:"水天相接",py:"shuǐ tiān xiāng jiē",m:"水与天连成一片",g:"江面水天相接",img:"img/shuitian.jpg",cap:"水与天连成一线"},
+  {w:"若隐若现",py:"ruò yǐn ruò xiàn",m:"隐隐约约看不真切",g:"山峦若隐若现",img:"img/ruoyin.jpg",cap:"远山雾气中若隐若现"},
   {w:"霎时",py:"shà shí",m:"极短的时间，一眨眼",g:"霎时沸腾"},
-  {w:"昂首",py:"áng shǒu",m:"抬头",g:"昂首东望"},
-  {w:"若隐若现",py:"ruò yǐn ruò xiàn",m:"隐隐约约看不真切",g:"山峦若隐若现"},
-  {w:"山崩地裂",py:"shān bēng dì liè",m:"形容声音巨大、气势惊人",g:"声音如山崩地裂"},
-  {w:"水天相接",py:"shuǐ tiān xiāng jiē",m:"水与天连成一片",g:"江面水天相接"}
+  {w:"山崩地裂",py:"shān bēng dì liè",m:"形容声音巨大、气势惊人",g:"声音如山崩地裂"}
 ];
 (function(){
   const wrap=document.getElementById("ziWrap");
   zi.forEach(z=>{
     const c=document.createElement("div"); c.className="word"; c.tabIndex=0;
-    c.innerHTML='<div class="w">'+z.w+'</div><div class="py">'+z.py+'</div><div class="m">点击看意思</div>';
+    c.innerHTML=(z.img?'<img src="'+z.img+'" alt="'+z.w+'" loading="lazy"><div class="imgcap">🖼️ '+z.cap+'</div>':'')+'<div class="w">'+z.w+'</div><div class="py">'+z.py+'</div><div class="m">点击看意思</div>';
     c.addEventListener("click",()=>{c.classList.toggle("flip"); c.querySelector(".m").innerHTML=c.classList.contains("flip")?z.m+'<div class="sh">🏷️ 组词：'+z.g+'</div>':"点击看意思";});
     c.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();c.click();}});
     wrap.appendChild(c);
