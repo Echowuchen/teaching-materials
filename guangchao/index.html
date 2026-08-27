@@ -8,6 +8,7 @@
   :root{
     --deep:#0a4d8c; --ocean:#1270b5; --aqua:#33a3d6; --foam:#eaf6ff; --white:#fff;
     --sand:#f6d276; --sand-deep:#e0a94b; --ink:#123; --muted:#5b7c99; --good:#24a46b; --card:#fff;
+    --see:#2a9df4; --hear:#f09f2e; --think:#8e5ad6;
     --shadow:0 10px 30px rgba(10,77,140,.14);
     --radius:20px;
   }
@@ -18,28 +19,20 @@
     color:var(--ink); background:linear-gradient(180deg,#eaf6ff 0%,#f7fbff 40%,#fff 100%); line-height:1.75;
     -webkit-font-smoothing:antialiased;
   }
-  /* ---- hero waves ---- */
-  .hero{
-    position:relative; overflow:hidden; text-align:center; color:#fff;
-    background:linear-gradient(180deg,#0a4d8c 0%,#1270b5 55%,#33a3d6 100%);
-    padding:78px 20px 150px;
-  }
+  .hero{position:relative; overflow:hidden; text-align:center; color:#fff;
+    background:linear-gradient(180deg,#0a4d8c 0%,#1270b5 55%,#33a3d6 100%); padding:76px 20px 150px}
   .hero h1{font-size:clamp(34px,6vw,58px); margin:0 0 8px; letter-spacing:2px; font-weight:900; text-shadow:0 4px 18px rgba(0,0,0,.25)}
   .hero .sub{font-size:clamp(15px,2.2vw,20px); opacity:.95; margin:0 0 18px}
-  .hero .tag{display:inline-block; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.4); padding:6px 18px; border-radius:40px; font-size:14px; letter-spacing:1px}
+  .hero .moodline{font-size:clamp(14px,2vw,18px); font-weight:600; background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.4); padding:8px 20px; border-radius:40px; display:inline-block; letter-spacing:.5px}
+  .hero .tag{display:inline-block; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.4); padding:6px 18px; border-radius:40px; font-size:14px; letter-spacing:1px; margin-bottom:12px}
   .hero .waves{position:absolute; left:0; right:0; bottom:-2px; line-height:0}
   .hero .waves svg{width:100%; height:110px; display:block}
   .wave1{animation:drift 7s ease-in-out infinite}
-  .wave2{animation:drift 9s ease-in-out infinite reverse; opacity:.6}
   @keyframes drift{0%,100%{transform:translateX(0)}50%{transform:translateX(-3%)}}
-  /* ---- nav ---- */
-  nav.chaps{
-    position:sticky; top:0; z-index:50; display:flex; gap:6px; flex-wrap:wrap; align-items:center; justify-content:center;
-    background:rgba(255,255,255,.92); backdrop-filter:blur(8px); padding:10px 12px; box-shadow:0 4px 16px rgba(10,77,140,.10);
-  }
-  nav.chaps a{text-decoration:none; color:var(--deep); font-weight:700; font-size:14px; padding:8px 14px; border-radius:30px; transition:.2s}
+  nav.chaps{position:sticky; top:0; z-index:50; display:flex; gap:6px; flex-wrap:wrap; align-items:center; justify-content:center;
+    background:rgba(255,255,255,.92); backdrop-filter:blur(8px); padding:10px 12px; box-shadow:0 4px 16px rgba(10,77,140,.10)}
+  nav.chaps a{text-decoration:none; color:var(--deep); font-weight:700; font-size:14px; padding:8px 13px; border-radius:30px; transition:.2s}
   nav.chaps a:hover,nav.chaps a.active{background:var(--ocean); color:#fff}
-  /* ---- layout ---- */
   main{max-width:980px; margin:0 auto; padding:34px 20px 80px}
   section{margin:64px 0}
   .head{display:flex; align-items:center; gap:12px; margin-bottom:8px}
@@ -48,19 +41,17 @@
   .lead{color:var(--muted); margin:0 0 22px; font-size:16px}
   .card{background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow); padding:24px}
   .grid{display:grid; gap:16px}
-  .g3{grid-template-columns:repeat(3,1fr)}
-  .g2{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)} .g2{grid-template-columns:repeat(2,1fr)}
   @media(max-width:720px){.g3,.g2{grid-template-columns:1fr}}
   .center{text-align:center}
   .slogan{font-size:clamp(19px,3vw,25px); font-weight:800; color:var(--deep); background:var(--foam); border-left:6px solid var(--aqua); padding:16px 20px; border-radius:12px}
-  /* ---- structure flow ---- */
-  .flow{display:flex; gap:14px; flex-wrap:wrap; justify-content:center}
-  .flow .step{flex:1 1 200px; background:#fff; border-radius:18px; box-shadow:var(--shadow); padding:18px; text-align:center; position:relative}
-  .flow .step .n{font-weight:900; font-size:20px; color:var(--aqua)}
+  .flow{display:flex; gap:12px; flex-wrap:wrap; justify-content:center}
+  .flow .step{flex:1 1 170px; background:#fff; border-radius:18px; box-shadow:var(--shadow); padding:16px; text-align:center; position:relative; border-top:5px solid var(--aqua)}
+  .flow .step .n{font-weight:900; font-size:18px; color:var(--aqua)}
   .flow .step .t{font-weight:800; margin:6px 0 4px}
-  .flow .step .d{font-size:14px; color:var(--muted)}
-  .flow .arrow{align-self:center; font-size:26px; color:var(--sand-deep)}
-  /* ---- reveal cards ---- */
+  .flow .step .d{font-size:13px; color:var(--muted)}
+  .flow .step .mood{margin-top:8px; font-size:13px; font-weight:700; color:#fff; background:linear-gradient(135deg,var(--see),var(--think)); padding:4px 10px; border-radius:20px; display:inline-block}
+  .flow .arrow{align-self:center; font-size:24px; color:var(--sand-deep)}
   .reveal{margin:14px 0}
   .reveal button{width:100%; text-align:left; border:none; cursor:pointer; background:#fff; border-radius:16px; box-shadow:var(--shadow); padding:18px 20px; font-size:16px; font-weight:600; transition:.2s}
   .reveal button:hover{transform:translateY(-2px)}
@@ -69,14 +60,21 @@
   .reveal.open .a{display:block}
   .reveal .a .effect{display:inline-block; background:var(--sand); color:#5a3d00; padding:2px 10px; border-radius:20px; font-size:13px; font-weight:700; margin-left:6px}
   @keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-  /* ---- word cards ---- */
-  .word{background:linear-gradient(160deg,#fff,var(--foam)); border-radius:18px; box-shadow:var(--shadow); padding:20px 16px; text-align:center; cursor:pointer; transition:.25s; min-height:120px}
+  .senseBar{display:flex; gap:10px; flex-wrap:wrap; margin:16px 0}
+  .senseBtn{flex:1 1 150px; padding:14px; border-radius:16px; border:none; cursor:pointer; font-size:16px; font-weight:800; color:#fff; transition:.2s}
+  .senseBtn.see{background:var(--see)} .senseBtn.hear{background:var(--hear)} .senseBtn.think{background:var(--think)}
+  .senseBtn:hover{transform:translateY(-3px)}
+  .sensePanel{background:#fff; border-radius:16px; box-shadow:var(--shadow); padding:18px; margin-top:12px; min-height:90px}
+  .senseTag{display:inline-block; padding:3px 12px; border-radius:20px; color:#fff; font-size:13px; font-weight:700; margin-right:8px}
+  .senseTag.see{background:var(--see)} .senseTag.hear{background:var(--hear)} .senseTag.think{background:var(--think)}
+  .word{background:linear-gradient(160deg,#fff,var(--foam)); border-radius:18px; box-shadow:var(--shadow); padding:18px 14px; text-align:center; cursor:pointer; transition:.25s; min-height:130px}
   .word:hover{transform:translateY(-3px)}
-  .word .w{font-size:22px; font-weight:900; color:var(--deep); margin-bottom:6px}
-  .word .m{font-size:14px; color:var(--muted)}
+  .word .w{font-size:20px; font-weight:900; color:var(--deep); margin-bottom:4px}
+  .word .py{font-size:13px; color:var(--aqua); font-weight:600}
+  .word .m{font-size:14px; color:var(--muted); margin-top:6px}
+  .word .sh{font-size:12px; color:var(--sand-deep); margin-top:6px}
   .word.flip{background:linear-gradient(160deg,var(--sand),var(--sand-deep)); color:#4a3200}
-  .word.flip .w,.word.flip .m{color:#4a3200}
-  /* ---- quiz ---- */
+  .word.flip .w,.word.flip .m,.word.flip .py{color:#4a3200}
   .quiz-q{font-weight:800; margin:18px 0 12px; color:var(--deep)}
   .opt{display:block; width:100%; text-align:left; margin:8px 0; padding:14px 18px; border:2px solid var(--foam); background:#fff; border-radius:14px; cursor:pointer; font-size:16px; font-weight:600; transition:.18s}
   .opt:hover:not(:disabled){border-color:var(--aqua); background:var(--foam)}
@@ -84,23 +82,22 @@
   .opt.wrong{background:#fdecec; border-color:#e05b5b; color:#8a2323}
   .opt:disabled{cursor:default}
   .quiz-fb{margin-top:14px; font-weight:800; min-height:26px}
-  .quiz-fb.ok{color:var(--good)}
-  .quiz-fb.no{color:#c94a4a}
+  .quiz-fb.ok{color:var(--good)} .quiz-fb.no{color:#c94a4a}
   .score{margin-top:14px; font-weight:800; color:var(--deep)}
   .stars{font-size:30px; letter-spacing:4px; margin-top:8px}
-  /* ---- sentence compare ---- */
   .sentCard{background:#fff; border-radius:16px; box-shadow:var(--shadow); padding:18px}
   .sentCard .src{color:var(--deep); font-weight:700; font-size:17px}
   .sentCard .im{color:var(--muted); margin-top:6px; border-left:3px solid var(--sand); padding-left:12px}
   .badge{display:inline-block; background:var(--aqua); color:#fff; font-size:12px; padding:2px 10px; border-radius:20px; margin-bottom:8px}
-  /* ---- extend ---- */
-  list{padding-left:18px}
-  li{margin:6px 0}
+  .readCard{background:#fff; border-radius:16px; box-shadow:var(--shadow); padding:20px; margin-bottom:14px}
+  .readCard .sentence{font-size:18px; line-height:2}
+  .readCard .kw{color:var(--sand-deep); font-weight:800}
   footer{text-align:center; color:var(--muted); font-size:13px; padding:30px; border-top:1px solid var(--foam)}
   .tip{background:var(--foam); border-radius:14px; padding:14px 18px; margin-top:14px}
   .btn{background:var(--ocean); color:#fff; border:none; padding:12px 26px; border-radius:30px; font-size:16px; font-weight:700; cursor:pointer; margin-top:20px; transition:.2s}
   .btn:hover{background:var(--deep); transform:translateY(-2px)}
-  .videoWrap{position:relative; width:100%}
+  .btn.ghost{background:#fff; color:var(--ocean); border:2px solid var(--ocean)}
+  .btn.ghost:hover{background:var(--foam)}
 </style>
 </head>
 <body>
@@ -109,6 +106,7 @@
   <div class="tag">人教版 · 四年级上册 · 第一课时</div>
   <h1>🌊 观潮</h1>
   <p class="sub">跟着钱塘江大潮，学"把壮观写具体"</p>
+  <div class="moodline">心情一层层涨起来：期待 → 惊喜 → 惊叹 → 意犹未尽</div>
   <div class="waves">
     <svg class="wave1" viewBox="0 0 1440 110" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
       <path fill="#ffffff" d="M0,60 C240,20 480,100 720,60 C960,20 1200,100 1440,60 L1440,110 L0,110 Z"/>
@@ -118,273 +116,246 @@
 
 <nav class="chaps">
   <a href="#start" class="active">导入</a>
-  <a href="#struct">结构</a>
-  <a href="#before">潮来前</a>
+  <a href="#struct">结构·心情</a>
+  <a href="#zi">生字</a>
+  <a href="#sense">感官发现</a>
   <a href="#mid">潮来时</a>
-  <a href="#after">潮去后</a>
-  <a href="#geo">地理锦囊</a>
   <a href="#words">词句库</a>
-  <a href="#quiz">小测验</a>
-  <a href="#extend">拓展</a>
+  <a href="#read">朗读背诵</a>
+  <a href="#guide">小导游</a>
+  <a href="#quiz">测验</a>
+  <a href="#geo">地理</a>
 </nav>
 
 <main>
 
   <section id="start">
     <div class="head"><span class="icon">🎬</span><h2>导入 · 天下奇观</h2></div>
-    <p class="lead">钱塘江大潮，到底有多壮观？为什么人们争先恐后去看它？</p>
+    <p class="lead">钱塘江大潮到底有多壮观？为什么被称为"天下奇观"？先自己说出你的理解。</p>
     <div class="card">
       <p class="slogan">▶️ 钱塘江大潮，自古以来被称为<b>天下奇观</b>。</p>
-      <p style="margin-top:16px">这篇课文是<b>写景记叙文</b>，作者按<b>时间顺序</b>，从潮来前 → 潮来时 → 潮去后，写尽大潮的壮美，不由自主地赞美大自然的壮丽。</p>
-      <div class="tip">🤔 <b>核心问题</b>：为什么钱塘江大潮被称为"天下奇观"？学完这篇，你就懂了！</div>
+      <div class="grid g3" style="margin-top:18px">
+        <div class="reveal">
+          <button><span class="q">🌊 <b>观潮</b> 是什么意思？</span></button>
+          <div class="a"><b>观潮 = 观看大潮。</b>农历八月十八前后，人们到钱塘江边看涌潮的景象。<span class="effect">字面义</span></div>
+        </div>
+        <div class="reveal">
+          <button><span class="q">✨ <b>天下奇观</b> 呢？</span></button>
+          <div class="a"><b>天下奇观 = 天下奇特、罕见的景象。</b>"奇"是奇特、奇妙。</div>
+        </div>
+        <div class="reveal">
+          <button><span class="q">💭 为什么叫它"天下奇观"？</span></button>
+          <div class="a">因为大潮<b>声势浩大、世间罕见，还流传千年</b>（从古至今都有），所以称得上"天下奇观"。</div>
+        </div>
+      </div>
+      <div class="tip" style="margin-top:16px">🎙️ 这是一篇<b>古文改写</b>而来的课文——从<b>古至今</b>都有的奇观，你读到的是千年前就震撼过古人的风景！</div>
     </div>
   </section>
 
   <section id="struct">
-    <div class="head"><span class="icon">🗺️</span><h2>文章结构</h2></div>
-    <p class="lead">课文共 5 段，分段清清楚楚。点一点体会作者的"时间顺序"。</p>
+    <div class="head"><span class="icon">🕰️</span><h2>按时间顺序 · 四步心情</h2></div>
+    <p class="lead">课文按<b>时间变化</b>顺序写。观察板书你发现了吗？——<b>不同时间的词</b> + <b>心情不断变化、层层递进</b>。点一点每步，看时间与心情。</p>
     <div class="flow">
-      <div class="step"><div class="n">第1段</div><div class="t">总起</div><div class="d">点出"天下奇观"</div></div>
+      <div class="step"><div class="n">潮来前</div><div class="t">静悄悄地等</div><div class="d">江面风平浪静，人山人海昂首东望</div><span class="mood">期待</span></div>
       <div class="arrow">→</div>
-      <div class="step"><div class="n">第2段</div><div class="t">潮来前</div><div class="d">静态 + 人群烘托</div></div>
+      <div class="step"><div class="n">潮来时①</div><div class="t">白线出现</div><div class="d">那条白线很快移来，拉长、变粗、横贯</div><span class="mood">惊喜</span></div>
       <div class="arrow">→</div>
-      <div class="step"><div class="n">第3-4段</div><div class="t">潮来时</div><div class="d">动态：比喻/夸张/排比</div></div>
+      <div class="step"><div class="n">潮来时②</div><div class="t">万马奔腾</div><div class="d">犹如千万匹战马，声音如同山崩地裂</div><span class="mood">惊叹</span></div>
       <div class="arrow">→</div>
-      <div class="step"><div class="n">第5段</div><div class="t">潮去后</div><div class="d">余韵收尾</div></div>
+      <div class="step"><div class="n">潮去后</div><div class="t">余韵悠悠</div><div class="d">漫天卷地，过了好久才恢复平静</div><span class="mood">意犹未尽</span></div>
     </div>
-    <div class="tip">✍️ <b>写作要点</b>：写景物可按<b>时间顺序</b>或<b>空间顺序</b>展开，条理才分明。</div>
+    <div class="tip">✍️ <b>写作要点</b>：① 按<b>时间顺序</b>（潮来前→潮来时→潮去后）条理分明；② <b>心情不断变化、层层递进</b>，让读者跟着你一起震撼！</div>
   </section>
 
-  <section id="before">
-    <div class="head"><span class="icon">🌫️</span><h2>潮来前 · 静等</h2></div>
-    <p class="lead">大潮还没来，江边已经热闹非凡。作者怎么"烘托期待感"？</p>
-    <div class="grid g3">
-      <div class="card"><b>🏞️ 江面景象</b><br>宽阔的钱塘江横卧在眼前，笼罩着蒙蒙薄雾。<span class="badge">静态描写</span></div>
-      <div class="card"><b>🏯 远处景物</b><br>镇海古塔、中山亭、观潮台屹立在江边。<span class="badge">环境烘托</span></div>
-      <div class="card"><b>👪 人群状态</b><br>人山人海，昂首东望，等着，盼着。<span class="badge">侧面描写</span></div>
+  <section id="zi">
+    <div class="head"><span class="icon">✏️</span><h2>生字新词</h2></div>
+    <p class="lead"><b>点击词语卡</b>看拼音、意思、组词。特别留意<b>笔顺</b>难的字：<b>鼎、贯、屹</b>。跟着范读读一读。</p>
+    <div class="grid g3" id="ziWrap"></div>
+    <div class="tip" style="margin-top:18px">✍️ <b>书写小提醒（易错笔顺）</b>：
+      <br>· <b>鼎</b>：上部先写"目"形，下部"爿"旁的笔画要穿插，最后写底部。
+      <br>· <b>贯</b>：上下两部件相连，整体字形是"毋"上"贝"下，写时注意中间贯通。
+      <br>· <b>屹</b>：左"山"右"乞"，右部"乞"注意折笔。
     </div>
-    <div class="tip">✍️ <b>写作要点</b>：写大场面可用"人山人海""昂首东望"等词烘托氛围，让读者感受到那份期待。</div>
+  </section>
+
+  <section id="sense">
+    <div class="head"><span class="icon">👀</span><h2>感官发现角 · 从哪些角度写？</h2></div>
+    <p class="lead">作者写大潮，不是只用一个角度！<b>视觉、听觉、联想</b>一起上，还配上心情。切到每个角度，找出句子体会<b>感觉 + 关键词 + 心情</b>。</p>
+    <div class="senseBar">
+      <button class="senseBtn see" onclick="showSense('see')">👀 视觉</button>
+      <button class="senseBtn hear" onclick="showSense('hear')">👂 听觉</button>
+      <button class="senseBtn think" onclick="showSense('think')">💭 联想</button>
+    </div>
+    <div class="sensePanel" id="sensePanel"></div>
   </section>
 
   <section id="mid">
     <div class="head"><span class="icon">⚡</span><h2>潮来时 · 山崩地裂</h2></div>
-    <p class="lead">这一部分是全文的<b>重点</b>！作者用比喻、夸张、排比，把壮观写得活灵活现。<b>点击卡片看修辞。</b></p>
-    <div class="card" style="margin-bottom:18px">
-      <p>💎 <b>中心句</b>：那条白线很快地向我们移来，逐渐拉长，变粗，横贯江面。</p>
-    </div>
-    <div class="reveal" data-open>
-      <button>🐎 <span class="q">比喻 —— "犹如千万匹白色战马齐头并进"</span></button>
-      <div class="a">把潮水比作<b>千万匹白色战马</b>，形象写出潮水齐头并进的气势。<span class="effect">效果：气势磅礴</span></div>
-    </div>
-    <div class="reveal">
-      <button>🌋 <span class="q">夸张 —— "那声音如同山崩地裂"</span></button>
-      <div class="a">把声音夸张成<b>山崩地裂</b>，突出巨响的震撼。<span class="effect">效果：震撼人心</span></div>
-    </div>
-    <div class="reveal">
-      <button>🔁 <span class="q">排比 —— "形成了……形成了……"</span></button>
-      <div class="a">用<b>排比</b>层层推进，增强语势，读起来更有节奏。<span class="effect">效果：增强语势</span></div>
-    </div>
-    <div class="reveal">
-      <button>🎯 <span class="q">中心句 —— "浪潮越来越近，犹如千万匹白色战马齐头并进"</span></button>
-      <div class="a">这是"越来越…"句式 + 比喻结合的经典示例，画面感十足。<span class="effect">效果：生动形象</span></div>
-    </div>
-    <div class="tip">✍️ <b>写作要点</b>：写壮观景象，可用"犹如""如同""好像"让描写生动，再用夸张突出特点。</div>
-  </section>
-
-  <section id="after">
-    <div class="head"><span class="icon">🌅</span><h2>潮去后 · 余韵</h2></div>
-    <p class="lead">潮水退去，江面慢慢恢复平静，可那份震撼久久不散。</p>
-    <div class="grid g2">
-      <div class="card"><b>🌊 余波</b><br>漫天卷地般涌来</div>
-      <div class="card"><b>💨 江面</b><br>风号浪吼</div>
-      <div class="card"><b>😌 恢复平静</b><br>过了好久才恢复</div>
-    </div>
-  </section>
-
-  <section id="geo">
-    <div class="head"><span class="icon">🗺️</span><h2>地理锦囊 · 大潮从哪来？</h2></div>
-    <p class="lead">课文写的是"壮观"，这一节我们看看<b>钱塘江大潮的科学成因</b>。观看下面的科普视频，再对照要点记一记。</p>
-    <div class="card">
-      <div class="videoWrap">
-        <iframe
-          src="https://player.bilibili.com/player.html?bvid=BV1GP4wzkEQV&page=1&high_quality=1&danmaku=0&autoplay=0"
-          style="width:100%; aspect-ratio:16/9; border:0; border-radius:16px; box-shadow:var(--shadow);"
-          scrolling="no" allowfullscreen
-          title="钱塘江大潮 · 地理成因科普视频"></iframe>
-      </div>
-      <div class="tip" style="margin-top:16px">👀 <b>需要联网</b>才能播放视频；其余内容可离线学习。视频来自 B站「羊羊的地理教室」。
-        <br>▶️ 若播放器未显示，<a href="https://www.bilibili.com/video/BV1GP4wzkEQV/" target="_blank" rel="noopener" style="color:var(--ocean);font-weight:700">点击这里去 B站 观看原视频</a>。</div>
-      <div class="grid g3" style="margin-top:18px">
-        <div class="card"><b>🌊 天时 · 引潮力</b><br>农历八月十八前后，太阳、月亮、地球几乎成一直线，日月引潮力叠加，潮水最大。</div>
-        <div class="card"><b>🏔️ 地利 · 喇叭形</b><br>杭州湾外宽内窄（口宽约100km→上游仅几km），"狭管效应"让潮水越涨越高。</div>
-        <div class="card"><b>⛰️ 河床 · 沙坎</b><br>江底巨大沙坎使前浪受阻、后浪跟进，层叠成数米高的涌潮。</div>
-      </div>
-      <div class="tip" style="margin-top:16px">✅ <b>一句话总结</b>：<b>天文引潮力</b> + <b>喇叭形河口</b> + <b>沙坎抬升</b>，三者叠加造就"天下奇观"。</div>
-    </div>
+    <p class="lead">全文重点！作者把"壮观"写得活灵活现。<b>点击卡片看修辞</b>。想一想：作者当时的<b>心情</b>是怎样的？——<b>惊叹！</b></p>
+    <div class="card" style="margin-bottom:18px"><p>💎 <b>中心句</b>：那条白线很快地向我们移来，逐渐拉长，变粗，横贯江面。</p></div>
+    <div class="reveal"><button>🐎 <span class="q">比喻 —— "犹如千万匹白色战马齐头并进"</span></button><div class="a">把潮水比作<b>千万匹白色战马</b>，气势磅礴。<span class="effect">联想</span></div></div>
+    <div class="reveal"><button>🌋 <span class="q">夸张 —— "那声音如同山崩地裂"</span></button><div class="a">夸张成<b>山崩地裂</b>，突出巨响。<span class="effect">听觉+联想</span></div></div>
+    <div class="reveal"><button>🔁 <span class="q">排比 —— "形成了……形成了……"</span></button><div class="a">层层推进，增强语势。<span class="effect">语势</span></div></div>
+    <div class="reveal"><button>🎯 <span class="q">心情 —— 人群又沸腾起来</span></button><div class="a">围观的人<b>兴奋、激动</b>！作者心情层层递进，从惊讶到<b>惊叹</b>。<span class="effect">层层递进</span></div></div>
+    <div class="tip">✍️ <b>写作要点</b>：写壮观，可把<b>视觉 + 听觉 + 联想</b>结合起来，再配上<b>心情</b>，读者就身临其境啦！</div>
   </section>
 
   <section id="words">
     <div class="head"><span class="icon">📚</span><h2>词句库</h2></div>
-    <p class="lead"><b>点击词语卡</b>，看看意思 / 实用例句。</p>
+    <p class="lead"><b>点击词卡</b>看意思/例句；再学两个<b>句式</b>仿写。</p>
     <div class="grid g3" id="wordWrap"></div>
-
     <h3 style="color:var(--deep);margin-top:30px">💬 重点句式 · 仿写</h3>
     <div class="grid g2">
-      <div class="sentCard">
-        <span class="badge">句式：越来越…</span>
-        <div class="src">📖 浪潮越来越近，犹如千万匹白色战马齐头并进。</div>
-        <div class="im">✍️ 天气越来越冷，路上的行人也越来越少了。</div>
-      </div>
-      <div class="sentCard">
-        <span class="badge">句式：如同…</span>
-        <div class="src">📖 那声音如同山崩地裂，好像大地都被震得颤动起来。</div>
-        <div class="im">✍️ 他的歌声如同百灵鸟一样动听，让所有人都陶醉了。</div>
-      </div>
+      <div class="sentCard"><span class="badge">句式：越来越…</span><div class="src">📖 浪潮越来越近，犹如千万匹白色战马齐头并进。</div><div class="im">✍️ 天气越来越冷，路上的行人也越来越少了。</div></div>
+      <div class="sentCard"><span class="badge">句式：如同…</span><div class="src">📖 那声音如同山崩地裂，好像大地都被震得颤动起来。</div><div class="im">✍️ 他的歌声如同百灵鸟一样动听，让所有人都陶醉了。</div></div>
+    </div>
+  </section>
+
+  <section id="read">
+    <div class="head"><span class="icon">🎤</span><h2>朗读 · 背诵</h2></div>
+    <p class="lead">先<b>跟范读</b>，再<b>按关键词试着背</b>——就像对着板书一样！</p>
+    <div class="readCard"><b>🎧 记一记这段话</b><p class="sentence" id="sentence1">那条白线很快地向我们移来，逐渐<b class="kw">拉长，变粗，横贯</b>江面。再近些，只见白浪翻滚，形成一堵<b class="kw">两丈多高</b>的水墙。浪潮越来越近，犹如<b class="kw">千万匹白色战马</b>齐头并进，那声音如同<b class="kw">山崩地裂</b>，好像大地都被震得颤动起来。</p>
+      <button class="btn ghost" onclick="readText('sentence1')">🗣️ 范读这段</button>
+      <button class="btn ghost" style="margin-left:8px" onclick="toggleKw()">🙈 隐藏关键词（试背）</button>
+    </div>
+    <div class="readCard"><b>🎧 记一记这段话</b><p class="sentence" id="sentence2">江面很平静，越往东越宽，在雨后的阳光下，笼罩着一层蒙蒙的薄雾。镇海古塔、中山亭、观潮台<span class="kw">屹立</span>在江边。</p>
+      <button class="btn ghost" onclick="readText('sentence2')">🗣️ 范读这段</button>
+    </div>
+    <div class="tip">💡 背诵小窍门：抓住<b>视觉→听觉→联想→心情</b>的顺序，把每句话的<b>关键词</b>串起来，就背下来啦。</div>
+  </section>
+
+  <section id="guide">
+    <div class="head"><span class="icon">🧭</span><h2>说话训练 · 我是小导游</h2></div>
+    <p class="lead">如果你是小导游，选一个片段，向游客介绍钱塘江大潮的场面。</p>
+    <div class="card">
+      <p>🎯 <b>任务</b>：选择一个片段（潮来前 / 潮来时 / 潮去后），用上<b>感觉 + 关键词 + 心情</b>说一段话。</p>
+      <div class="tip">🧩 <b>句式支架</b>：我看到的（视觉）是……，我听到的（听觉）是……，这让我想到……（联想），我的心情……</div>
+      <p class="sentCard" style="margin-top:16px"><b>🎤 示例（潮来时）</b>：游客朋友们快看！天边出现一条<b>白线</b>，越拉越长、越变越粗，横贯江面。听，那声音像<b>闷雷滚动</b>，越来越响，最后<b>如同山崩地裂</b>！这潮水就像<b>千万匹白色战马</b>冲过来，看得我<b>惊叹不已</b>！</p>
+      <button class="btn" onclick="readDemo()">🗣️ 朗读示例</button>
     </div>
   </section>
 
   <section id="quiz">
     <div class="head"><span class="icon">🏆</span><h2>小测验</h2></div>
-    <p class="lead">5 道题，检验你学得怎么样。答对会点亮星星哦！</p>
+    <p class="lead">7 道题，答对点亮星星！</p>
     <div class="card" id="quizBox"></div>
-    <div class="score center" id="scoreBox" style="display:none">
-      <div id="scoreText"></div><div class="stars" id="starBox"></div>
-      <button class="btn" onclick="startQuiz()">再答一次</button>
-    </div>
+    <div class="score center" id="scoreBox" style="display:none"><div id="scoreText"></div><div class="stars" id="starBox"></div><button class="btn" onclick="startQuiz()">再答一次</button></div>
   </section>
 
-  <section id="extend">
-    <div class="head"><span class="icon">🔭</span><h2>拓展知识</h2></div>
+  <section id="geo">
+    <div class="head"><span class="icon">🗺️</span><h2>地理锦囊 · 大潮从哪来？</h2></div>
+    <p class="lead">课文写"壮观"，这里看<b>科学成因</b>。看科普视频，再对照要点记一记。</p>
     <div class="card">
-      <h3 style="color:var(--deep)">👤 作者</h3>
-      <p>赵宗成、朱明元（具体生平不详，本文选作课文时有改动）。</p>
-      <h3 style="color:var(--deep);margin-top:20px">🌊 钱塘江为什么有如此壮观的大潮？</h3>
-      <ul id="causeList">
-        <li>杭州湾外宽内窄，呈<b>喇叭形</b>；</li>
-        <li>江底泥沙淤积，形成<b>沙坎</b>；</li>
-        <li>涨潮时潮水受约束，<b>越来越高</b>。</li>
-      </ul>
-      <h3 style="color:var(--deep);margin-top:20px">✍️ 关于潮的诗句</h3>
-      <p style="margin:6px 0">"八月涛声吼地来，头高数丈触山回。" —— 刘禹锡《浪淘沙》</p>
-      <p>"海涌银为郭，江横玉系腰。" —— 杨万里</p>
+      <div class="videoWrap"><iframe src="https://player.bilibili.com/player.html?bvid=BV1GP4wzkEQV&page=1&high_quality=1&danmaku=0&autoplay=0" style="width:100%; aspect-ratio:16/9; border:0; border-radius:16px; box-shadow:var(--shadow);" scrolling="no" allowfullscreen title="钱塘江大潮 · 地理成因科普视频"></iframe></div>
+      <div class="tip" style="margin-top:16px">👀 <b>需要联网</b>才能播放；其余离线学习。来自 B站「羊羊的地理教室」。▶️ 播放器没显示，<a href="https://www.bilibili.com/video/BV1GP4wzkEQV/" target="_blank" rel="noopener" style="color:var(--ocean);font-weight:700">点这里去 B站</a>。</div>
+      <div class="grid g3" style="margin-top:18px">
+        <div class="card"><b>🌊 天时·引潮力</b><br>农历八月十八前后，日月地一线，引力叠加。</div>
+        <div class="card"><b>🏔️ 地利·喇叭形</b><br>杭州湾外宽内窄，"狭管效应"潮越涨越高。</div>
+        <div class="card"><b>⛰️ 河床·沙坎</b><br>江底沙坎使前浪受阻、后浪层叠成涌潮。</div>
+      </div>
+      <div class="tip" style="margin-top:16px">✅ <b>一句话</b>：天文引潮力 + 喇叭形河口 + 沙坎抬升 = 天下奇观。</div>
     </div>
   </section>
 
   <section>
     <div class="head"><span class="icon">💪</span><h2>课后挑战</h2></div>
     <div class="grid g3">
-      <div class="card"><b>🎤 朗读小能手</b><br>有感情地朗读，背诵第3-4自然段。</div>
-      <div class="card"><b>🖼️ 画面小画家</b><br>想象钱塘江大潮的样子，画出你脑海中的画面。</div>
+      <div class="card"><b>🎤 朗读小能手</b><br>有感情朗读，背诵第3-4自然段。</div>
+      <div class="card"><b>🖼️ 画面小画家</b><br>想象大潮，画出脑海中的画面。</div>
+      <div class="card"><b>🗣️ 小导游</b><br>选一个片段，用"感觉+关键词+心情"介绍给"游客"。</div>
       <div class="card"><b>🌸 妙笔生花</b><br>用"时间顺序"写一处自然景观，用上比喻和夸张。</div>
     </div>
   </section>
 
 </main>
 
-<footer>🌊《观潮》交互课堂 · 依据四上语文《观潮》笔记整理 · 随点随学</footer>
+<footer>🌊《观潮》交互课堂 · 依据四上语文《观潮》教学设计优化 · 随点随学</footer>
 
 <script>
-/* ---------- 词语卡 ---------- */
-const words=[
-  {w:"人山人海",m:"形容人非常多，如潮水般涌来，挤满了江边"},
-  {w:"人声鼎沸",m:"人声喧闹，像煮开了的水一样沸腾"},
-  {w:"风号浪吼",m:"狂风呼啸，大浪怒吼，声音很大"},
-  {w:"水天相接",m:"水与天连在一起，看不到尽头"},
-  {w:"浩浩荡荡",m:"形容水势大或队伍壮阔"},
-  {w:"山崩地裂",m:"山崩塌、地开裂，形容声音巨大、气势惊人"},
-  {w:"若隐若现",m:"隐隐约约，时隐时现，看不真切"},
-  {w:"横贯",m:"横着贯穿过去，形容横跨江面"},
-  {w:"齐头并进",m:"不分先后，一齐向前"},
-  {w:"漫天卷地",m:"铺满天空、卷过大地，形容声势极盛"}
+/* ---------- 生字新词卡 ---------- */
+const zi=[
+  {w:"屹立",py:"yì lì",m:"像山峰一样高耸而稳固地立着",g:"屹立不倒"},
+  {w:"薄雾",py:"bó wù",m:"淡薄的雾气",g:"蒙蒙薄雾"},
+  {w:"人声鼎沸",py:"rén shēng dǐng fèi",m:"人声喧闹，像水烧开一样沸腾",g:"人声鼎沸"},
+  {w:"横贯",py:"héng guàn",m:"横着贯穿过去",g:"横贯江面"},
+  {w:"霎时",py:"shà shí",m:"极短的时间，一眨眼",g:"霎时沸腾"},
+  {w:"昂首",py:"áng shǒu",m:"抬头",g:"昂首东望"},
+  {w:"若隐若现",py:"ruò yǐn ruò xiàn",m:"隐隐约约看不真切",g:"山峦若隐若现"},
+  {w:"山崩地裂",py:"shān bēng dì liè",m:"形容声音巨大、气势惊人",g:"声音如山崩地裂"},
+  {w:"水天相接",py:"shuǐ tiān xiāng jiē",m:"水与天连成一片",g:"江面水天相接"}
 ];
 (function(){
-  const wrap=document.getElementById("wordWrap");
-  words.forEach((wd,i)=>{
-    const c=document.createElement("div");
-    c.className="word"; c.tabIndex=0;
-    c.innerHTML='<div class="w">'+wd.w+'</div><div class="m">点击看意思</div>';
-    c.addEventListener("click",()=>{c.classList.toggle("flip"); c.querySelector(".m").textContent=c.classList.contains("flip")?wd.m:"点击看意思";});
+  const wrap=document.getElementById("ziWrap");
+  zi.forEach(z=>{
+    const c=document.createElement("div"); c.className="word"; c.tabIndex=0;
+    c.innerHTML='<div class="w">'+z.w+'</div><div class="py">'+z.py+'</div><div class="m">点击看意思</div>';
+    c.addEventListener("click",()=>{c.classList.toggle("flip"); c.querySelector(".m").innerHTML=c.classList.contains("flip")?z.m+'<div class="sh">🏷️ 组词：'+z.g+'</div>':"点击看意思";});
     c.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();c.click();}});
     wrap.appendChild(c);
   });
 })();
 
-/* ---------- 揭示卡（修辞） ---------- */
-document.querySelectorAll(".reveal button").forEach(btn=>{
-  btn.addEventListener("click",()=>btn.parentElement.classList.toggle("open"));
-});
+/* ---------- 感官发现角 ---------- */
+const senseData={
+  see:[{t:"江面景象",s:"宽阔的钱塘江横卧在眼前，笼罩着蒙蒙薄雾"},{t:"人群",s:"人山人海，昂首东望"},{t:"白线",s:"那条白线很快移来，拉长、变粗、横贯江面"},{t:"水墙",s:"只见白浪翻滚，形成一堵两丈多高的水墙"}],
+  hear:[{t:"远处",s:"从远处传来隆隆的响声，好像闷雷滚动"},{t:"人群",s:"人声鼎沸"},{t:"巨响",s:"那声音如同山崩地裂，好像大地都被震得颤动起来"},{t:"潮去",s:"江面风号浪吼"}],
+  think:[{t:"联想战马",s:"浪潮越来越近，犹如千万匹白色战马齐头并进"},{t:"联想声势",s:"好像大地都被震得颤动起来"},{t:"联想诗句",s:"八月涛声吼地来，头高数丈触山回"}]
+};
+function showSense(k){
+  const p=document.getElementById("sensePanel");
+  let html='<span class="senseTag '+k+'">'+({see:"👀 视觉",hear:"👂 听觉",think:"💭 联想"})[k]+'</span> 从这些句子里找感觉——<b>看到/听到什么 + 关键词 + 心情</b>：<div style="margin-top:12px">';
+  senseData[k].forEach(it=>{html+='<p style="margin:8px 0"><b>'+it.t+'：</b>'+it.s+'</p>';});
+  html+='</div>';
+  p.innerHTML=html;
+}
+showSense("see");
+
+/* ---------- 修辞揭示 ---------- */
+document.querySelectorAll(".reveal button").forEach(btn=>{btn.addEventListener("click",()=>btn.parentElement.classList.toggle("open"));});
+
+/* ---------- 词句库词卡 ---------- */
+(function(){
+  const words=[
+    {w:"人山人海",m:"形容人非常多，挤满了江边"},{w:"人声鼎沸",m:"人声喧闹，像煮开水一样"},{w:"风号浪吼",m:"狂风呼啸，大浪怒吼"},{w:"浩浩荡荡",m:"水势或队伍壮阔"},
+    {w:"齐头并进",m:"不分先后，一齐向前"},{w:"漫天卷地",m:"铺满天空、卷过大地，声势极盛"},{w:"横贯",m:"横着贯穿过去"},{w:"若隐若现",m:"时隐时现，看不真切"},
+    {w:"水天相接",m:"水与天连在一起"},{w:"山崩地裂",m:"形容声音巨大、气势惊人"}
+  ];
+  const wrap=document.getElementById("wordWrap");
+  words.forEach(wd=>{const c=document.createElement("div");c.className="word";c.tabIndex=0;c.innerHTML='<div class="w">'+wd.w+'</div><div class="m">点击看意思</div>';c.addEventListener("click",()=>{c.classList.toggle("flip");c.querySelector(".m").textContent=c.classList.contains("flip")?wd.m:"点击看意思";});c.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();c.click();}});wrap.appendChild(c);});
+})();
+
+/* ---------- 朗读 / 背诵 ---------- */
+function readText(id){const t=document.getElementById(id).innerText; if(window.speechSynthesis){const u=new SpeechSynthesisUtterance(t);u.lang="zh-CN";u.rate=0.85;speechSynthesis.cancel();speechSynthesis.speak(u);} else alert("当前浏览器不支持朗读，请手动朗读。");}
+function toggleKw(){const s=document.getElementById("sentence1"); const kw=s.querySelectorAll(".kw"); kw.forEach(k=>k.style.display=k.style.display==="none"?"inline":"none"); }
+function readDemo(){const txt="游客朋友们快看！天边出现一条白线，越拉越长、越变越粗，横贯江面。听，那声音像闷雷滚动，越来越响，最后如同山崩地裂！这潮水就像千万匹白色战马冲过来，看得我惊叹不已！"; if(window.speechSynthesis){const u=new SpeechSynthesisUtterance(txt);u.lang="zh-CN";u.rate=0.9;speechSynthesis.cancel();speechSynthesis.speak(u);}else alert("请手动朗读。");}
 
 /* ---------- 测验 ---------- */
 const quiz=[
-  {q:"1️⃣ 课文是按什么顺序写观潮的？",opts:["空间顺序","时间顺序","由远及近再说近"],ans:1},
-  {q:"2️⃣ \"犹如千万匹白色战马齐头并进\" 用了什么修辞？",opts:["夸张","排比","比喻"],ans:2},
-  {q:"3️⃣ \"那声音如同山崩地裂\" 突出的是？",opts:["潮水的气势","声音的震撼","人群的嘈杂"],ans:1},
-  {q:"4️⃣ \"人山人海、昂首东望\" 是哪种描写？",opts:["侧面烘托","动态直接写潮","静态写景"],ans:0},
-  {q:"5️⃣ 钱塘江大潮被誉为？",opts:["天下奇观","世界之最","第一大潮"],ans:0}
+  {q:"1️⃣ 课文按什么顺序写观潮？",opts:["空间顺序","时间顺序（潮来前→潮来时→潮去后）","人物顺序"],ans:1},
+  {q:"2️⃣ 「犹如千万匹白色战马齐头并进」是哪种角度感受？",opts:["听觉","视觉联想","嗅觉"],ans:1},
+  {q:"3️⃣ \"那声音如同山崩地裂\" 主要从哪个角度写？",opts:["听觉","视觉","味觉"],ans:0},
+  {q:"4️⃣ \"人山人海、昂首东望\" 是什么描写？",opts:["侧面烘托人群","直接写潮水","静态写景"],ans:0},
+  {q:"5️⃣ 潮来时作者的心情是？",opts:["平静","惊叹/激动","难过"],ans:1},
+  {q:"6️⃣ \"横贯江面\" 的\"贯\"字形该怎么记？",opts:["上毋下贝，注意中间贯通","山字旁","三点水旁"],ans:0},
+  {q:"7️⃣ 钱塘江大潮被誉为？",opts:["天下第一湖","天下奇观","世界之最"],ans:1}
 ];
 let score=0;
-function startQuiz(){
-  score=0;
-  const box=document.getElementById("quizBox");
-  box.style.display="block";
-  document.getElementById("scoreBox").style.display="none";
-  box.innerHTML='';
-  quiz.forEach((qz,qi)=>{
-    const sec=document.createElement("div");
-    sec.innerHTML='<div class="quiz-q">'+qz.q+'</div>';
-    qz.opts.forEach((o,oi)=>{
-      const b=document.createElement("button"); b.className="opt";
-      b.textContent=o;
-      b.addEventListener("click",()=>{
-        const prev=sec.querySelectorAll(".opt");
-        prev.forEach(p=>p.disabled=true);
-        if(oi===qz.ans){b.classList.add("correct"); score++;}
-        else{
-          b.classList.add("wrong");
-          sec.querySelectorAll(".opt")[qz.ans].classList.add("correct");
-        }
+function startQuiz(){score=0;const box=document.getElementById("quizBox");box.style.display="block";document.getElementById("scoreBox").style.display="none";box.innerHTML='';
+  quiz.forEach(qz=>{const sec=document.createElement("div");sec.innerHTML='<div class="quiz-q">'+qz.q+'</div>';
+    qz.opts.forEach((o,oi)=>{const b=document.createElement("button");b.className="opt";b.textContent=o;
+      b.addEventListener("click",()=>{const prev=sec.querySelectorAll(".opt");prev.forEach(p=>p.disabled=true);
+        if(oi===qz.ans){b.classList.add("correct");score++;}else{b.classList.add("wrong");sec.querySelectorAll(".opt")[qz.ans].classList.add("correct");}
         sec.querySelectorAll(".quiz-fb").forEach(f=>f.remove());
-        const fb=document.createElement("div"); fb.className="quiz-fb "+(oi===qz.ans?"ok":"no");
-        fb.textContent=oi===qz.ans?"✅ 答对啦！":"❌ 再想想："+qz.opts[qz.ans];
-        sec.appendChild(fb);
-        if(sec.querySelector(".opt.wrong")){} // noop for clarity
-        if(sec.querySelectorAll(".opt").length){/* keep */}
-        // update score if answered all
-        if(box.querySelectorAll(".quiz-q").length && !box.querySelector(".quiz-fb.no")){}
-        showScoreIfDone();
-      });
-      sec.appendChild(b);
-    });
-    box.appendChild(sec);
+        const fb=document.createElement("div");fb.className="quiz-fb "+(oi===qz.ans?"ok":"no");fb.textContent=(oi===qz.ans?"✅ 答对啦！":"❌ 再想想：")+qz.opts[qz.ans];sec.appendChild(fb);
+        if(document.querySelectorAll("#quizBox .opt:not(:disabled)").length===0){const total=quiz.length;document.getElementById("scoreText").textContent="本次得分："+score+" / "+total;document.getElementById("starBox").textContent="⭐".repeat(score)+"☆".repeat(total-score);box.style.display="none";document.getElementById("scoreBox").style.display="block";}
+      });sec.appendChild(b);});box.appendChild(sec);
   });
 }
-function allAnswered(){
-  const buttons=document.querySelectorAll("#quizBox .opt:not(:disabled)");
-  return buttons.length===0;
-}
-function showScoreIfDone(){
-  if(!allAnswered()) return;
-  const total=quiz.length;
-  const text=document.getElementById("scoreText");
-  const stars=document.getElementById("starBox");
-  text.textContent="本次得分："+score+" / "+total;
-  stars.textContent="⭐".repeat(score)+"☆".repeat(total-score);
-  document.getElementById("quizBox").style.display="none";
-  document.getElementById("scoreBox").style.display="block";
-}
-
-/* init */
 startQuiz();
 
 /* nav active */
-const links=document.querySelectorAll("nav.chaps a");
-const secs=[...document.querySelectorAll("main section[id]")];
-window.addEventListener("scroll",()=>{
-  let idx=0; const y=window.scrollY+120;
-  secs.forEach((s,i)=>{if(s.offsetTop<=y) idx=i;});
-  links.forEach(l=>l.classList.remove("active"));
-  if(links[idx]) links[idx].classList.add("active");
-});
+const links=document.querySelectorAll("nav.chaps a");const secs=[...document.querySelectorAll("main section[id]")];
+window.addEventListener("scroll",()=>{let idx=0;const y=window.scrollY+120;secs.forEach((s,i)=>{if(s.offsetTop<=y)idx=i;});links.forEach(l=>l.classList.remove("active"));if(links[idx])links[idx].classList.add("active");});
 </script>
 </body>
 </html>
